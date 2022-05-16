@@ -1,72 +1,39 @@
-const { Client } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const dotenv = require('dotenv');
-dotenv.config();
-
-const promote = new SlashCommandBuilder()
-  .setName("promote")
-  .setDescription("promote a user")
-  .setDescriptionLocalization('fr', "promouvoir un utilisateur")
-  .addUserOption(o => o
-    .setDescription("the user to promote")
-    .setDescriptionLocalization('fr', "l'utilisateur a promouvoir")
-    .setName("user"))
-  .addStringOption(o => o
-    .setDescription("why would you promote this user?")
-    .setDescriptionLocalization('fr', "pourquoi voulez-vous promouvoir cette utilisateur?")
-    .setName("reason"));
+const fs = require('node:fs');
+const path = require('node:path');
+const { Client, Collection } = require('discord.js');
+const { token } = require('./config.json');
 
 client = new Client({intents: 0});
 
-client.once('ready', async () => {
+client.commands = new Collection();
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-  await client.guilds.cache.get('861413126393954314').commands.fetch();
-  
-  // client.application.commands.create(data);
-  // client.guilds.cache.get('861413126393954314').commands.create(data);
+for (const file of commandFiles) {
+  const filePath = path.join(commandsPath, file);
+  const command = require(filePath);
+  client.commands.set(command.data.name, command);
+}
 
+
+client.once('ready', () => {
   console.log("Login as ???");
 })
 
 
 client.on("interactionCreate", interaction => {
-  if (interaction.isCommand()) {
-    if (interaction.commandName === 'promote') {
-      let user = interaction.options.getUser('user')
-      let reason = interaction.options.getString('reason')
+  if (!interaction.isCommand()) return;
 
-    }
-    if (interaction.commandName === 'demote') {
-      let user = interaction.options.getUser('user')
-      let reason = interaction.options.getString('reason')
+  const command = client.commands.get(interaction.commandName);
 
-    }
-    if (interaction.commandName === 'warn') {
-      let user = interaction.options.getUser('user')
-      let reason = interaction.options.getString('reason')
+  if (!command) return;
 
-    }
-    if (interaction.commandName === 'warnings') {
-      let user = interaction.options.getUser('user')
-      
-    }
-    if (interaction.commandName === 'kick') {
-      let user = interaction.options.getUser('user')
-      let reason = interaction.options.getString('reason')
-      
-    }
-    if (interaction.commandName === 'ban') {
-      let user = interaction.options.getUser('user')
-      let reason = interaction.options.getString('reason')
-
-    }
-    if (interaction.commandName === 'unban') {
-      let user = interaction.options.getUser('user')
-      let reason = interaction.options.getString('reason')
-
-    }
-
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
   }
 })
 
-client.login(process.env.TOKEN);
+client.login(token);
