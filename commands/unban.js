@@ -15,7 +15,9 @@ module.exports = {
     let member = interaction.options.getMember("user");
     let reason = interaction.options.getString("reason");
 
-    await member.unban(user);
+    if (!reason) reason = "No reason provided"
+
+    await member.unban();
     
     if (reason === String) interaction.reply(`${user.tag} has been unbanned with the reason ${reason}`);
 

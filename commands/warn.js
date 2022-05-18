@@ -14,5 +14,7 @@ module.exports = {
     .setDescription("why this user should be warn?")),
   async execute(interaction) {
     interaction.reply({ content: "This command is not out yet!", ephemeral: true})
+
+    //if (!reason) reason = "No reason provided"
   }
 }

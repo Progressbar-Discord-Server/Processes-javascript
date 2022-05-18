@@ -17,6 +17,9 @@ module.exports = {
   async execute(interaction) {
     let member = interaction.options.getMember("user")
     let reason = interaction.options.getString("reason")
+
+    if (!reason) reason = "No reason provided"
+
     if (interaction.options.getNumber("time") !== undefined) {let days = interaction.options.getNumber("time")}
     else {let days = null}
 

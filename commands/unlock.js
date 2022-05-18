@@ -15,6 +15,9 @@ module.exports = {
   async execute(interaction) {
     let channel = interaction.options.getChannel("channel"); 
     let reason = interaction.options.getString("reason")
+
+    if (!reason) reason = "No reason provided"
+
     channel.permissionOverwrites.edit(guildId, {
       SEND_MESSAGES: true,
       SEND_MESSAGES_IN_THREADS: true,
