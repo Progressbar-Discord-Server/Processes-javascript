@@ -17,7 +17,7 @@ for (const file of commandFiles) {
 
 
 client.once('ready', () => {
-  console.log("Login as ???");
+  console.log(`Login as ${client.user.tag}`);
 })
 
 
