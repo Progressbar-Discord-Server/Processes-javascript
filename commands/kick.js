@@ -18,7 +18,7 @@ module.exports = {
 
     if (member.kickable) member.kick({ reason: reason }).then(console.log).catch(error => {console.error(error);await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });return});
     
-    if (reason === String) interaction.reply(`${user.tag} has been banned with the reason ${reason}`)
-    else if (reason !== String) interaction.reply(`${user.tag} has been banned`)
+    if (reason === String) interaction.reply(`${user.tag} has been kicked with the reason ${reason}`)
+    else if (reason !== String) interaction.reply(`${user.tag} has been kicked`)
   }
 }
