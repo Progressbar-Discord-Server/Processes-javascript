@@ -13,8 +13,11 @@ module.exports = {
     .setName("reason")
     .setDescription("why this user should be warn?")),
   async execute(interaction) {
-    interaction.reply({ content: "This command is not out yet!", ephemeral: true})
-
+	const user = interaction.options.getUser("user")
+	const reason = interaction.options.getString("reason")
+    //interaction.reply({ content: "This command is not out yet!", ephemeral: true})
+	interaction.reply({ content: `Warned ${user.tag}: ${reason}`})
+	user.send(`You have been warned for: ${reason}`)
     //if (!reason) reason = "No reason provided"
   }
 }
