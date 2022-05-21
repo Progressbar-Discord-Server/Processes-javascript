@@ -16,13 +16,20 @@ const rest = new REST({ version: '9' }).setToken(token);
 (async () => {
 	try {
 		console.log('Started refreshing application (/) commands.');
-
-		guildId.forEach(async guild => {
-      await rest.put(
-			  Routes.applicationGuildCommands(clientId, guild),
-			  { body: commands },
-		  );
-		})
+		if (guildId instanceof Array) {
+			guildId.forEach(async guild => {
+      	await rest.put(
+			  	Routes.applicationGuildCommands(clientId, guild),
+			  	{ body: commands },
+		  	);
+			}
+		)}
+		else {
+			await rest.put(
+				Routes.applicationGuildCommands(clientId, guildId),
+				{ body: commands },
+			)
+		}
 		console.log('Successfully reloaded application (/) commands.');
 	} catch (error) {
 		console.error(error);
