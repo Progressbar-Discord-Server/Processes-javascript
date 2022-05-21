@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Permissions } = require('discord.js');
+const { Modal } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -44,11 +44,12 @@ module.exports = {
 			await interaction.reply(`**I cannot timeout ${user.tag}! You provided a time longer than 28 days!**`)
 		}
 		else {
-			member.timeout(length, reason + " | Timeout by " + interaction.member.user.tag).catch(async error => {
+			member.timeout(length, reason + " | Timeout by " + interaction.member.user.tag)
+			.then(async () => {await interaction.reply(`Timedout ${member} for **${RealLen} ${unit}** for **"${reason}".**`)})
+			.catch(async error => {
 				console.log(error)
-				await interaction.reply(`**I cannot timeout ${user.tag}! They have staff permissions!**`)
+				await interaction.reply(`**I cannot timeout ${member.tag}! They have staff permissions!**`)
 			})
-			await interaction.reply(`Timedout ${member} for **${RealLen} ${unit}** for **"${reason}".**`)
 		}
 	},
 };
