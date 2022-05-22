@@ -30,8 +30,8 @@ const Warns = sequelize.define('warns', {
     type: Sequelize.TEXT,
     defaultValue: "No reason provided"
   },
-  Executor: Sequelize.STRING,
-  ID: Sequelize.NUMBER
+  Executor: Sequelize.STRING//,
+ // ID: Sequelize.NUMBER
 });
 
 module.exports = { Bans, Warns }
