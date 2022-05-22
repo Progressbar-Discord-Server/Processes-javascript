@@ -33,3 +33,5 @@ const Warns = sequelize.define('warns', {
   Executor: Sequelize.STRING,
   ID: Sequelize.NUMBER
 });
+
+module.exports = { Bans, Warns }
