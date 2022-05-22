@@ -11,7 +11,7 @@ module.exports = {
     .setRequired(true))
   .addStringOption(o => o
     .setName("reason")
-    .setDescription("why this channel should be unlock?")),
+    .setDescription("Why should this channel be unlocked?")),
   async execute(interaction) {
     let channel = interaction.options.getChannel("channel"); 
     let reason = interaction.options.getString("reason")

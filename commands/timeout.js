@@ -11,16 +11,16 @@ module.exports = {
 			.setRequired(true))
 		.addStringOption(o => o
 			.setName('unit')
-			.setDescription('the unit of time')
+			.setDescription('In which unit is the duration?')
 			.setRequired(true)
 			.addChoices({ name: 'seconds', value: 'seconds' }, { name: 'minutes', value: 'minutes' }, { name: 'hours', value: 'hours' }, { name: 'days', value: 'days' }))
 		.addIntegerOption(o => o
 			.setName("duration")
-			.setDescription('the duration')
+			.setDescription('How long should this user be timed out for? (max 28 days)')
 			.setRequired(true))
 		.addStringOption(o => o
 			.setName("reason")
-			.setDescription('the reason')),
+			.setDescription('Why should this user be timed out?')),
 	async execute(interaction) {
 		const member = interaction.options.getMember('user')
 		const RealLen = interaction.options.getInteger('duration')
@@ -41,7 +41,7 @@ module.exports = {
 		}
 
 		if (length > 2.419e+9) {
-			await interaction.reply(`**I cannot timeout ${user.tag}! You provided a time longer than 28 days!**`)
+			await interaction.reply(`**I cannot timeout ${user.tag} for that long! You provided a time longer than 28 days!**`)
 		}
 		else {
 			member.timeout(length, reason + " | Timeout by " + interaction.member.user.tag)

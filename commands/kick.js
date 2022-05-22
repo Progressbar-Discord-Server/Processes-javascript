@@ -6,12 +6,12 @@ module.exports = {
     .setName('kick')
     .setDescription("kick a user")
     .addUserOption(o => o
-      .setDescription("the user to kick")
+      .setDescription("The user to kick")
       .setName('user')
       .setRequired(true))
     .addStringOption(o => o
       .setName("reason")
-      .setDescription("why this user should be kicked?")),
+      .setDescription("Why should this user be kicked?")),
   async execute(interaction) {
     let member = interaction.options.getMember("user")
     let reason = interaction.options.getString("reason")

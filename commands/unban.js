@@ -10,7 +10,7 @@ module.exports = {
       .setRequired(true))
     .addStringOption(o => o
       .setName("reason")
-      .setDescription("why this user should be unbanned?")),
+      .setDescription("Why should this user be unbanned?")),
   async execute(interaction) {
     let member = interaction.options.getMember("user");
     let reason = interaction.options.getString("reason");

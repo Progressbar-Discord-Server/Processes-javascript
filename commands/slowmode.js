@@ -3,10 +3,10 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('slowmode')
-    .setDescription("set a slowmode to a channel")
+    .setDescription("set a slowmode in a channel")
     .addChannelOption(o => o
       .setName("channel")
-      .setDescription("what channel do you want the slowmode to be?")
+      .setDescription("What channel do you want to apply slowmode to?")
       .setRequired(true))
     .addStringOption(o => o
       .setName('unit')
@@ -19,7 +19,7 @@ module.exports = {
       .setRequired(true))
     .addStringOption(o => o
       .setName("reason")
-      .setDescription("why do you want to slowmode this channel?")),
+      .setDescription("Why do you want to set a slowmode in this channel?")),
   async execute(interaction) {
     const channel = interaction.options.getChannel('channel');
     const unit = interaction.options.getString('unit');
@@ -35,12 +35,12 @@ module.exports = {
 
       if (channel.isText) {
         channel.setRateLimitPerUser(length, reason);
-        interaction.reply(`${channel} has been slowmode for **${RealLen} ${unit}** for "**${reason}**"`)
+        interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
       }
-      else if (!channel.isText) interaction.reply({ content: `The specified channel (<#${channel.id}>) isn't a text channel, i can't set a slowmode on them`, ephemeral: true })
+      else if (!channel.isText) interaction.reply({ content: `The specified channel (<#${channel.id}>) isn't a text channel,  I can't set a slowmode there.`, ephemeral: true })
     }
     else if (!channel.available) {
-      interaction.reply({ content: "It seems discord is having problem, please go to https://discordstatus.com/ to see \"when\" it would be fixed", ephemeral: true})
+      interaction.reply({ content: "It seems Discord is having problems, please go to https://discordstatus.com/ to see \"when\" it will be fixed", ephemeral: true})
     }
   }
 }

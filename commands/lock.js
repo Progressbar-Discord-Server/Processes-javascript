@@ -7,11 +7,11 @@ module.exports = {
   .setDescription("lock a channel")
   .addChannelOption(o => o
     .setName("channel")
-    .setDescription("the channel to lock")
+    .setDescription("The channel to lock")
     .setRequired(true))
   .addStringOption(o => o
     .setName("reason")
-    .setDescription("why this channel should be lock?")),
+    .setDescription("Why should this channel be locked?")),
   async execute(interaction) {
     let channel = interaction.options.getChannel("channel"); 
     let reason = interaction.options.getString("reason")

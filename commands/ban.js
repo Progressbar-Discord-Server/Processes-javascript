@@ -5,15 +5,15 @@ module.exports = {
     .setName('ban')
     .setDescription("ban a user")
     .addUserOption(o => o
-      .setDescription("the user to ban")
+      .setDescription("The user to ban")
       .setName('user')
       .setRequired(true))
     .addStringOption(o => o
       .setName("reason")
-      .setDescription("why this user should be banned?"))
+      .setDescription("Why should this user be banned?"))
     .addNumberOption(o => o
       .setName("time")
-      .setDescription("how many days this user will be banned")),
+      .setDescription("How long to ban this user?")),
   async execute(interaction) {
     let member = interaction.options.getMember("user")
     let reason = interaction.options.getString("reason")
