@@ -22,7 +22,6 @@ module.exports = {
 	  user.send(`You have been warned for: ${reason}`)
     db.create({
       reason: reason,
-      ID: 6969,
       Executor: interaction.member.user.tag,
       userID: user.id
     })

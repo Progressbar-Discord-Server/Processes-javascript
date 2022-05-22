@@ -17,7 +17,7 @@ module.exports = {
   async execute(interaction) {
     let member = interaction.options.getMember("user")
     let reason = interaction.options.getString("reason")
-
+    const db = interaction.client.db.Bans
     if (!reason) reason = "No reason provided"
 
     if (interaction.options.getNumber("time") !== undefined) {let days = interaction.options.getNumber("time")}
@@ -28,5 +28,10 @@ module.exports = {
     else if (!user.bannable) {interaction.reply("I can't ban this member");return}
     if (reason === String) interaction.reply(`${user.tag} has been banned with the reason ${reason}`)
     else if (reason !== String) interaction.reply(`${user.tag} has been banned`)
+    db.create({
+      reason: reason,
+      Executor: interaction.member.user.tag,
+      userID: user.id
+    })
   },
 };
