@@ -7,17 +7,29 @@ const sequelize = new Sequelize('database', 'user', 'password', {
   storage: 'database.sqlite'
 })
 
-const Ban = sequelize.define('ban', {
+const Bans = sequelize.define('bans', {
   userID:{
     type: Sequelize.NUMBER,
   },
-  raison: {
+  reason: {
     type: Sequelize.TEXT,
-    defaultValue: "No raison provided"
+    defaultValue: "No reason provided"
   },
   Executor: Sequelize.STRING,
   type: {
     type: Sequelize.STRING,
   },
+  ID: Sequelize.NUMBER
+});
+
+const Warns = sequelize.define('warns', {
+  userID:{
+    type: Sequelize.NUMBER,
+  },
+  reason: {
+    type: Sequelize.TEXT,
+    defaultValue: "No reason provided"
+  },
+  Executor: Sequelize.STRING,
   ID: Sequelize.NUMBER
 });

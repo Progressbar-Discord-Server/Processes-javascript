@@ -1,9 +1,18 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const Sequelize = require('sequelize')
 const { Client, Collection } = require('discord.js');
-const { token } = require('./config.json');
+const { token, sqlPass } = require('./config.json');
 
 client = new Client({intents: 0});
+
+const sequelize = new Sequelize('database', 'user', sqlPass, {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'database.sqlite',
+});
+client.db = require('./Util/database')
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -17,6 +26,8 @@ for (const file of commandFiles) {
 
 
 client.once('ready', () => {
+  client.db.Bans.sync()
+  client.db.Warns.sync()
   console.log(`Login as ${client.user.tag}`);
 })
 
