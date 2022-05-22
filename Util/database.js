@@ -18,8 +18,8 @@ const Bans = sequelize.define('bans', {
   Executor: Sequelize.STRING,
   type: {
     type: Sequelize.STRING,
-  },
-  ID: Sequelize.NUMBER
+  }//,
+  //ID: Sequelize.NUMBER
 });
 
 const Warns = sequelize.define('warns', {
