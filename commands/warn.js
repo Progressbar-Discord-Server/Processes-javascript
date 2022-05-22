@@ -11,13 +11,21 @@ module.exports = {
     .setRequired(true))
   .addStringOption(o => o
     .setName("reason")
-    .setDescription("Why should this user be warned?")),
+    .setDescription("Why should this user be warned?")
+    .setRequired(true))
+,
   async execute(interaction) {
-	const user = interaction.options.getUser("user")
-	const reason = interaction.options.getString("reason")
-    //interaction.reply({ content: "This command is not out yet!", ephemeral: true})
-	interaction.reply({ content: `Warned ${user.tag}: ${reason}`})
-	user.send(`You have been warned for: ${reason}`)
+  	const user = interaction.options.getUser("user")
+	  const reason = interaction.options.getString("reason")
+    const db = interaction.client.db.Warns
+	  interaction.reply({ content: `Warned ${user.tag}: ${reason}`})
+	  user.send(`You have been warned for: ${reason}`)
+    db.create({
+      reason: reason,
+      ID: 6969,
+      Executor: interaction.member.user.tag,
+      userID: user.id
+    })
     //if (!reason) reason = "No reason provided"
   }
 }
