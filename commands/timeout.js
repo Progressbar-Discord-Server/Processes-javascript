@@ -48,7 +48,7 @@ module.exports = {
 			.then(async () => {await interaction.reply(`Timedout ${member} for **${RealLen} ${unit}** for **"${reason}".**`)})
 			.catch(async error => {
 				console.log(error)
-				await interaction.reply(`**I cannot timeout ${member.tag}! They have staff permissions!**`)
+				await interaction.reply({content: `**I cannot timeout ${member.tag}! They have staff permissions!**`, ephemeral: true})
 			})
 		}
 	},

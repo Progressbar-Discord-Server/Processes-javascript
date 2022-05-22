@@ -27,11 +27,20 @@ module.exports = {
     const reason = interaction.options.getString('reason');
     let length = RealLen;
 
-    if (unit == "seconds") length = Math.floor(length * 1000);
-    else if (unit == "minutes") length = Math.floor(length * 60 * 1000);
-	  else if (unit == "hours") length = Math.floor(length * 60 * 60 * 1000);
-    
-    if (channel.isText) channel.setRateLimitPerUser(length, reason);
-    interaction.reply(`${channel} has been slowmode for **${RealLen} ${unit}** for "**${reason}**"`)
+    if (channel.available) {
+
+      if (unit == "seconds") length = Math.floor(length * 1000);
+      else if (unit == "minutes") length = Math.floor(length * 60 * 1000);
+      else if (unit == "hours") length = Math.floor(length * 60 * 60 * 1000);
+
+      if (channel.isText) {
+        channel.setRateLimitPerUser(length, reason);
+        interaction.reply(`${channel} has been slowmode for **${RealLen} ${unit}** for "**${reason}**"`)
+      }
+      else if (!channel.isText) interaction.reply({ content: `The specified channel (<#${channel.id}>) isn't a text channel, i can't set a slowmode on them`, ephemeral: true })
+    }
+    else if (!channel.available) {
+      interaction.reply({ content: "It seems discord is having problem, please go to https://discordstatus.com/ to see \"when\" it would be fixed", ephemeral: true})
+    }
   }
 }
