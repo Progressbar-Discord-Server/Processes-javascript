@@ -24,23 +24,20 @@ module.exports = {
     const channel = interaction.options.getChannel('channel');
     const unit = interaction.options.getString('unit');
     const RealLen = interaction.options.getInteger('duration');
-    const reason = interaction.options.getString('reason');
+    let reason = interaction.options.getString('reason');
     let length = RealLen;
 
-    if (channel.available) {
+    if (!reason) reason = "No reason provided"
 
-      if (unit == "seconds") length = Math.floor(length * 1000);
-      else if (unit == "minutes") length = Math.floor(length * 60 * 1000);
-      else if (unit == "hours") length = Math.floor(length * 60 * 60 * 1000);
-
-      if (channel.isText) {
-        channel.setRateLimitPerUser(length, reason);
-        interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
-      }
-      else if (!channel.isText) interaction.reply({ content: `The specified channel (<#${channel.id}>) isn't a text channel,  I can't set a slowmode there.`, ephemeral: true })
+    if (unit == "minutes") length = Math.floor(length * 60)
+    else if (unit == "hours") length = Math.floor(length * 60 * 60)
+    
+    if (channel.type === "GUILD_TEXT") {
+      channel.setRateLimitPerUser(length, reason);
+      if (reason === "No reason provided") interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel}`)
+      else if (reason !== "No reason provided") interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
+    } else if (channel.type === "GUILD_NEWS") {
+      interaction.reply("No")
+    } else if (channel.type !== "GUILD_TEXT" && channel.type !== "GUILD_NEWS") interaction.reply({ content: `The specified channel (<#${channel.id}>) isn't a text channel,  I can't set a slowmode there.`, ephemeral: true })
     }
-    else if (!channel.available) {
-      interaction.reply({ content: "It seems Discord is having problems, please go to https://discordstatus.com/ to see \"when\" it will be fixed", ephemeral: true})
-    }
-  }
 }
