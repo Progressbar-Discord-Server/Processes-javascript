@@ -31,6 +31,10 @@ module.exports = {
 
     if (unit == "minutes") length = Math.floor(length * 60)
     else if (unit == "hours") length = Math.floor(length * 60 * 60)
+
+    if (length > 21600) {
+      return interaction.reply("You set the slowmode to more then 6 hours, it's imposible for me to execute that...")
+    }
     
     if (channel.type === "GUILD_TEXT") {
       channel.setRateLimitPerUser(length, reason);
