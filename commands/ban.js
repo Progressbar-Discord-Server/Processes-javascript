@@ -25,7 +25,7 @@ module.exports = {
     
     if (member.bannable) await member.ban({ days: days, reason: reason }).then(console.log).catch(error => {console.error(error);interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });return});
 
-    else if (!user.bannable) {interaction.reply("I can't ban this member");return}
+    else if (!member.bannable) {interaction.reply("I can't ban this member");return}
     if (reason === String) interaction.reply(`${user.tag} has been banned with the reason ${reason}`)
     else if (reason !== String) interaction.reply(`${user.tag} has been banned`)
     db.create({
