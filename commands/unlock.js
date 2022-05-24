@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { guildId } = require("../config.json")
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,6 +14,7 @@ module.exports = {
       .setName("reason")
       .setDescription("Why should this channel be unlocked?")),
   async execute(interaction) {
+    const replyEmbed = new MessageEmbed()
     let channel = interaction.options.getChannel("channel");
     let reason = interaction.options.getString("reason")
 
@@ -28,8 +30,9 @@ module.exports = {
         CREATE_PUBLIC_THREADS: true,
         CREATE_PRIVATE_THREADS: true,
       }, { reason: reason, type: 0 })
-
-      interaction.reply("Channel unlocked")
+      .setDescription("Channel unlocked")
+      .setColor("#00FF00")
+    interaction.reply({embeds: [replyEmbed]})
     }
   }
 }

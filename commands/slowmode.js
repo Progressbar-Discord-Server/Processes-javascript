@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,24 +25,33 @@ module.exports = {
     const channel = interaction.options.getChannel('channel');
     const unit = interaction.options.getString('unit');
     const RealLen = interaction.options.getInteger('duration');
-    let reason = interaction.options.getString('reason');
-    let length = RealLen;
 
+    const reason = interaction.options.getString('reason');
+    const replyEmbed = new MessageEmbed()
+    let length = RealLen;
     if (!reason) reason = "No reason provided"
 
     if (unit == "minutes") length = Math.floor(length * 60)
     else if (unit == "hours") length = Math.floor(length * 60 * 60)
-
+    
     if (length > 21600) {
       return interaction.reply("You set the slowmode to more then 6 hours, it's imposible for me to execute that...")
     }
     
     if (channel.type === "GUILD_TEXT") {
       channel.setRateLimitPerUser(length, reason);
-      if (reason === "No reason provided") interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel}`)
-      else if (reason !== "No reason provided") interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
+      replyEmbed.setDescription(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
+      replyEmbed.setColor("#00FF00")
+      if (reason === "No reason provided") replyEmbed.setDescription(`Set **${RealLen} ${unit}** slowmode in ${channel}`)
+      else if (reason !== "No reason provided") replyEmbed.setDescription(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
+      interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
     } else if (channel.type === "GUILD_NEWS") {
-      interaction.reply("No")
-    } else if (channel.type !== "GUILD_TEXT" && channel.type !== "GUILD_NEWS") interaction.reply({ content: `The specified channel (<#${channel.id}>) isn't a text channel,  I can't set a slowmode there.`, ephemeral: true })
+      replyEmbed.setDescription("No")
+      interaction.reply({embed: [replyEmbed]})
+    } else if (channel.type !== "GUILD_TEXT" && channel.type !== "GUILD_NEWS") {
+      replyEmbed.setDescription(`The specified channel (<#${channel.id}>) isn't a text channel,  I can't set a slowmode there.`)
+      replyEmbed.setColor("#FF0000")
+      interaction.reply({ embeds: [replyEmbed], ephemeral: true })
+    }
     }
 }

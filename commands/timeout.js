@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Modal } = require('discord.js');
+const { Modal, MessageEmbed } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -27,7 +27,7 @@ module.exports = {
 		let length = interaction.options.getInteger('duration')
 		const unit = interaction.options.getString('unit')
 		let reason = interaction.options.getString('reason')
-
+		const replyEmbed = new MessageEmbed();
 		if (!reason) reason = "No reason provided"
 
 		if (unit == "seconds") {
@@ -41,14 +41,22 @@ module.exports = {
 		}
 
 		if (length > 2.419e+9) {
-			await interaction.reply(`**I cannot timeout ${user.tag} for that long! You provided a time longer than 28 days!**`)
+			replyEmbed.setColor("#FF0000")
+			replyEmbed.setDescription(`**I cannot timeout ${user.tag} for that long! You provided a time longer than 28 days!**`)
+			await interaction.reply({embeds:[replyEmbed]})
 		}
 		else {
 			member.timeout(length, reason + " | Timeout by " + interaction.member.user.tag)
-			.then(async () => {await interaction.reply(`Timedout ${member} for **${RealLen} ${unit}** for **"${reason}".**`)})
+			.then(async () => {
+				replyEmbed.setDescription(`Timed out ${member} for **${RealLen} ${unit}** for **"${reason}".**`)
+				replyEmbed.setColor("#00FF00")
+				await interaction.reply({embeds:[replyEmbed]})
+			})
 			.catch(async error => {
 				console.log(error)
-				await interaction.reply({content: `**I cannot timeout ${member.tag}! They have staff permissions!**`, ephemeral: true})
+				replyEmbed.setDescription(`**I cannot timeout ${member.tag}! They have staff permissions!**`)
+				replyEmbed.setColor("#FF0000")
+				await interaction.reply({embeds: [replyEmbed], ephemeral: true})
 			})
 		}
 	},

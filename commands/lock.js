@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { guildId } = require("../config.json")
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,7 +16,8 @@ module.exports = {
   async execute(interaction) {
     let channel = interaction.options.getChannel("channel");
     let reason = interaction.options.getString("reason")
-
+    const replyEmbed = new MessageEmbed()
+    
     if (!reason) reason = "No reason provided"
 
     if (channel.type === "GUILD_NEWS") {
@@ -28,8 +30,9 @@ module.exports = {
         CREATE_PUBLIC_THREADS: false,
         CREATE_PRIVATE_THREADS: false,
       }, { reason: reason, type: 0 })
-
-      interaction.reply("Channel locked")
+      replyEmbed.setColor("#00FF00")
+      replyEmbed.setDescription("Channel locked")
+      interaction.reply({ embeds:[replyEmbed] })
     }
   }
 }
