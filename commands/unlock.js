@@ -18,13 +18,17 @@ module.exports = {
 
     if (!reason) reason = "No reason provided"
 
-    channel.permissionOverwrites.edit(guildId, {
-      SEND_MESSAGES: true,
-      SEND_MESSAGES_IN_THREADS: true,
-      CREATE_PUBLIC_THREADS: true,
-      CREATE_PRIVATE_THREADS: true,
-    }, {reason: reason, type: 0})
+    if (channel.type === "GUILD_NEWS") {
+      interaction.reply("No");
+      return
+    } else if (channel.type === "GUILD_TEXT") {
+      channel.permissionOverwrites.edit(guildId, {
+        SEND_MESSAGES: true,
+        SEND_MESSAGES_IN_THREADS: true,
+        CREATE_PUBLIC_THREADS: true,
+        CREATE_PRIVATE_THREADS: true,
+      }, {reason: reason, type: 0})
 
-    interaction.reply("Channel unlocked")
+      interaction.reply("Channel unlocked")}
   } 
 }
