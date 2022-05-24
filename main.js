@@ -4,7 +4,7 @@ const Sequelize = require('sequelize')
 const { Client, Collection } = require('discord.js');
 const { token, sqlPass } = require('./config.json');
 
-client = new Client({intents: 0});
+client = new Client({intents: 0, presence: {status: 'idle'}});
 
 const sequelize = new Sequelize('database', 'user', sqlPass, {
 	host: 'localhost',
