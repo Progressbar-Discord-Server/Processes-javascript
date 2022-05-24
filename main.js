@@ -3,7 +3,7 @@ const path = require('node:path');
 const { Client, Collection } = require('discord.js');
 const { token } = require('./config.json');
 
-client = new Client({intents: 0});
+client = new Client({intents: 0, presence: {status: 'idle'}});
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
