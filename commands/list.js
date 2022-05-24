@@ -20,7 +20,7 @@ module.exports = {
 			interaction.deferReply()
       db = interaction.client.db.Warns
       list = await db.findAll({where: { userID: user.id }})
-      interaction.reply(list)
+      interaction.edit(list)
 		}
 	}
 }
