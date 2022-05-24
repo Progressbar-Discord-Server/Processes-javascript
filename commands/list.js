@@ -19,7 +19,7 @@ module.exports = {
       const user = interaction.options.getMember("user")
 			//interaction.deferReply()
       db = interaction.client.db.Warns
-      list = await db.findAll({where: { userID: user.id }})
+      list = await db.findAll(/*{where: { userID: user.id }}*/)
       interaction.reply(list)
 		}
 	}
