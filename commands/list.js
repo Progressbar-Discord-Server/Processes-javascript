@@ -17,10 +17,10 @@ module.exports = {
 		const subcommand = interaction.options.getSubcommand()
 		if (subcommand == "warns") { 
       const user = interaction.options.getMember("user").user
-			interaction.deferReply()
+			//interaction.deferReply()
       db = interaction.client.db.Warns
       list = await db.findAll({where: { userID: user.id }})
-      interaction.edit(list)
+      interaction.reply(list)
 		}
 	}
 }
