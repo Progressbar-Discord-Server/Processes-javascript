@@ -19,8 +19,16 @@ module.exports = {
 
     await member.unban();
     
-    if (reason === String) interaction.reply(`${user.tag} has been unbanned with the reason ${reason}`);
+    if (reason === String) {
+      replyEmbed.setColor("#00FF00")
+      replyEmbed.setDescription(`${user.tag} has been unbanned with the reason ${reason}`)
+    }
+    else if (reason !== String) {
+      replyEmbed.setDescription(`${user.tag} has been unbanned`);
+      replyEmbed.setColor("#00FF00")
+    }
 
-    else if (reason !== String) interaction.reply(`${user.tag} has been unbanned`);
+    interaction.reply({embeds:[replyEmbed]});
+
   },
 };

@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { guildId } = require("../config.json")
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,7 +25,9 @@ module.exports = {
       CREATE_PUBLIC_THREADS: true,
       CREATE_PRIVATE_THREADS: true,
     }, {reason: reason, type: 0})
-
-    interaction.reply("Channel unlocked")
+    const replyEmbed = new MessageEmbed()
+      .setDescription("Channel unlocked")
+      .setColor("#00FF00")
+    interaction.reply({embeds: [replyEmbed]})
   } 
 }

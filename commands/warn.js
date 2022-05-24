@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { guildId } = require("../config.json")
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -18,8 +19,12 @@ module.exports = {
   	const user = interaction.options.getUser("user")
 	  const reason = interaction.options.getString("reason")
     const db = interaction.client.db.Warns
-	  interaction.reply({ content: `Warned ${user.tag}: ${reason}`})
-	  user.send(`You have been warned for: ${reason}`)
+    const replyEmbed = new MessageEmbed.setColor("#00FF00")
+    const dmEmbed = new MessageEmbed.setColor("#FF0000")
+    replyEmbed.setDescription(`Warned ${user.tag}: ${reason}`)
+    dmEmbed.setDescription(`You have been warned for: ${reason}`)
+	  interaction.reply({ embeds: [replyEmbed]})
+	  user.send({ embeds: [dmEmbed]})
     db.create({
       reason: reason,
       Executor: interaction.member.user.tag,
