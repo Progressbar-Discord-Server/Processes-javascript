@@ -20,7 +20,7 @@ module.exports = {
     if (!reason) reason = "No reason provided"
 
     if (member.kickable) member.kick({ reason: reason }).then(console.log).catch(error => {console.error(error);interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });return});
-    const replyEmbed = new MessageEmbed.setColor("#00FF00")
+    const replyEmbed = new MessageEmbed().setColor("#00FF00")
     if (reason === String) replyEmbed.setDescription(`${user.tag} has been kicked with the reason ${reason}`)
     else if (reason !== String) replyEmbed.setDescription(`${user.tag} has been kicked`)
     interaction.reply({embeds:[replyEmbed]})

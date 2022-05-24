@@ -26,7 +26,7 @@ module.exports = {
     const unit = interaction.options.getString('unit');
     const RealLen = interaction.options.getInteger('duration');
     const reason = interaction.options.getString('reason');
-    const replyEmbed = new MessageEmbed
+    const replyEmbed = new MessageEmbed()
     let length = RealLen;
     
     if (channel.available) {

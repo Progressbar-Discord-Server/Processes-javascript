@@ -19,7 +19,7 @@ module.exports = {
     let member = await interaction.client.users.fetch(interaction.options.getMember("user"))
     let reason = interaction.options.getString("reason")
     const db = interaction.client.db.Bans
-    const replyEmbed = new MessageEmbed
+    const replyEmbed = new MessageEmbed()
     if (!reason) reason = "No reason provided"
 
     if (interaction.options.getNumber("time") !== undefined) {let days = interaction.options.getNumber("time")}

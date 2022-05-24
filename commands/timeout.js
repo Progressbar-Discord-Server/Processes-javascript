@@ -27,7 +27,7 @@ module.exports = {
 		let length = interaction.options.getInteger('duration')
 		const unit = interaction.options.getString('unit')
 		let reason = interaction.options.getString('reason')
-		const replyEmbed = new MessageEmbed;
+		const replyEmbed = new MessageEmbed();
 		if (!reason) reason = "No reason provided"
 
 		if (unit == "seconds") {

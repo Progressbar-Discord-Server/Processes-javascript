@@ -16,7 +16,7 @@ module.exports = {
   async execute(interaction) {
     let channel = interaction.options.getChannel("channel"); 
     let reason = interaction.options.getString("reason")
-    const replyEmbed = new MessageEmbed
+    const replyEmbed = new MessageEmbed()
     if (!reason) reason = "No reason provided"
     
     channel.permissionOverwrites.edit(guildId, {

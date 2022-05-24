@@ -14,7 +14,7 @@ module.exports = {
   async execute(interaction) {
     let member = interaction.options.getMember("user");
     let reason = interaction.options.getString("reason");
-
+    const replyEmbed = new MessageEmbed()
     if (!reason) reason = "No reason provided"
 
     await member.unban();

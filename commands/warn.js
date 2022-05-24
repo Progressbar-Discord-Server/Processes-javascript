@@ -19,8 +19,8 @@ module.exports = {
   	const user = interaction.options.getUser("user")
 	  const reason = interaction.options.getString("reason")
     const db = interaction.client.db.Warns
-    const replyEmbed = new MessageEmbed.setColor("#00FF00")
-    const dmEmbed = new MessageEmbed.setColor("#FF0000")
+    const replyEmbed = new MessageEmbed().setColor("#00FF00")
+    const dmEmbed = new MessageEmbed().setColor("#FF0000")
     replyEmbed.setDescription(`Warned ${user.tag}: ${reason}`)
     dmEmbed.setDescription(`You have been warned for: ${reason}`)
 	  interaction.reply({ embeds: [replyEmbed]})
