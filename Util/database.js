@@ -22,6 +22,21 @@ const Bans = sequelize.define('bans', {
   //ID: Sequelize.NUMBER
 });
 
+const Kick = sequelize.define('kick', {
+  userID:{
+    type: Sequelize.NUMBER,
+  },
+  reason: {
+    type: Sequelize.TEXT,
+    defaultValue: "No reason provided"
+  },
+  Executor: Sequelize.STRING,
+  type: {
+    type: Sequelize.STRING,
+  }//,
+  //ID: Sequelize.NUMBER
+});
+
 const Warns = sequelize.define('warns', {
   userID:{
     type: Sequelize.NUMBER,
@@ -34,4 +49,4 @@ const Warns = sequelize.define('warns', {
  // ID: Sequelize.NUMBER
 });
 
-module.exports = { Bans, Warns }
+module.exports = { Bans, Kick, Warns }

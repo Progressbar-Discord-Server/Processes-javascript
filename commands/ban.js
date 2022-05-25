@@ -16,31 +16,35 @@ module.exports = {
       .setName("time")
       .setDescription("How long to ban this user?")),
   async execute(interaction) {
+    let user = interaction.options.getUser("user")
     let member = await interaction.client.users.fetch(interaction.options.getMember("user"))
     let reason = interaction.options.getString("reason")
     const db = interaction.client.db.Bans
+    let days = interaction.options.getNumber("time")
     const replyEmbed = new MessageEmbed()
     if (!reason) reason = "No reason provided"
+    if (!days) days = 0
 
-    if (interaction.options.getNumber("time") !== undefined) {let days = interaction.options.getNumber("time")}
-    else {let days = null}
-    
-    if (member.bannable) await member.ban({ days: days, reason: reason }).then(console.log).catch(error => {console.error(error);interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });return});
-
-    else if (!member.bannable) {
-      replyEmbed.setDescription("I can't ban this member")
-      replyEmbed.setColor("#FF0000")
-      return
+    await member.ban({ days: days, reason: reason })
+      .then(() => {
+        if (reason === "No reason provided") {
+          replyEmbed.setDescription(`${user.tag} has been banned`)
+          replyEmbed.setColor("#00FF00")
+        } else if (reason !== "No reaqon provided") {
+          replyEmbed.setDescription(`${user.tag} has been banned with the reason ${reason}`)
+          replyEmbed.setColor("#00FF00")
+        }
+      })
+      .catch(error => {
+        console.error(error)
+        replyEmbed.setDescription('There was an error while executing this command!')
+        replyEmbed.setColor("#FF0000")
+      })
+    if (replyEmbed.description === "There was an error while executing this command!") {
+      interaction.reply({ embeds: [replyEmbed], ephemeral: true })
+    } else if (replyEmbed.description === `${user.tag} has been banned` || replyEmbed.description === `${user.tag} has been banned with the reason ${reason}`) {
+      interaction.reply({ embeds: [replyEmbed] })
     }
-    if (reason === String) {
-      replyEmbed.setDescription(`${user.tag} has been banned with the reason ${reason}`)
-      replyEmbed.setColor("#00FF00")
-    }
-    else if (reason !== String) {
-      replyEmbed.setDescription(`${user.tag} has been banned`)
-      replyEmbed.setColor("#00FF00")
-    }
-    interaction.reply({embeds:[replyEmbed]})
     db.create({
       reason: reason,
       Executor: interaction.member.user.tag,
