@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { guildId } = require('../config.json')
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -16,13 +15,24 @@ module.exports = {
   async execute(interaction) {
     let member = interaction.options.getMember("user")
     let reason = interaction.options.getString("reason")
-
+    const replyEmbed = new MessageEmbed().setColor("#00FF00")
     if (!reason) reason = "No reason provided"
 
-    if (member.kickable) member.kick({ reason: reason }).then(console.log).catch(error => {console.error(error);interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });return});
-    const replyEmbed = new MessageEmbed().setColor("#00FF00")
-    if (reason === String) replyEmbed.setDescription(`${user.tag} has been kicked with the reason ${reason}`)
-    else if (reason !== String) replyEmbed.setDescription(`${user.tag} has been kicked`)
-    interaction.reply({embeds:[replyEmbed]})
+    if (member.kickable) {
+      member.kick({ reason: reason })
+        .then(() => {
+          if (reason !== "No reason provided") {
+            replyEmbed.setDescription(`${user.tag} has been kicked with the reason ${reason}`)
+          } else if (reason === "No reason provided") {
+            replyEmbed.setDescription(`${user.tag} has been kicked`)
+          }
+        })
+      interaction.reply({ embeds: [replyEmbed] })
+        .catch(error => {
+          console.error(error);
+          replyEmbed.setDescription('There was an error while executing this command!');
+          interaction.reply({ embeds: [replyEmbed], ephemeral: true });
+        });
+    }
   }
 }
