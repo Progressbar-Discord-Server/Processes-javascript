@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { guildId } = require('../config.json')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,9 +17,13 @@ module.exports = {
 		if (subcommand == "warns") { 
       const user = interaction.options.getMember("user")
 			await interaction.deferReply()
-      db = interaction.client.db.Cases
+      db = interaction.client.db
       list = await db.findAll({where: {userID: user.id, type: "warn"}})
-      interaction.followUp(list)
+      if (list !== "") {
+        interaction.followUp({content: list, ephemeral: true})
+      } else {
+        interaction.followUp({content: "There is no warn", ephemeral: true})
+      }
 		}
 	}
 }
