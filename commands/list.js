@@ -17,7 +17,7 @@ module.exports = {
 		if (subcommand == "warns") { 
       const user = interaction.options.getMember("user")
 			await interaction.deferReply()
-      db = interaction.client.db
+      db = interaction.client.db.Cases
       list = await db.findAll({where: {userID: user.id, type: "warn"}})
       if (list !== "") {
         interaction.followUp({content: list, ephemeral: true})
