@@ -7,7 +7,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
   storage: 'database.sqlite'
 })
 
-const Bans = sequelize.define('bans', {
+const Cases = sequelize.define('cases', {
   userID:{
     type: Sequelize.NUMBER,
   },
@@ -15,38 +15,9 @@ const Bans = sequelize.define('bans', {
     type: Sequelize.TEXT,
     defaultValue: "No reason provided"
   },
-  Executor: Sequelize.STRING,
+  Executor: Sequelize.NUMBER,
   type: {
     type: Sequelize.STRING,
-  }//,
-  //ID: Sequelize.NUMBER
+  }
 });
-
-const Kick = sequelize.define('kick', {
-  userID:{
-    type: Sequelize.NUMBER,
-  },
-  reason: {
-    type: Sequelize.TEXT,
-    defaultValue: "No reason provided"
-  },
-  Executor: Sequelize.STRING,
-  type: {
-    type: Sequelize.STRING,
-  }//,
-  //ID: Sequelize.NUMBER
-});
-
-const Warns = sequelize.define('warns', {
-  userID:{
-    type: Sequelize.NUMBER,
-  },
-  reason: {
-    type: Sequelize.TEXT,
-    defaultValue: "No reason provided"
-  },
-  Executor: Sequelize.STRING//,
- // ID: Sequelize.NUMBER
-});
-
-module.exports = { Bans, Kick, Warns }
+module.exports = { Cases }

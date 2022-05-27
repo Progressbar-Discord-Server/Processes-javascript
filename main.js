@@ -26,8 +26,7 @@ for (const file of commandFiles) {
 
 
 client.once('ready', () => {
-  client.db.Bans.sync()
-  client.db.Warns.sync()
+  client.db.Cases.sync()
   console.log(`Login as ${client.user.tag}`);
 })
 

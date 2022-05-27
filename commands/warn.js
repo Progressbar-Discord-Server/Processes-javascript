@@ -18,7 +18,7 @@ module.exports = {
   async execute(interaction) {
   	const user = interaction.options.getUser("user")
 	  const reason = interaction.options.getString("reason")
-    const db = interaction.client.db.Warns
+    const db = interaction.client.db.Cases
     const replyEmbed = new MessageEmbed().setColor("#00FF00")
     const dmEmbed = new MessageEmbed().setColor("#FF0000")
     replyEmbed.setDescription(`Warned ${user.tag}: ${reason}`)
@@ -26,6 +26,7 @@ module.exports = {
 	  interaction.reply({ embeds: [replyEmbed]})
 	  user.send({ embeds: [dmEmbed]})
     db.create({
+      type: "warn",
       reason: reason,
       Executor: interaction.member.user.tag,
       userID: user.id
