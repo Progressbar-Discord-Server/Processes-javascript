@@ -16,7 +16,7 @@ module.exports = {
       .setName("time")
       .setDescription("How long to ban this user?")),
   async execute(interaction) {
-    let user = interaction.options.getUser("user")
+    let user = interaction.options.getMember("user")
     let member = await interaction.client.users.fetch(interaction.options.getMember("user"))
     let reason = interaction.options.getString("reason")
     const db = interaction.client.db.Bans
