@@ -18,9 +18,9 @@ module.exports = {
       const user = interaction.options.getMember("user")
 			await interaction.deferReply()
       db = interaction.client.db.Cases
-      list = await db.findAll({where: {userID: user.id, type: "warn"}})
+      list = await db.findAll({where: {userID: user.id, type: "warn"}, attributes: ['id', 'type', 'userID', 'reason', 'Executor']})
       console.log(list)
-      if (list !== "") {
+      if (list !== []) {
         interaction.followUp({content: list, ephemeral: true})
       } else {
         interaction.followUp({content: "There is no warn", ephemeral: true})
