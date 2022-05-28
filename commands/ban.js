@@ -22,7 +22,7 @@ module.exports = {
     const db = interaction.client.db.Cases
     const reason = interaction.options.getString("reason") || "No reason provided"
     const days = interaction.options.getNumber("time") || 0
-    if (!member.instanceof(GuildMember)) {
+    if (!(member instanceof GuildMember)) {
       await guild.members.fetch(member)
     }
     const dmEmbed = new MessageEmbed()
