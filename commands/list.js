@@ -19,6 +19,7 @@ module.exports = {
 			await interaction.deferReply()
       db = interaction.client.db.Cases
       list = await db.findAll({where: {userID: user.id, type: "warn"}})
+      console.log(list)
       if (list !== "") {
         interaction.followUp({content: list, ephemeral: true})
       } else {
