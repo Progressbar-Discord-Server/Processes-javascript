@@ -18,7 +18,14 @@ module.exports = {
       const user = interaction.options.getMember("user")
 			await interaction.deferReply()
       db = interaction.client.db.Cases
-      list = await db.findAll({where: {userID: user.id, type: "warn"}, attributes: ['id', 'type', 'userID', 'reason', 'Executor']})
+      list = await db.findAll({
+        where: {
+          userID: user.id,
+          type: "warn"
+        }, 
+        attributes: ['id', 'type', 'userID', 'reason', 'Executor']
+      })
+      list = list[0].dataValues.toString()
       console.log(list)
       if (list !== []) {
         interaction.followUp({content: list, ephemeral: true})
