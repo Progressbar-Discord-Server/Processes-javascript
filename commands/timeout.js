@@ -26,9 +26,12 @@ module.exports = {
 		const RealLen = interaction.options.getInteger('duration')
 		let length = interaction.options.getInteger('duration')
 		const unit = interaction.options.getString('unit')
-		let reason = interaction.options.getString('reason')
+		let reason = interaction.options.getString('reason') || "No reason provided"
 		const replyEmbed = new MessageEmbed();
-		if (!reason) reason = "No reason provided"
+
+		if (member.id = clientId) {
+			if (!reason)return interaction.reply(`Timed out undefined for ${RealLen} ${unit}`)
+			else if (reason) return interaction.reply(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)}
 
 		if (unit == "seconds") {
 			length = Math.floor(length * 1000)
