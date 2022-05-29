@@ -31,8 +31,8 @@ module.exports = {
 		const replyEmbed = new MessageEmbed();
 
 		if (member.id = clientId) {
-			if (!reason)return interaction.reply(`Timed out undefined for ${RealLen} ${unit}`)
-			else if (reason) return interaction.reply(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)}
+			if (!reason || reason === "No reason provided")return interaction.reply(`Timed out undefined for ${RealLen} ${unit}`)
+			else if (reason || reason !== "No reason provided") return interaction.reply(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)}
 
 		if (unit == "seconds") {
 			length = Math.floor(length * 1000)
