@@ -22,6 +22,8 @@ module.exports = {
     const reason = interaction.options.getString("reason")
     const replyEmbed = new MessageEmbed().setColor("#00FF00")
 
+    if (member.id = clientId) return interaction.reply("❌ Why would you kick me? 😢")
+
     if (!joke) {
       if (member.kickable) {
         member.kick({ reason: reason })
