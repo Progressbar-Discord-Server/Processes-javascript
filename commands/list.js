@@ -6,12 +6,25 @@ module.exports = {
       .setDescription("List bans and kicks and warns and stuff")
       .addSubcommand(subcommand => subcommand
             .setName('warns')
-            .setDescription('list warns')
+            .setDescription('List warns')
             .addUserOption(o => o
               .setName("user")
               .setDescription("The user to list warnings")
-              .setRequired(true))
-            ),
+              .setRequired(true)))
+      .addSubcommand(sc => sc
+        .setName("bans")
+        .setDescription('List bans')
+        .addStringOption(o => o 
+          .setName("user")
+          .setDescription("The user to list bans (Id)")
+          .setRequired(true)))
+      .addSubcommand(sc => sc
+        .setName("kicks")
+        .setDescription("List kicks")
+        .addStringOption(o => o
+          .setName("user")
+          .setDescription("The user to list kicks (Id)")
+          .setRequired(true))),
     async execute(interaction) {
 		const subcommand = interaction.options.getSubcommand()
 		if (subcommand == "warns") { 
