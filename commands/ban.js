@@ -15,8 +15,8 @@ module.exports = {
       .setRequired(true))
     .addBooleanOption(o => o
       .setName("joke")
-      .setDescription("Is this command a joke command?"))
-    .setRequired(true)
+      .setDescription("Is this command a joke command?")
+      .setRequired(true))
     .addNumberOption(o => o
       .setName("time")
       .setDescription("How long to ban this member?")),
