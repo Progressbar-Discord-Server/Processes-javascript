@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Modal, MessageEmbed } = require('discord.js');
-const { clientId } = require("../config.json")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -30,7 +29,7 @@ module.exports = {
 		let reason = interaction.options.getString('reason') || "No reason provided"
 		const replyEmbed = new MessageEmbed();
 
-		if (member.id = clientId) {
+		if (member.id = interaction.client.user.id) {
 			if (!reason || reason === "No reason provided")return interaction.reply(`Timed out undefined for ${RealLen} ${unit}`)
 			else if (reason || reason !== "No reason provided") return interaction.reply(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)}
 

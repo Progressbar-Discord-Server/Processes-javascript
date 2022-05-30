@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, GuildMember } = require('discord.js');
-const { clientId } = require('../config.json')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -33,7 +32,7 @@ module.exports = {
       await guild.members.fetch(member)
     }
 
-    if (member.id = clientId) return interaction.reply("❌ Why would you ban me? 😢")
+    if (member.id = interaction.client.user.id) return interaction.reply("❌ Why would you ban me? 😢")
 
     const dmEmbed = new MessageEmbed()
       .setColor("#FF0000")

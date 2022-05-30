@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { clientId } = require("../config.json")
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -26,7 +25,7 @@ module.exports = {
     const replyEmbed = new MessageEmbed().setColor("#00FF00")
     const dmEmbed = new MessageEmbed().setColor("#FF0000")
 
-    if (user.id = clientId) return interaction.reply("I just deleted my own warn <:troll:869197146786766849>")
+    if (user.id = interaction.client.id) return interaction.reply("I just deleted my own warn <:troll:869197146786766849>")
 
     replyEmbed.setDescription(`Warned ${user.tag}: ${reason}`)
     dmEmbed.setDescription(`You have been warned for: ${reason}`)

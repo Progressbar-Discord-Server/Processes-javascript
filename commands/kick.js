@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { MessageEmbed } = require('discord.js');
-const { clientId } = require('../config.json')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -23,7 +22,7 @@ module.exports = {
     const reason = interaction.options.getString("reason")
     const replyEmbed = new MessageEmbed().setColor("#00FF00")
 
-    if (member.id = clientId) return interaction.reply("❌ Why would you kick me? 😢")
+    if (member.id = interaction.client.user.id) return interaction.reply("❌ Why would you kick me? 😢")
 
     if (!joke) {
       if (member.kickable) {
