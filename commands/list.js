@@ -31,16 +31,19 @@ module.exports = {
       const user = interaction.options.getMember("user")
       await interaction.deferReply()
       db = interaction.client.db.Cases
-      list = await db.findAll({
+      warnDB = await db.findAll({
         where: {
           userID: user.id,
           type: "warn"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
       })
-      list = list[0].dataValues.toString()
+      let list = ""
+      for (let i = 0; i < warnDB.length; i++){
+        list += `${warnDB[i].reason} - *insert date here*\n`
+      }
       console.log(list)
-      if (list !== []) {
+      if (list !== "") {
         interaction.followUp({ content: list, ephemeral: true })
       } else {
         interaction.followUp({ content: "There is no warn", ephemeral: true })

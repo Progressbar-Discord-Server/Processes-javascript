@@ -26,11 +26,10 @@ module.exports = {
     const unit = interaction.options.getString('unit');
     const RealLen = interaction.options.getInteger('duration');
 
-    const reason = interaction.options.getString('reason');
+    const reason = interaction.options.getString('reason') || "No reason provided";
     const replyEmbed = new MessageEmbed()
     let length = RealLen;
-    if (!reason) reason = "No reason provided"
-
+    
     if (unit == "minutes") length = Math.floor(length * 60)
     else if (unit == "hours") length = Math.floor(length * 60 * 60)
     
