@@ -29,7 +29,7 @@ module.exports = {
 		let reason = interaction.options.getString('reason') || "No reason provided"
 		const replyEmbed = new MessageEmbed();
 
-		if (member.id = interaction.client.user.id) {
+		if (member.id === interaction.client.user.id) {
 			if (!reason || reason === "No reason provided")return interaction.reply(`Timed out undefined for ${RealLen} ${unit}`)
 			else if (reason || reason !== "No reason provided") return interaction.reply(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)}
 
