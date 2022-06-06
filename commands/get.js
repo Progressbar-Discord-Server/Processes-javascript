@@ -37,7 +37,7 @@ module.exports = {
 
       let FormattedURLList = FormattedURLArray.join('\n')
       console.log(ArrayURL)
-      if (FormattedURLList && FormattedURLList > 2000) {
+      if (FormattedURLList && FormattedURLList.length > 2000) {
         interaction.followUp("I can't show you the result, too big of a message")
       }
       else if (FormattedURLList) {
