@@ -34,10 +34,18 @@ module.exports = {
         let a = nameRole[i]
         FormattedURLArray.push(`${e} for ${a}`)
       }
-      
+
       let FormattedURLList = FormattedURLArray.join('\n')
       console.log(ArrayURL)
-      interaction.followUp(FormattedURLList)
+      if (FormattedURLList && FormattedURLList > 2000) {
+        interaction.followUp("I can't show you the result, too big of a message")
+      }
+      else if (FormattedURLList) {
+        interaction.followUp(FormattedURLList)
+      }
+      else if (!FormattedURLList) {
+        interaction.followUp("There is no role with an icon")
+      }
     }
     else if (choice === 'rc') {
 
