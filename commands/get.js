@@ -18,6 +18,7 @@ module.exports = {
       let array = []
       guildRole.forEach(e => {
         if (e.iconURL()) {
+          console.log(e.iconURL({format: 'png', size: 4096}))
           array.push(e.iconURL({ format: 'png', size: 4096 }))
         }
       });
