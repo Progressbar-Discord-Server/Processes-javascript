@@ -24,7 +24,7 @@ module.exports = {
       }
       });
       console.log(array)
-      interaction.followUp(array)
+      interaction.followUp(array.join('\n'))
     }
   }
 }
