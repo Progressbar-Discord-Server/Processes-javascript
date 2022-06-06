@@ -27,6 +27,7 @@ module.exports = {
       });
 
       if (ArrayURL) {
+        console.log(ArrayURL)
         CreateAndWrite('/Tmp/log.txt', ArrayURL.toString())
         interaction.followUp({files: [new MessageAttachment(ReadFile('/Tmp/log.txt'), 'result.txt')]})
       }
@@ -43,6 +44,7 @@ module.exports = {
         if (color !== '#000000') ArrColor.push(`${color} for ${name}\n`)
       })
       if (ArrColor) {
+        console.log(ArrColor)
         CreateAndWrite('/Tmp/log.txt', ArrColor.toString())
         interaction.followUp({ files: [new MessageAttachment(ReadFile('/Tmp/log.txt'))]})
       }
