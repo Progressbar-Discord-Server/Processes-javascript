@@ -15,16 +15,20 @@ module.exports = {
     const guildRole = await interaction.guild.roles.fetch()
 
     if (choice === "ri") {
-      let array = []
+      let ArrayURL = []
       guildRole.forEach(e => {
       if (e.iconURL()) {
         let icon  = e.iconURL({format: 'png', size: 4096})
         console.log(icon)
-        array.push(icon)
+        ArrayURL.push(icon)
       }
       });
-      console.log(array)
-      interaction.followUp(array.join('\n'))
+      console.log(ArrayURL)
+      let FormattedURLList = ArrayURL.join(` for ${e.name}\n `)
+      interaction.followUp(FormattedURLList)
+    }
+    else if (choice === 'rc') {
+      
     }
   }
 }
