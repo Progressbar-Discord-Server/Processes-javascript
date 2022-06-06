@@ -28,7 +28,7 @@ module.exports = {
 
       if (ArrayURL) {
         CreateAndWrite('/Tmp/log.txt', ArrayURL.toString())
-        interaction.followUp({files: [new MessageAttachment(ReadFile('/Tmp/log.txt'))]})
+        interaction.followUp({files: [new MessageAttachment(ReadFile('/Tmp/log.txt'), 'result.txt')]})
       }
       else if (!ArrayURL) {
         interaction.followUp("There is no role with an icon")
