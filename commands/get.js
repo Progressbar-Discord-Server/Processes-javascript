@@ -13,12 +13,13 @@ module.exports = {
     const choice = interaction.options.getString("what")
     const guildRole = await interaction.guild.role.fetch()
 
+    interaction.deferReply()
     if (choice === "ri") {
       let array = []
       guildRole.forEach(e => {
         array.push(e.iconURL({format: 'png', size: 4096}))
       });
-      interaction.reply(array)
+      interaction.followUp(array)
     }
   }
 }
