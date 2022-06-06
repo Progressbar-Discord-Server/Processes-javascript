@@ -11,9 +11,9 @@ module.exports = {
       .addChoices({ name: 'Role Icon', value: 'ri' }, { name: 'Role Color', value: 'rc' })),
   async execute(interaction) {
     interaction.deferReply()
-    
+
     const choice = interaction.options.getString("what")
-    const guildRole = await interaction.guild.role.fetch()
+    const guildRole = await interaction.guild.roles.fetch()
 
     if (choice === "ri") {
       let array = []
