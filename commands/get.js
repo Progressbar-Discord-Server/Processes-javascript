@@ -16,33 +16,21 @@ module.exports = {
 
     if (choice === "ri") {
       let ArrayURL = []
-      let nameRole = []
-
       guildRole.forEach(e => {
         if (e.iconURL()) {
           let icon = e.iconURL({ format: 'png', size: 4096 })
           let name = e.name
-          ArrayURL.push(icon)
-          nameRole.push(name)
+          ArrayURL.push(`${icon} for ${name}\n`)
         }
       });
-      let FormattedURLArray = []
 
-      for (i in ArrayURL) {
-        let e = ArrayURL[i]
-        let a = nameRole[i]
-        FormattedURLArray.push(`${e} for ${a}`)
-      }
-      let FormattedURLList = FormattedURLArray.join('\n')
-
-      console.log(FormattedURLList)
-      if (FormattedURLList && FormattedURLList.length > 2000) {
+      if (ArrayURL && ArrayURL.length > 2000) {
         interaction.followUp("I can't show you the result, too big of a message")
       }
-      else if (FormattedURLList) {
-        interaction.followUp(FormattedURLList)
+      else if (ArrayURL) {
+        interaction.followUp(ArrayURL)
       }
-      else if (!FormattedURLList) {
+      else if (!ArrayURL) {
         interaction.followUp("There is no role with an icon")
       }
     }
