@@ -8,4 +8,4 @@ function ReadFile(path) {
   fs.readFileSync(Path.join(__dirname, path))
 }
 
-module.exports = CreateAndWrite, ReadFile
+module.exports = { CreateAndWrite, ReadFile }
