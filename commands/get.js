@@ -17,7 +17,8 @@ module.exports = {
     if (choice === "ri") {
       let array = []
       guildRole.forEach(e => {
-        array.push(e.iconURL({format: 'png', size: 4096}))
+        if (e.iconURL())
+          array.push(e.iconURL({format: 'png', size: 4096}))
       });
       interaction.followUp(array)
     }
