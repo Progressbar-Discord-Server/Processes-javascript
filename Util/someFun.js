@@ -1,11 +1,11 @@
 const fs = require('fs')
 const Path = require('path')
 
-function CreateAndWrite(path, data) {
-  fs.writeFileSync(Path.join(__dirname, '/..', path), data)
+function CreateAndWrite(path2, data) {
+  fs.writeFileSync(Path.join(__dirname, '/..', path2), data)
 }
-function ReadFile(path) {
-  fs.readFileSync(Path.join(__dirname, '/..', path))
+function ReadFile(path2) {
+  fs.readFileSync(Path.join(__dirname, '/..', path2))
 }
 
 module.exports = { CreateAndWrite, ReadFile }
