@@ -7,8 +7,8 @@ module.exports = {
     .addStringOption(o => o
       .setName('what')
       .setDescription("What do you want to get?")
-      .setRequired(true))
-      .addChoices({ name: 'Role Icon', value: 'ri' }, { name: 'Role Color', value: 'rc' }),
+      .setRequired(true)
+      .addChoices({ name: 'Role Icon', value: 'ri' }, { name: 'Role Color', value: 'rc' })),
   async execute(interaction) {
     const choice = interaction.options.getString("what")
     const guildRole = await interaction.guild.role.fetch()
