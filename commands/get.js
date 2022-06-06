@@ -38,7 +38,7 @@ module.exports = {
       let ArrColor = []
       
       guildRole.forEach(e => {
-        let color = e.color
+        let color = e.hexColor
         let name = e.name
         ArrColor.push(`${color} for ${name}`)
       })
