@@ -40,7 +40,7 @@ module.exports = {
       guildRole.forEach(e => {
         let color = e.hexColor
         let name = e.name
-        ArrColor.push(`${color} for ${name}`)
+        if (color !== '#000000') ArrColor.push(`${color} for ${name}`)
       })
       interaction.followUp(ArrColor.join('\n'))
     }
