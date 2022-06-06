@@ -27,7 +27,7 @@ module.exports = {
       });
 
       if (ArrayURL) {
-        CreateAndWrite('/Tmp/log.txt', ArrayURL.toString)
+        CreateAndWrite('/Tmp/log.txt', ArrayURL.toString())
         interaction.followUp({files: [new MessageAttachment(ReadFile('/Tmp/log.txt'))]})
       }
       else if (!ArrayURL) {
@@ -43,7 +43,7 @@ module.exports = {
         if (color !== '#000000') ArrColor.push(`${color} for ${name}\n`)
       })
       if (ArrColor) {
-        CreateAndWrite('/Tmp/log.txt', ArrColor.toString)
+        CreateAndWrite('/Tmp/log.txt', ArrColor.toString())
         interaction.followUp({ files: [new MessageAttachment(ReadFile('/Tmp/log.txt'))]})
       }
       else if (!ArrColor) {
