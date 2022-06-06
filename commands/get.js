@@ -10,10 +10,9 @@ module.exports = {
       .setRequired(true)
       .addChoices({ name: 'Role Icon', value: 'ri' }, { name: 'Role Color', value: 'rc' })),
   async execute(interaction) {
-    const choice = interaction.options.getString("what")
     const guildRole = await interaction.guild.role.fetch()
 
-    if (choice = "ri") {
+    if (interaction.options.getString("what") = "ri") {
       let array = []
       guildRole.forEach(e => {
         array.push(e.iconURL({format: 'png', size: 4096}))
