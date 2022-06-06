@@ -27,7 +27,7 @@ module.exports = {
         }
       });
       let FormattedURLArray = []
-      
+
       for (i in ArrayURL) {
         let e = ArrayURL[i]
         let a = nameRole[i]
@@ -47,7 +47,14 @@ module.exports = {
       }
     }
     else if (choice === 'rc') {
-
+      let ArrColor = []
+      
+      guildRole.forEach(e => {
+        let color = e.color
+        let name = e.name
+        ArrColor.push(`${color} for ${name}`)
+      })
+      interaction.followUp(ArrColor.join('\n'))
     }
   }
 }
