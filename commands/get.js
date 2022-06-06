@@ -10,8 +10,7 @@ module.exports = {
       .setRequired(true)
       .addChoices({ name: 'Role Icon', value: 'ri' }, { name: 'Role Color', value: 'rc' })),
   async execute(interaction) {
-    interaction.deferReply()
-
+    await interaction.deferReply()
     const choice = interaction.options.getString("what")
     const guildRole = await interaction.guild.roles.fetch()
 
