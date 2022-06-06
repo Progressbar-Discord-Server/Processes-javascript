@@ -40,6 +40,7 @@ module.exports = {
       
       guildRole.forEach(e => {
         let color = e.color
+        console.log('color is equal to ', color)
         let name = e.name
         if (color !== '0') ArrColor.push(`${color} for ${name}\n`)
       })
