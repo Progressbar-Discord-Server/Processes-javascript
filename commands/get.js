@@ -24,10 +24,10 @@ module.exports = {
       .setDescription("Getting All Colors of All Roles")),
   async execute(interaction) {
     await interaction.deferReply()
-    const choice = interaction.options.getString("what")
+    const sc = interaction.options.getSubcommand()
     const guildRole = await interaction.guild.roles.fetch()
 
-    if (choice === "ri") {
+    if (sc === "ricon") {
       const format = interaction.options.getString("format")
       const size = interaction.options.getNumber("size")
       let ArrayURL = []
@@ -50,7 +50,7 @@ module.exports = {
         interaction.followUp("There is no role with an icon")
       }
     }
-    else if (choice === 'rc') {
+    else if (sc === 'rcolor') {
       let ArrColor = []
       
       guildRole.forEach(e => {
