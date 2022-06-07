@@ -7,7 +7,7 @@ module.exports = {
     .setName('get')
     .setDescription("Get something")
     .addSubcommand(sc => sc
-      .setName('role Icon')
+      .setName('role icon')
       .setDescription("Getting All Icons of All Roles"))
       .addStringOption(o => o
         .setName("format")
