@@ -4,7 +4,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("create")
     .setDescription('Create a text channel')
-    .setStringOption(o => o
+    .addStringOption(o => o
       .setName('name')
       .setDescription("The name of the channel you want to create")),
   async execute(interaction) {
