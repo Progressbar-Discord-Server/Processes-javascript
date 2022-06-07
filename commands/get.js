@@ -54,10 +54,10 @@ module.exports = {
       let ArrColor = []
       
       guildRole.forEach(e => {
-        let color = e.color
+        let color = e.hexColor
         console.log('color is equal to ', color)
         let name = e.name
-        if (color !== '0') ArrColor.push(`${color} for ${name}\n`)
+        if (color !== '#000000') ArrColor.push(`${color} for ${name}\n`)
       })
       if (ArrColor) {
         console.log(ArrColor)
