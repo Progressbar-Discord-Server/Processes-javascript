@@ -43,7 +43,7 @@ module.exports = {
       if (ArrayURL) {
         console.log(ArrayURL)
         CreateAndWrite('/Tmp/log.txt', ArrayURL.join(""))
-        const file = new MessageAttachment(ReadFile('Tmp/log.txt'), 'result.txt')
+        const file = new MessageAttachment('../Tmp/log.txt', 'result.txt')
         interaction.followUp({files: [file]})
       }
       else if (!ArrayURL) {
@@ -62,7 +62,7 @@ module.exports = {
       if (ArrColor) {
         console.log(ArrColor)
         CreateAndWrite('/Tmp/log.txt', ArrColor.join(""))
-        const file = new MessageAttachment(ReadFile('Tmp/log.txt'), 'result.txt')
+        const file = new MessageAttachment('../Tmp/log.txt', 'result.txt')
         interaction.followUp({ files: [file]})
       }
       else if (!ArrColor) {
