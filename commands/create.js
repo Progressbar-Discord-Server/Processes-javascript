@@ -10,7 +10,11 @@ module.exports = {
   async execute(interaction) {
     let server = interaction.guild;
     let name = interaction.options.getString('name');
-    
-    server.createChannel(name, "text");
+    try {
+     server.createChannel(name, "text");
+    }
+    catch (err) {
+      interaction.reply(`\`${err}\``)
+    }
   }
 }
