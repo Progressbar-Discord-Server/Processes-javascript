@@ -17,5 +17,8 @@ module.exports = {
     catch (err) {
       interaction.reply(`\`${err}\``)
     }
+    finally {
+      interaction.reply("No error!")
+    }
   }
 }
