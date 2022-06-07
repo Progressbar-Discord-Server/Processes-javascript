@@ -41,7 +41,6 @@ module.exports = {
       });
 
       if (ArrayURL) {
-        console.log(ArrayURL)
         CreateAndWrite('/Tmp/log.txt', ArrayURL.join(""))
         const file = new MessageAttachment('./Tmp/log.txt', 'result.txt')
         interaction.followUp({files: [file]})
@@ -55,12 +54,10 @@ module.exports = {
       
       guildRole.forEach(e => {
         let color = e.hexColor
-        console.log('color is equal to ', color)
         let name = e.name
         if (color !== '#000000') ArrColor.push(`${color} for ${name}\n`)
       })
       if (ArrColor) {
-        console.log(ArrColor)
         CreateAndWrite('/Tmp/log.txt', ArrColor.join(""))
         const file = new MessageAttachment('./Tmp/log.txt', 'result.txt')
         interaction.followUp({ files: [file]})
