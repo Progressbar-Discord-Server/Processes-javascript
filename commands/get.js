@@ -43,7 +43,7 @@ module.exports = {
       if (ArrayURL) {
         console.log(ArrayURL)
         CreateAndWrite('/Tmp/log.txt', ArrayURL.join(""))
-        const file = new MessageAttachment('../Tmp/log.txt', 'result.txt')
+        const file = new MessageAttachment('./Tmp/log.txt', 'result.txt')
         interaction.followUp({files: [file]})
       }
       else if (!ArrayURL) {
