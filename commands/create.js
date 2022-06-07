@@ -12,7 +12,7 @@ module.exports = {
     let name = interaction.options.getString('name');
     
     try {
-      server.channel.create(name, "text");
+      server.channels.create(name, "text");
     }
     catch (err) {
       interaction.reply(`\`${err}\``)
