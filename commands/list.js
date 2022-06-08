@@ -27,7 +27,7 @@ module.exports = {
     const subcommand = interaction.options.getSubcommand()
     if (subcommand === "warns") {
       await interaction.deferReply({ ephemeral: true })
-      let IdUser = interaction.options.getString("user")
+      let IdUser = { id: interaction.options.getString("user") }
       
       if (!IdUser) {
         IdUser = interaction.member
@@ -58,18 +58,16 @@ module.exports = {
     }
     else if (subcommand === "bans") {
       await interaction.deferReply({ ephemeral: true })
-      let user = interaction.options.getMember("user")
-      if (!user) {
-        user = interaction.member
-      }
-      if (!(user instanceof GuildMember)) {
-        await interaction.guild.member.fetch(user)
+      let IdUser = { id: interaction.options.getString("user")}
+      
+      if (!IdUser) {
+        IdUser = interaction.member
       }
 
       db = interaction.client.db.Cases
       banDB = await db.findAll({
         where: {
-          userID: user.id,
+          userID: IdUser.id,
           type: "bans"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
@@ -89,7 +87,7 @@ module.exports = {
     }
     else if (subcommand === "kicks") {
       await interaction.deferReply({ ephemeral: true })
-      let user = interaction.options.getString("user")
+      let IdUser = { id: interaction.options.getString("user") }
 
       if (!IdUser) {
         IdUser = interaction.member
