@@ -27,7 +27,7 @@ module.exports = {
         .setDescription("Do you want to get a hex value?")
         .setRequired(true))),
   async execute(interaction) {
-    await interaction.deferReply()
+    await interaction.deferReply({ephemeral: true})
     const sc = interaction.options.getSubcommand()
     const guildRole = await interaction.guild.roles.fetch()
 
