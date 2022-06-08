@@ -29,8 +29,8 @@ module.exports = {
       await interaction.deferReply({ ephemeral: true })
       let IdUser = interaction.options.getString("user")
       
-      if (!user) {
-        user = interaction.member
+      if (!IdUser) {
+        IdUser = interaction.member
         if (!(user instanceof GuildMember)) {
           await interaction.guild.members.fetch(IdUser)
         }
@@ -91,10 +91,10 @@ module.exports = {
       await interaction.deferReply({ ephemeral: true })
       let user = interaction.options.getString("user")
 
-      if (!user) {
-        user = interaction.member
-        if (!(user instanceof GuildMember)) {
-          await interaction.guild.member.fetch(user)
+      if (!IdUser) {
+        IdUser = interaction.member
+        if (!(IdUser instanceof GuildMember)) {
+          await interaction.guild.member.fetch(IdUser)
         }
       }
 
