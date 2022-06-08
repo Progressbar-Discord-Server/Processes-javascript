@@ -22,6 +22,6 @@ module.exports = {
       interaction.reply("No error!")
     }
     */
-   interaction.reply("This command is *not* necessary, as it will just create a channel, if you want it, delete the \\* and *\\")
+   interaction.reply("This command is *not* necessary, as it will just create a channel, if you want it, delete the \\\\* and \\*\\ that are on the create.js file in the commands directory")
   }
 }
