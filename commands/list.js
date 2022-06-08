@@ -31,7 +31,7 @@ module.exports = {
       
       if (!IdUser) {
         IdUser = interaction.member
-        if (!(user instanceof GuildMember)) {
+        if (!(IdUser instanceof GuildMember)) {
           await interaction.guild.members.fetch(IdUser)
         }
       }
