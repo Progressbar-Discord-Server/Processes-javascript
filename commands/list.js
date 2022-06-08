@@ -30,10 +30,7 @@ module.exports = {
       let IdUser = { id: interaction.options.getString("user") }
       
       if (!IdUser) {
-        IdUser = interaction.member
-        if (!(IdUser instanceof GuildMember)) {
-          await interaction.guild.members.fetch(IdUser)
-        }
+        IdUser = interaction.user.id
       }
 
       db = interaction.client.db.Cases
