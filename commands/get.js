@@ -21,7 +21,11 @@ module.exports = {
           .addChoices({name: '16',value: 16},{name: '32',value: 32},{name: '56',value: 56},{name: '64',value: 64},{name: '96',value: 96},{name: '128',value: 128},{name: '256',value: 256},{name: '300',value: 300},{name: '512',value: 512},{name: '600',value: 600},{name: '1024',value: 1024},{name: '2048',value: 2048},{name: '4096',value: 4096})))
     .addSubcommand(sc => sc
       .setName('rcolor')
-      .setDescription("Getting All Colors of All Roles")),
+      .setDescription("Getting All Colors of All Roles")
+      .addBooleanOption(o => o
+        .setName("hex")
+        .setDescription("Do you want to get a hex value?")
+        .setRequired(true))),
   async execute(interaction) {
     await interaction.deferReply()
     const sc = interaction.options.getSubcommand()
@@ -50,10 +54,13 @@ module.exports = {
       }
     }
     else if (sc === 'rcolor') {
+      const hex = interaction.options.getBoolean("hex")
       let ArrColor = []
       
       guildRole.forEach(e => {
-        let color = e.hexColor
+        let color
+        if (hex) color = e.hexColor
+        else if (!hex) color = e.color
         let name = e.name
         if (color !== '#000000') ArrColor.push(`${color} for ${name}\n`)
       })
