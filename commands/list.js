@@ -30,7 +30,7 @@ module.exports = {
       let IdUser = { id: interaction.options.getString("user") }
       
       if (!IdUser) {
-        IdUser = interaction.user.id
+        IdUser = interaction.user
       }
 
       db = interaction.client.db.Cases
