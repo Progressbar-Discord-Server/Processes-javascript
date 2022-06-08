@@ -32,7 +32,7 @@ module.exports = {
       await guild.members.fetch(member)
     }
 
-    if (member.id = interaction.client.user.id) return interaction.reply("❌ Why would you ban me? 😢")
+    if (member.id === interaction.client.user.id) return interaction.reply("❌ Why would you ban me? 😢")
 
     const dmEmbed = new MessageEmbed()
       .setColor("#FF0000")
