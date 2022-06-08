@@ -46,8 +46,7 @@ module.exports = {
 
       if (ArrayURL) {
         CreateAndWrite('/Tmp/log.txt', ArrayURL.join(""))
-        const file = new MessageAttachment('./Tmp/log.txt', 'result.txt')
-        interaction.followUp({files: [file]})
+        interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
       }
       else if (!ArrayURL) {
         interaction.followUp("There is no role with an icon")
@@ -66,8 +65,7 @@ module.exports = {
       })
       if (ArrColor) {
         CreateAndWrite('/Tmp/log.txt', ArrColor.join(""))
-        const file = new MessageAttachment('./Tmp/log.txt', 'result.txt')
-        interaction.followUp({ files: [file]})
+        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
       }
       else if (!ArrColor) {
         interaction.followUp("No role have color")
