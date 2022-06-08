@@ -29,6 +29,13 @@ module.exports = {
     const reason = interaction.options.getString('reason') || "No reason provided";
     const replyEmbed = new MessageEmbed()
     let length = RealLen;
+
+    if (RealLen === 0) {
+      channel.setRateLimitPerUser(length, reason);
+      replyEmbed.setDescription(`No slowmode set in ${channel} for "**${reason}**"`)
+      replyEmbed.setColor('#00FF00')
+      interaction.reply({ embeds: [replyEmbed]})
+    }
     
     if (unit == "minutes") length = Math.floor(length * 60)
     else if (unit == "hours") length = Math.floor(length * 60 * 60)
@@ -45,8 +52,8 @@ module.exports = {
       else if (reason !== "No reason provided") replyEmbed.setDescription(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
       interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
     } else if (channel.type === "GUILD_NEWS") {
-      replyEmbed.setDescription("No")
-      interaction.reply({embed: [replyEmbed]})
+      replyEmbed.setDescription(`The specified channel (<#${channel.id}>) is a news channel, i do not want to set a slowmode there`)
+      interaction.reply({embed: [replyEmbed], ephemeral: true})
     } else if (channel.type !== "GUILD_TEXT" && channel.type !== "GUILD_NEWS") {
       replyEmbed.setDescription(`The specified channel (<#${channel.id}>) isn't a text channel,  I can't set a slowmode there.`)
       replyEmbed.setColor("#FF0000")
