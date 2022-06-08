@@ -39,7 +39,7 @@ module.exports = {
       db = interaction.client.db.Cases
       warnDB = await db.findAll({
         where: {
-          userID: user.id,
+          userID: IdUser.id,
           type: "warn"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
@@ -101,7 +101,7 @@ module.exports = {
       db = interaction.client.db.Cases
       banDB = await db.findAll({
         where: {
-          userID: user.id,
+          userID: IdUser.id,
           type: "kick"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
