@@ -27,16 +27,16 @@ module.exports = {
     const subcommand = interaction.options.getSubcommand()
     if (subcommand === "warns") {
       await interaction.deferReply({ ephemeral: true })
-      let IdUser = { id: interaction.options.getString("user") }
+      let IdUser = interaction.options.getString("user")
       
       if (!IdUser) {
-        IdUser = { id: interaction.user.id }
+        IdUser = interaction.user.id
       }
 
       db = interaction.client.db.Cases
       warnDB = await db.findAll({
         where: {
-          userID: IdUser.id,
+          userID: IdUser,
           type: "warn"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
@@ -55,16 +55,16 @@ module.exports = {
     }
     else if (subcommand === "bans") {
       await interaction.deferReply({ ephemeral: true })
-      let IdUser = { id: interaction.options.getString("user")}
+      let IdUser = interaction.options.getString("user")
       
       if (!IdUser) {
-        IdUser = { id: interaction.user.id }
+        IdUser = interaction.user.id
       }
 
       db = interaction.client.db.Cases
       banDB = await db.findAll({
         where: {
-          userID: IdUser.id,
+          userID: IdUser,
           type: "bans"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
@@ -84,16 +84,16 @@ module.exports = {
     }
     else if (subcommand === "kicks") {
       await interaction.deferReply({ ephemeral: true })
-      let IdUser = { id: interaction.options.getString("user") }
+      let IdUser = interaction.options.getString("user")
 
       if (!IdUser) {
-        IdUser = { id: interaction.user.id }
+        IdUser = interaction.user.id
       }
 
       db = interaction.client.db.Cases
       banDB = await db.findAll({
         where: {
-          userID: IdUser.id,
+          userID: IdUser,
           type: "kick"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
