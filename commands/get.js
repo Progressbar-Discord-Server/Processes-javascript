@@ -17,8 +17,8 @@ module.exports = {
       .addNumberOption(o => o
           .setName('size')
           .setDescription('At what size do you want the icon to be? (pixel)')
-          .setRequired(true)
-          .addChoices({name: '16',value: 16},{name: '32',value: 32},{name: '56',value: 56},{name: '64',value: 64},{name: '96',value: 96},{name: '128',value: 128},{name: '256',value: 256},{name: '300',value: 300},{name: '512',value: 512},{name: '600',value: 600},{name: '1024',value: 1024},{name: '2048',value: 2048},{name: '4096',value: 4096})))
+          .addChoices({name: '16',value: 16},{name: '32',value: 32},{name: '56',value: 56},{name: '64',value: 64},{name: '96',value: 96},{name: '128',value: 128},{name: '256',value: 256},{name: '300',value: 300},{name: '512',value: 512},{name: '600',value: 600},{name: '1024',value: 1024},{name: '2048',value: 2048},{name: '4096',value: 4096})
+          .setRequired(true)))
     .addSubcommand(sc => sc
       .setName('rcolor')
       .setDescription("Getting All Colors of All Roles")
@@ -29,9 +29,9 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply({ephemeral: true})
     const sc = interaction.options.getSubcommand()
-    const guildRole = await interaction.guild.roles.fetch()
 
     if (sc === "ricon") {
+      const guildRole = await interaction.guild.roles.fetch()
       const format = interaction.options.getString("format")
       const size = interaction.options.getNumber("size")
       let ArrayURL = []
@@ -49,7 +49,7 @@ module.exports = {
         interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
       }
       else if (!ArrayURL) {
-        interaction.followUp("There is no role with an icon")
+        interaction.followUp("No role found with an icon")
       }
     }
     else if (sc === 'rcolor') {
@@ -57,18 +57,19 @@ module.exports = {
       let ArrColor = []
       
       guildRole.forEach(e => {
+        let name = e.name
         let color
         if (hex) color = e.hexColor
         else if (!hex) color = e.color
-        let name = e.name
-        if (color !== '#000000' || color !== 0) ArrColor.push(`${color} for ${name}\n`)
+
+        if (color === String && color !== '#000000' || color === Number && color !== 0) ArrColor.push(`${color} for ${name}`)
       })
       if (ArrColor) {
         CreateAndWrite('/Tmp/log.txt', ArrColor.join(""))
         interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
       }
       else if (!ArrColor) {
-        interaction.followUp("No role have color")
+        interaction.followUp("No role found to have color")
       }
     }
   }
