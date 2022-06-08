@@ -1,4 +1,3 @@
-/*
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
 module.exports = {
@@ -9,6 +8,7 @@ module.exports = {
       .setName('name')
       .setDescription("The name of the channel you want to create")),
   async execute(interaction) {
+    /*
     let server = interaction.guild;
     let name = interaction.options.getString('name');
     
@@ -21,6 +21,7 @@ module.exports = {
     finally {
       interaction.reply("No error!")
     }
+    */
+   interaction.reply("This command is *not* necessary, as it will just create a channel, if you want it, delete the \\* and *\\")
   }
 }
-*/
