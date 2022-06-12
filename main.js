@@ -1,19 +1,15 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const Sequelize = require('sequelize')
 const { Client, Collection } = require('discord.js');
-const { token, sqlPass } = require('./config.json');
+const { add } = require('./event/messageReact.js');
+const { token } = require('./config.json');
 
-client = new Client({intents: 0, presence: {status: 'idle'}});
+// intent 1024 allow to see messageReactionAdd and Remove events
+client = new Client({intents: 1024, partials: ['MESSAGE', 'REACTION', 'USER'], presence: {status: 'idle'}});
 
-const sequelize = new Sequelize('database', 'user', sqlPass, {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'database.sqlite',
-});
-client.db = require('./Util/database')
+client.db = require('./Util/database');
 
+// initiation of all slash commands
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -24,12 +20,20 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-
 client.once('ready', () => {
   client.db.Cases.sync()
   console.log(`Login as ${client.user.tag}`);
 })
 
+client.on("messageReactionAdd", async (reaction, user) => {
+
+  try {
+    add(reaction, user);
+  } 
+  catch (err) {
+    console.error(err);
+  }
+})
 
 client.on("interactionCreate", async interaction => {
   if (!interaction.isCommand()) return;
@@ -40,9 +44,9 @@ client.on("interactionCreate", async interaction => {
 
   try {
     await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
+  } catch (err) {
+    console.error(err);
+    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
   }
 })
 
