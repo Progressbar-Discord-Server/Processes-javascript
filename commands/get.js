@@ -85,8 +85,12 @@ module.exports = {
         emojiArr.push(`${e.url} for ${e.name}`)
       })
       CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"))
-
-      interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
+      if (emojiArr) {
+        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
+      }
+      else if (!emojiArr) {
+        interaction.followUp("No emojis found")
+      }
     }
   }
 }
