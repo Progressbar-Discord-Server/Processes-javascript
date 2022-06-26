@@ -7,14 +7,14 @@ module.exports = {
     .setDescription("Get information about something")
     .addSubcommand(sc => sc
       .setName("server")
-      .setDescription("Get Information about the server"))
-    .addSubcommand(sc => sc
+      .setDescription("Get Information about the server")),
+    /*.addSubcommand(sc => sc
       .setName("user")
       .setDescription("Get information about a user")
       .addUserOption(o => o
         .setName("user")
         .setDescription("The user to get information")
-        .setRequired(true))),
+        .setRequired(true))),*/
   async execute(interaction) {
     const sc = interaction.options.getSubcommand()
     const replyEmbed = new MessageEmbed()
@@ -31,29 +31,52 @@ module.exports = {
     else if (sc === "server") {
       const guild = interaction.guild;
       await guild.fetch()
-
+      
       let owner = await guild.fetchOwner()
       let threads = await guild.channels.fetchActiveThreads()
-      let voiceCollection = await guild.channels.fetch()
-      let v = 0
-      for (vc in voiceCollection) {
-        if (vc.type === 2) {
-          v=v+1
-        }
-      }
-
+      let channelCollection = await guild.channels.fetch()
       let member = await guild.members.fetch()
+      
+      let voice = 0
+      let text = 0
+      channelCollection.forEach(e => {
+        if (e.type === "GUILD_VOICE") {
+          voice=voice+1
+        }
+        if (e.type === "GUILD_TEXT") {
+          text=text+1
+        }
+      })
 
+      let emoji = await guild.emojis.fetch()
 
-      if (guild.iconURL) {replyEmbed.setThumbnail(guild.iconURL({ format: "png", size: 4096 }))}
+      let emojiCount = 0
+      emoji.forEach(e => {
+        emojiCount=emojiCount+1
+      })
+
+      let roles = await guild.roles.fetch()
+      let rolesCount = 0
+      roles.forEach(e => {
+        rolesCount=rolesCount+1
+      })
+      
+      let date = new Date(guild.createdAt)
+
+      let icon = guild.iconURL
+      if (icon) {replyEmbed.setThumbnail(guild.iconURL({ format: "png", size: 4096 }))}
+      replyEmbed.setAuthor({name: `${guild.name}`, iconURL: icon})
       replyEmbed.setColor(`#${Math.floor(Math.random()*16777215).toString(16)}`)
       replyEmbed.addFields(
-        {name: "**Owner**", value: owner.user.tag, inline: true},
-        {name: "**Active Treads**", value: threads.threads.size, inline: true},
-        {name: "**Text channels**", value: guild.channels.channelCountWithoutThreads, inline: true},
-        {name: "**Voice channels**", value: 5},
-        {name: "**Members**", value: member.size, inline: true},     
-        {name: "**Roles**", value: 5, inline: true},
+        {name: "**Owner**", value: `${owner.user.tag}`, inline: true},
+        {name: "**Active threads**", value: `${threads.threads.size}`, inline: true},
+        {name: "**Text channels**", value: `${text}`, inline: true},
+        {name: "**Voice channels**", value: `${voice}`, inline: true},
+        {name: "**Members**", value: `${member.size}`, inline: true},
+        {name: "**Roles**", value: `${rolesCount}`, inline: true},
+        {name: "**Created at**", value: `<t:${Math.floor(date.getTime()/1000)}:d>`, inline:true},
+        {name: "**N° Emojis**", value: `${emojiCount}`, inline: true},
+        {name: "ID", value: `${guild.id}`, inline: true},
       );
 
       await interaction.reply({ embeds: [replyEmbed], ephemeral: true});
