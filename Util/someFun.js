@@ -7,10 +7,4 @@ function CreateAndWrite(path2, data) {
   })
 }
 
-function ReadFile(path2) {
-  fs.readFile(Path.join(__dirname, '/..', path2), err => {
-    if (err) throw err
-  })
-}
-
-module.exports = { CreateAndWrite, ReadFile }
+module.exports = { CreateAndWrite }

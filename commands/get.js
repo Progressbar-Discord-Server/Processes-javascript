@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { MessageAttachment } = require('discord.js')
-const { CreateAndWrite, ReadFile } = require('../Util/someFun.js')
+const { CreateAndWrite } = require('../Util/someFun.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -31,21 +31,21 @@ module.exports = {
     const sc = interaction.options.getSubcommand()
 
     if (sc === "ricon") {
-      const guildRole = await interaction.guild.roles.fetch()
+      const guildRoles = await interaction.guild.roles.fetch()
       const format = interaction.options.getString("format")
       const size = interaction.options.getNumber("size")
       let ArrayURL = []
 
-      guildRole.forEach(e => {
+      guildRoles.forEach(e => {
         if (e.iconURL()) {
           let icon = e.iconURL({ format: format, size: size })
           let name = e.name
-          ArrayURL.push(`${icon} for ${name}\n`)
+          ArrayURL.push(`${icon} for ${name}`)
         }
       });
 
       if (ArrayURL) {
-        CreateAndWrite('/Tmp/log.txt', ArrayURL.join(""))
+        CreateAndWrite('/Tmp/log.txt', ArrayURL.join("\n"))
         interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
       }
       else if (!ArrayURL) {

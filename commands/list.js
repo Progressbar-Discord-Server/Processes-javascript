@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { GuildMember } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { User, Permissions } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -28,8 +28,15 @@ module.exports = {
     if (subcommand === "warns") {
       await interaction.deferReply({ ephemeral: true })
       let IdUser = interaction.options.getString("user")
+      let UserExecutor = interaction.user
       
-      if (!IdUser) {
+      if (IdUser) {
+        let permV = await interaction.guild.members.fetch(UserExecutor)
+        if (!permV.permissions.FLAGS.has(Permissions.FLAGS.KICK_MEMBERS)) {
+          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that")
+        }
+      }
+      else if (!IdUser) {
         IdUser = interaction.user.id
       }
 
@@ -57,7 +64,13 @@ module.exports = {
       await interaction.deferReply({ ephemeral: true })
       let IdUser = interaction.options.getString("user")
       
-      if (!IdUser) {
+      if (IdUser) {
+        let permV = await interaction.guild.members.fetch(UserExecutor)
+        if (!permV.permissions.FLAGS.has(Permissions.FLAGS.BAN_MEMBERS)) {
+          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that")
+        }
+      }
+      else if (!IdUser) {
         IdUser = interaction.user.id
       }
 
@@ -86,7 +99,13 @@ module.exports = {
       await interaction.deferReply({ ephemeral: true })
       let IdUser = interaction.options.getString("user")
 
-      if (!IdUser) {
+      if (IdUser) {
+        let permV = await interaction.guild.members.fetch(UserExecutor)
+        if (!permV.permissions.FLAGS.has(Permissions.FLAGS.KICK_MEMBERS)) {
+          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that")
+        }
+      }
+      else if (!IdUser) {
         IdUser = interaction.user.id
       }
 

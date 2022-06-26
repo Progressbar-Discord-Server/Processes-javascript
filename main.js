@@ -1,17 +1,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const Sequelize = require('sequelize')
 const { Client, Collection } = require('discord.js');
-const { token, sqlPass } = require('./config.json');
+const { token } = require('./config.json');
 
-client = new Client({intents: 0, presence: {status: 'idle'}});
-
-const sequelize = new Sequelize('database', 'user', sqlPass, {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'database.sqlite',
-});
+client = new Client({intents: 2, presence: {status: 'idle'}});
 client.db = require('./Util/database')
 
 client.commands = new Collection();
@@ -23,7 +15,6 @@ for (const file of commandFiles) {
   const command = require(filePath);
   client.commands.set(command.data.name, command);
 }
-
 
 client.once('ready', () => {
   client.db.Cases.sync()
@@ -42,7 +33,11 @@ client.on("interactionCreate", async interaction => {
     await command.execute(interaction);
   } catch (error) {
     console.error(error);
-    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
+    if (!(interaction.replied)) {
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
+    } else {
+      await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true })
+    }
   }
 })
 

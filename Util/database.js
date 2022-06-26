@@ -20,4 +20,5 @@ const Cases = sequelize.define('cases', {
     type: Sequelize.STRING,
   }
 });
+
 module.exports = { Cases }
