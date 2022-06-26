@@ -3,7 +3,7 @@ const path = require('node:path');
 const { Client, Collection } = require('discord.js');
 const { token } = require('./config.json');
 
-client = new Client({intents: 2, presence: {status: 'idle'}});
+client = new Client({ intents: 2, presence: { status: 'idle' } });
 client.db = require('./Util/database')
 
 client.commands = new Collection();
@@ -33,9 +33,9 @@ client.on("interactionCreate", async interaction => {
     await command.execute(interaction);
   } catch (error) {
     console.error(error);
-    if (!(interaction.replied)) {
+    try {
       await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
-    } else {
+    } catch {
       await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true })
     }
   }

@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const { GuildEmojiManager } = require('discord.js')
 const { MessageAttachment } = require('discord.js')
 const { CreateAndWrite } = require('../Util/someFun.js')
 
@@ -8,7 +9,7 @@ module.exports = {
     .setDescription("Get something")
     .addSubcommand(sc => sc
       .setName('ricon')
-      .setDescription("Getting All Icons of All Roles")
+      .setDescription("Getting all icons of all roles")
       .addStringOption(o => o
         .setName("format")
         .setDescription("In what format do you want the icons?")
@@ -21,11 +22,14 @@ module.exports = {
           .setRequired(true)))
     .addSubcommand(sc => sc
       .setName('rcolor')
-      .setDescription("Getting All Colors of All Roles")
+      .setDescription("Getting all Colors of all roles")
       .addBooleanOption(o => o
         .setName("hex")
         .setDescription("Do you want to get a hex value?")
-        .setRequired(true))),
+        .setRequired(true)))
+    .addSubcommand(sc => sc
+      .setName("emojis")
+      .setDescription("Getting all emojis from a server")),
   async execute(interaction) {
     await interaction.deferReply({ephemeral: true})
     const sc = interaction.options.getSubcommand()
@@ -53,10 +57,11 @@ module.exports = {
       }
     }
     else if (sc === 'rcolor') {
+      const guildRoles = await interaction.guild.roles.fetch()
       const hex = interaction.options.getBoolean("hex")
       let ArrColor = []
       
-      guildRole.forEach(e => {
+      guildRoles.forEach(e => {
         let name = e.name
         let color
         if (hex) color = e.hexColor
@@ -65,12 +70,23 @@ module.exports = {
         if (color === String && color !== '#000000' || color === Number && color !== 0) ArrColor.push(`${color} for ${name}`)
       })
       if (ArrColor) {
-        CreateAndWrite('/Tmp/log.txt', ArrColor.join(""))
+        CreateAndWrite('/Tmp/log.txt', ArrColor.join("\n"))
         interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
       }
       else if (!ArrColor) {
         interaction.followUp("No role found to have color")
       }
+    }
+    else if (sc === "emojis") {
+      await interaction.guild.fetch()
+      let emojis = await interaction.guild.emojis.fetch()
+      let emojiArr = []
+      emojis.forEach(e => {
+        emojiArr.push(`${e.url} for ${e.name}`)
+      })
+      CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"))
+
+      interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
     }
   }
 }
