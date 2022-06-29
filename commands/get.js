@@ -81,10 +81,13 @@ module.exports = {
       await interaction.guild.fetch()
       let emojis = await interaction.guild.emojis.fetch()
       let emojiArr = []
+
       emojis.forEach(e => {
         emojiArr.push(`${e.url} for ${e.name}`)
       })
+      
       CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"))
+
       if (emojiArr) {
         interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
       }

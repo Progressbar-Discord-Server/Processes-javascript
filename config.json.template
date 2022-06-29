@@ -1,7 +1,7 @@
 {
   "Token":"The token of the bot",
-  "clienTId":"The id of the bot",
+  "clientId":"The id of the bot",
   "guildId":"The id of the discord server",
   "sqlPass":"A password, can be empty",
-  "logcha":"The id of a log channel"
+  "logCha":"The id of a log channel"
 }

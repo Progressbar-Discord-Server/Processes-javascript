@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { MessageEmbed } = require('discord.js');
+const { ChannelType } = require("discord-api-types/payloads/v10")
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,7 +9,8 @@ module.exports = {
     .addChannelOption(o => o
       .setName("channel")
       .setDescription("What channel do you want to apply slowmode to?")
-      .setRequired(true))
+      .setRequired(true)
+      .addChannelTypes(ChannelType.GuildText))
     .addStringOption(o => o
       .setName('unit')
       .setDescription('the unit of time')
@@ -41,23 +43,19 @@ module.exports = {
     else if (unit == "hours") length = Math.floor(length * 60 * 60)
     
     if (length > 21600) {
-      return interaction.reply("You set the slowmode to more then 6 hours, it's imposible for me to execute that...")
+      replyEmbed.setColor("#FF0000")
+      replyEmbed.setDescription("You set the slowmode to more then 6 hours, it's imposible for me to execute that...")
+      return interaction.reply({ embeds: [replyEmbed] })
     }
-    
-    if (channel.type === "GUILD_TEXT") {
+    else if (length < 21600) {
+
       channel.setRateLimitPerUser(length, reason);
-      replyEmbed.setDescription(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
+      
       replyEmbed.setColor("#00FF00")
       if (reason === "No reason provided") replyEmbed.setDescription(`Set **${RealLen} ${unit}** slowmode in ${channel}`)
       else if (reason !== "No reason provided") replyEmbed.setDescription(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
-      interaction.reply(`Set **${RealLen} ${unit}** slowmode in ${channel} for "**${reason}**"`)
-    } else if (channel.type === "GUILD_NEWS") {
-      replyEmbed.setDescription(`The specified channel (<#${channel.id}>) is a news channel, i do not want to set a slowmode there`)
-      interaction.reply({embed: [replyEmbed], ephemeral: true})
-    } else if (channel.type !== "GUILD_TEXT" && channel.type !== "GUILD_NEWS") {
-      replyEmbed.setDescription(`The specified channel (<#${channel.id}>) isn't a text channel,  I can't set a slowmode there.`)
-      replyEmbed.setColor("#FF0000")
-      interaction.reply({ embeds: [replyEmbed], ephemeral: true })
+      
+      interaction.reply({ embeds: [replyEmbed] })
     }
-    }
+  }
 }
