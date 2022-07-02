@@ -14,21 +14,19 @@ module.exports = {
   async execute(interaction) {
     let member = interaction.options.getMember("user");
     let reason = interaction.options.getString("reason");
-    const replyEmbed = new MessageEmbed()
-    if (!reason) reason = "No reason provided"
+    const replyEmbed = new MessageEmbed();
+    if (!reason) reason = "No reason provided";
 
     await member.unban();
     
     if (reason === String) {
-      replyEmbed.setColor("#00FF00")
-      replyEmbed.setDescription(`${user.tag} has been unbanned with the reason ${reason}`)
+      replyEmbed.setColor("#00FF00");
+      replyEmbed.setDescription(`${user.tag} has been unbanned with the reason ${reason}`);
     }
     else if (reason !== String) {
       replyEmbed.setDescription(`${user.tag} has been unbanned`);
-      replyEmbed.setColor("#00FF00")
+      replyEmbed.setColor("#00FF00");
     }
-
     interaction.reply({embeds:[replyEmbed]});
-
   },
 };

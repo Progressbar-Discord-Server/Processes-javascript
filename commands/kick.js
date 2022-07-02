@@ -18,29 +18,29 @@ module.exports = {
       .setDescription("Why should this user be kicked?")
       .setRequired(true)),
   async execute(interaction) {
-    let member = interaction.options.getMember("user")
-    const reason = interaction.options.getString("reason")
-    const replyEmbed = new MessageEmbed().setColor("#00FF00")
+    let member = interaction.options.getMember("user");
+    const reason = interaction.options.getString("reason");
+    const replyEmbed = new MessageEmbed().setColor("#00FF00");
 
-    if (member.id === interaction.client.user.id) return interaction.reply("❌ Why would you kick me? 😢")
+    if (member.id === interaction.client.user.id) return interaction.reply("❌ Why would you kick me? 😢");
 
     if (!joke) {
       if (member.kickable) {
         member.kick({ reason: reason })
           .then(() => {
             if (reason !== "No reason provided") {
-              replyEmbed.setDescription(`${user.tag} has been kicked with the reason ${reason}`)
+              replyEmbed.setDescription(`${user.tag} has been kicked with the reason ${reason}`);
             } else if (reason === "No reason provided") {
-              replyEmbed.setDescription(`${user.tag} has been kicked`)
-            }
-          }).catch(error => {
+              replyEmbed.setDescription(`${user.tag} has been kicked`);
+            };
+          })
+          .catch(error => {
             console.error(error);
             replyEmbed.setDescription('There was an error while executing this command!');
             interaction.reply({ embeds: [replyEmbed], ephemeral: true });
           });
       }
     }
-    interaction.reply({ embeds: [replyEmbed] })
-
+    interaction.reply({ embeds: [replyEmbed] });
   }
 }

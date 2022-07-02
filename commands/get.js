@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { GuildEmojiManager } = require('discord.js')
-const { MessageAttachment } = require('discord.js')
 const { CreateAndWrite } = require('../Util/someFun.js')
+const { GuildEmojiManager, MessageAttachment } = require('discord.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -34,88 +33,79 @@ module.exports = {
       .setName("emojis")
       .setDescription("Getting all emojis from a server")),
   async execute(interaction) {
-    await interaction.deferReply({ephemeral: true})
-    const sc = interaction.options.getSubcommand()
+    await interaction.deferReply({ ephemeral: true });
+    const sc = interaction.options.getSubcommand();
 
     if (sc === 'rname') {
-      const guildRoles = await interaction.guild.roles.fetch()
+      const guildRoles = await interaction.guild.roles.fetch();
 
-      let ArrName = []
+      let ArrName = [];
       guildRoles.forEach(e => {
-        if (e.name !== "@everyone") {
-          ArrName.push(e.name)
-        }
-      })
+        if (e.name !== "@everyone") ArrName.push(e.name);
+      });
       
       if (ArrName) {
-        CreateAndWrite('/Tmp/log.txt', ArrName.join("\n"))
-        interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
+        CreateAndWrite('/Tmp/log.txt', ArrName.join("\n"));
+        interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]});
       }
-      else if (!ArrName) {
-        interaction.followUp("Why does not even a single role exist?")
-      }
-
+      else if (!ArrName) interaction.followUp("Why does not even a single role exist?");
+      
     }
     else if (sc === "ricon") {
-      const guildRoles = await interaction.guild.roles.fetch()
-      const format = interaction.options.getString("format")
-      const size = interaction.options.getNumber("size")
-      let ArrayURL = []
+      const guildRoles = await interaction.guild.roles.fetch();
+      const format = interaction.options.getString("format");
+      const size = interaction.options.getNumber("size");
+      let ArrayURL = [];
 
       guildRoles.forEach(e => {
-        if (e.iconURL()) {
-          let icon = e.iconURL({ format: format, size: size })
-          let name = e.name
-          ArrayURL.push(`${icon} for ${name}`)
-        }
+        if (e.iconURL()) ArrayURL.push(`${e.iconURL({ format: format, size: size })} for ${e.name}`);
       });
 
       if (ArrayURL) {
-        CreateAndWrite('/Tmp/log.txt', ArrayURL.join("\n"))
-        interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
+        CreateAndWrite('/Tmp/log.txt', ArrayURL.join("\n"));
+        interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]});
       }
       else if (!ArrayURL) {
-        interaction.followUp("No role found with an icon")
+        interaction.followUp("No role found with an icon");
       }
     }
     else if (sc === 'rcolor') {
-      const guildRoles = await interaction.guild.roles.fetch()
-      const hex = interaction.options.getBoolean("hex")
-      let ArrColor = []
+      const guildRoles = await interaction.guild.roles.fetch();
+      const hex = interaction.options.getBoolean("hex");
+      let ArrColor = [];
       
       guildRoles.forEach(e => {
-        let name = e.name
         let color
-        if (hex) color = e.hexColor
-        else if (!hex) color = e.color
+        if (hex) color = e.hexColor; else color = e.color;
 
-        if (color === String && color !== '#000000' || color === Number && color !== 0) ArrColor.push(`${color} for ${name}`)
-      })
+        if (color === String && color !== '#000000' || color === Number && color !== 0) ArrColor.push(`${color} for ${e.name}`);
+      });
+
       if (ArrColor) {
-        CreateAndWrite('/Tmp/log.txt', ArrColor.join("\n"))
-        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
+        CreateAndWrite('/Tmp/log.txt', ArrColor.join("\n"));
+        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]});
       }
       else if (!ArrColor) {
-        interaction.followUp("No role found to have color")
-      }
+        interaction.followUp("No role found to have color");
+      };
     }
     else if (sc === "emojis") {
-      await interaction.guild.fetch()
-      let emojis = await interaction.guild.emojis.fetch()
-      let emojiArr = []
+      await interaction.guild.fetch();
+      let emojis = await interaction.guild.emojis.fetch();
+      let emojiArr = [];
 
       emojis.forEach(e => {
-        emojiArr.push(`${e.url} for ${e.name}`)
-      })
+        emojiArr.push(`${e.url} for ${e.name}`);
+      });
       
-      CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"))
+      CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"));
 
       if (emojiArr) {
-        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
+        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]});
       }
       else if (!emojiArr) {
-        interaction.followUp("No emojis found")
-      }
+        interaction.followUp("No emojis found");
+      };
     }
   }
 }

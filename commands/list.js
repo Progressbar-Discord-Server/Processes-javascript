@@ -24,21 +24,21 @@ module.exports = {
         .setName("user")
         .setDescription("The user to list kicks (Id)"))),
   async execute(interaction) {
-    const subcommand = interaction.options.getSubcommand()
+    const subcommand = interaction.options.getSubcommand();
     if (subcommand === "warns") {
-      await interaction.deferReply({ ephemeral: true })
-      let IdUser = interaction.options.getString("user")
-      let UserExecutor = interaction.user
+      await interaction.deferReply({ ephemeral: true });
+      let IdUser = interaction.options.getString("user");
+      let UserExecutor = interaction.user;
       
       if (IdUser) {
-        let permV = await interaction.guild.members.fetch(UserExecutor)
+        let permV = await interaction.guild.members.fetch(UserExecutor);
         if (!permV.permissions.FLAGS.has(Permissions.FLAGS.KICK_MEMBERS)) {
-          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that")
-        }
+          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that");
+        };
       }
       else if (!IdUser) {
-        IdUser = interaction.user.id
-      }
+        IdUser = interaction.user.id;
+      };
 
       db = interaction.client.db.Cases
       warnDB = await db.findAll({
@@ -47,32 +47,32 @@ module.exports = {
           type: "warn"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
-      })
-      let list = ""
+      });
+      let list = "";
       for (let i = 0; i < warnDB.length; i++) {
-        list += `${warnDB[i].reason} - *insert date here*\n`
+        list += `${warnDB[i].reason} - *insert date here*\n`;
       }
-      console.log(list)
+      console.log(list);
       if (list !== "") {
-        interaction.followUp({ content: list })
+        interaction.followUp({ content: list });
       }
       else if (list === "") {
-        interaction.followUp({ content: "There is no warn" })
-      }
+        interaction.followUp({ content: "There is no warn" });
+      };
     }
     else if (subcommand === "bans") {
-      await interaction.deferReply({ ephemeral: true })
-      let IdUser = interaction.options.getString("user")
+      await interaction.deferReply({ ephemeral: true });
+      let IdUser = interaction.options.getString("user");
       
       if (IdUser) {
-        let permV = await interaction.guild.members.fetch(UserExecutor)
+        let permV = await interaction.guild.members.fetch(UserExecutor);
         if (!permV.permissions.FLAGS.has(Permissions.FLAGS.BAN_MEMBERS)) {
-          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that")
-        }
+          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that");
+        };
       }
       else if (!IdUser) {
-        IdUser = interaction.user.id
-      }
+        IdUser = interaction.user.id;
+      };
 
       db = interaction.client.db.Cases
       banDB = await db.findAll({
@@ -81,33 +81,33 @@ module.exports = {
           type: "bans"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
-      })
-      let list = ""
+      });
+      let list = "";
 
       for (let i = 0; i < warnDB.length; i++) {
-        list += `${warnDB[i].reason} - *insert date here*\n`
+        list += `${warnDB[i].reason} - *insert date here*\n`;
       }
-      console.log(list)
+      console.log(list);
       if (list !== "") {
-        interaction.followUp({ content: list })
+        interaction.followUp({ content: list });
       }
       else if (list === "") {
-        interaction.followUp({ content: "There is no warn" })
-      }
+        interaction.followUp({ content: "There is no warn" });
+      };
     }
     else if (subcommand === "kicks") {
-      await interaction.deferReply({ ephemeral: true })
-      let IdUser = interaction.options.getString("user")
+      await interaction.deferReply({ ephemeral: true });
+      let IdUser = interaction.options.getString("user");
 
       if (IdUser) {
-        let permV = await interaction.guild.members.fetch(UserExecutor)
+        let permV = await interaction.guild.members.fetch(UserExecutor);
         if (!permV.permissions.FLAGS.has(Permissions.FLAGS.KICK_MEMBERS)) {
-          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that")
+          return interaction.reply("I'm sorry Dave, but i'm afraied i can't do that\nYou do not have the permission to do that");
         }
       }
       else if (!IdUser) {
-        IdUser = interaction.user.id
-      }
+        IdUser = interaction.user.id;
+      };
 
       db = interaction.client.db.Cases
       banDB = await db.findAll({
@@ -116,19 +116,19 @@ module.exports = {
           type: "kick"
         },
         attributes: ['id', 'type', 'userID', 'reason', 'Executor']
-      })
-      let list = ""
+      });
+      let list = "";
 
       for (let i = 0; i < warnDB.length; i++) {
-        list += `${warnDB[i].reason} - *insert date here*\n`
+        list += `${warnDB[i].reason} - *insert date here*\n`;
       }
-      console.log(list)
+      console.log(list);
       if (list !== "") {
-        interaction.followUp({ content: list })
+        interaction.followUp({ content: list });
       }
       else if (list === "") {
-        interaction.followUp({ content: "There is no warn" })
-      }
-    }
+        interaction.followUp({ content: "There is no warn" });
+      };
+    };
   }
 }

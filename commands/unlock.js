@@ -16,9 +16,9 @@ module.exports = {
   async execute(interaction) {
     const replyEmbed = new MessageEmbed()
     let channel = interaction.options.getChannel("channel");
-    let reason = interaction.options.getString("reason")
+    let reason = interaction.options.getString("reason");
 
-    if (!reason) reason = "No reason provided"
+    if (!reason) reason = "No reason provided";
 
     if (channel.type === "GUILD_NEWS") {
       interaction.reply("No");
@@ -31,8 +31,8 @@ module.exports = {
         CREATE_PRIVATE_THREADS: true,
       }, { reason: reason, type: 0 })
       .setDescription("Channel unlocked")
-      .setColor("#00FF00")
-    interaction.reply({embeds: [replyEmbed]})
+      .setColor("#00FF00");
+    interaction.reply({embeds: [replyEmbed]});
     }
   }
 }

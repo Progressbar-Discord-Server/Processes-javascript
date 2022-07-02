@@ -18,20 +18,20 @@ module.exports = {
       .setDescription("Is this command a joke?"))
   ,
   async execute(interaction) {
-    const user = interaction.options.getUser("user")
-    const reason = interaction.options.getString("reason")
-    const joke = interaction.options.getBoolean("joke")
-    const db = interaction.client.db.Cases
-    const replyEmbed = new MessageEmbed().setColor("#00FF00")
-    const dmEmbed = new MessageEmbed().setColor("#FF0000")
+    const user = interaction.options.getUser("user");
+    const reason = interaction.options.getString("reason");
+    const joke = interaction.options.getBoolean("joke");
+    const db = interaction.client.db.Cases;
+    const replyEmbed = new MessageEmbed().setColor("#00FF00");
+    const dmEmbed = new MessageEmbed().setColor("#FF0000");
 
-    if (user.id = interaction.client.id) return interaction.reply("I just deleted my own warn <:troll:869197146786766849>")
+    if (user.id = interaction.client.id) return interaction.reply("I just deleted my own warn <:troll:869197146786766849>");
 
-    replyEmbed.setDescription(`Warned ${user.tag}: ${reason}`)
-    dmEmbed.setDescription(`You have been warned for: ${reason}`)
+    replyEmbed.setDescription(`Warned ${user.tag}: ${reason}`);
+    dmEmbed.setDescription(`You have been warned for: ${reason}`);
 
-    interaction.reply({ embeds: [replyEmbed] })
-    user.send({ embeds: [dmEmbed] })
+    interaction.reply({ embeds: [replyEmbed] });
+    user.send({ embeds: [dmEmbed] });
 
     if (!joke) {
       db.create({
@@ -39,7 +39,7 @@ module.exports = {
         reason: reason,
         Executor: interaction.member.user.tag,
         userID: user.id
-      })
-    }
+      });
+    };
   }
-}
+};

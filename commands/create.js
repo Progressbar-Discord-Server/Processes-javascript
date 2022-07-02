@@ -16,10 +16,10 @@ module.exports = {
       server.channels.create(name, "text");
     }
     catch (err) {
-      interaction.reply(`\`${err}\``)
+      interaction.reply(`\`${err}\``);
     }
     finally {
-      interaction.reply("No error!")
+      interaction.reply("No error!");
     }
     */
    interaction.reply("This command is *not* necessary, as it will just create a channel, if you want it, delete the \\\\* and \\*\\ that are on the create.js file in the commands directory")
