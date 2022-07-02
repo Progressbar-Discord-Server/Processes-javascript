@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { CreateAndWrite } = require('../Util/someFun.js')
-const { GuildEmojiManager, MessageAttachment } = require('discord.js')
+const { MessageAttachment } = require('discord.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -31,7 +31,10 @@ module.exports = {
         .setRequired(true)))
     .addSubcommand(sc => sc
       .setName("emojis")
-      .setDescription("Getting all emojis from a server")),
+      .setDescription("Getting all emojis of a server"))
+    .addSubcommand(sc => sc
+      .setName('stickers')
+      .setDescription('Getting all stickers of a server')),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
     const sc = interaction.options.getSubcommand();
@@ -100,12 +103,30 @@ module.exports = {
       
       CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"));
 
-      if (emojiArr) {
-        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]});
+      if (emojiArr.length) {
+        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')] });
       }
-      else if (!emojiArr) {
+      else if (!emojiArr.length) {
         interaction.followUp("No emojis found");
       };
     }
+    else if (sc === "stickers") {
+      await interaction.guild.fetch();
+      let stickers = await interaction.guild.stickers.fetch();
+      let stickersArr = [];
+
+      stickers.forEach(e => {
+        stickersArr.push(`${e.url} for ${e.name}`);
+      });
+
+      CreateAndWrite('/Tmp/log.txt', stickersArr.join("\n"));
+
+      if (stickersArr.length) {
+        interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')] });
+      }
+      else if (!stickersArr.length) {
+        interaction.followUp("No stickers found");
+      };
+    };
   }
 }
