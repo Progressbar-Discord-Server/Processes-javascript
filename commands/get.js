@@ -8,6 +8,9 @@ module.exports = {
     .setName('get')
     .setDescription("Get something")
     .addSubcommand(sc => sc
+      .setName('rname')
+      .setDescription('Getting all role name'))
+    .addSubcommand(sc => sc
       .setName('ricon')
       .setDescription("Getting all icons of all roles")
       .addStringOption(o => o
@@ -34,7 +37,26 @@ module.exports = {
     await interaction.deferReply({ephemeral: true})
     const sc = interaction.options.getSubcommand()
 
-    if (sc === "ricon") {
+    if (sc === 'rname') {
+      const guildRoles = await interaction.guild.roles.fetch()
+
+      let ArrName = []
+      guildRoles.forEach(e => {
+        if (e.name !== "@everyone") {
+          ArrName.push(e.name)
+        }
+      })
+      
+      if (ArrName) {
+        CreateAndWrite('/Tmp/log.txt', ArrName.join("\n"))
+        interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]})
+      }
+      else if (!ArrName) {
+        interaction.followUp("Why does not even a single role exist?")
+      }
+
+    }
+    else if (sc === "ricon") {
       const guildRoles = await interaction.guild.roles.fetch()
       const format = interaction.options.getString("format")
       const size = interaction.options.getNumber("size")
