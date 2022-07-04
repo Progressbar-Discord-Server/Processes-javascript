@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { guildId } = require("../config.json")
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -21,10 +20,9 @@ module.exports = {
     if (!reason) reason = "No reason provided";
 
     if (channel.type === "GUILD_NEWS") {
-      interaction.reply("No");
-      return
+      return interaction.reply("No");
     } else if (channel.type === "GUILD_TEXT") {
-      channel.permissionOverwrites.edit(guildId, {
+      channel.permissionOverwrites.edit(interaction.guildId, {
         SEND_MESSAGES: true,
         SEND_MESSAGES_IN_THREADS: true,
         CREATE_PUBLIC_THREADS: true,

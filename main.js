@@ -1,26 +1,67 @@
 const fs = require('node:fs');
-const path = require('node:path');
 const { Client, Collection } = require('discord.js');
 const { token } = require('./config.json');
 
-client = new Client({ intents: 2, presence: { status: 'idle' } });
+client = new Client({ intents: 33282, presence: { status: 'idle' }});
 client.db = require('./Util/database')
 
 client.commands = new Collection();
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const commandFolders = fs.readdirSync(`${__dirname}/commands`);
 
-for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
-  const command = require(filePath);
-  client.commands.set(command.data.name, command);
+for (const folder of commandFolders) {
+  const commandFiles = fs.readdirSync(`${__dirname}/commands/${folder}`).filter(file => file.endsWith(".js"));
+  console.log(`Next commands are loading from "${folder}"`);
+
+  for (const file of commandFiles) {
+   try {
+      const command = require(`${__dirname}/commands/${folder}/${file}`);
+      client.commands.set(command.data.name, command);
+      console.log(`Command "${command.data.name}" has been loaded`);
+   } catch (err) {
+      console.error(err);
+    }
+  }
 }
 
+console.log("All command have been loaded");
+
+client.messages = new Collection();
+const messageFolders = fs.readdirSync(`${__dirname}/messages`);
+
+for (const folder of messageFolders) {
+  const messagesFiles = fs.readdirSync(`${__dirname}/messages/${folder}`).filter(file => file.endsWith(".js"));
+  console.log(`Next messages are loading from "${folder}"`)
+
+  for (const file of messagesFiles) {
+   try {
+      const message = require(`${__dirname}/messages/${folder}/${file}`);
+      client.messages.set(message.message, message);
+      console.log(`Message "${message.message}" has been loaded`);
+   } catch (err) {
+      console.error(err);
+    }
+  }
+}
+
+console.log("All message has been loaded");
+
 client.once('ready', () => {
-  client.db.Cases.sync()
+  client.db.Cases.sync();
   console.log(`Login as ${client.user.tag}`);
 })
 
+client.on('messageCreate', async messages => {
+  console.log(messages.content);
+  const message = client.messages.get(messages.content);
+
+  if (!message) return;
+
+  try {
+    await message.execute(messages);
+  } catch (err) {
+    console.error(err);
+  }
+})
 
 client.on("interactionCreate", async interaction => {
   if (!interaction.isCommand()) return;
@@ -31,14 +72,14 @@ client.on("interactionCreate", async interaction => {
 
   try {
     await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     try {
-      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     } catch {
-      await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true })
-    }
-  }
-})
+      await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+    };
+  };
+});
 
 client.login(token);
