@@ -4,11 +4,19 @@ const { token, clientId, guildId } = require('./config.json');
 const fs = require('node:fs');
 
 const commands = [];
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFolders = fs.readdirSync(`${__dirname}/commands`);
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	commands.push(command.data.toJSON());
+for (const folder of commandFolders) {
+  const commandFiles = fs.readdirSync(`${__dirname}/commands/${folder}`).filter(file => file.endsWith(".js"));
+
+  for (const file of commandFiles) {
+   try {
+      const command = require(`${__dirname}/commands/${folder}/${file}`);
+      commands.push(command.data.toJSON());
+   } catch (err) {
+      console.error(err);
+    }
+  }
 }
 
 const rest = new REST({ version: '9' }).setToken(token);
