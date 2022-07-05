@@ -18,10 +18,13 @@ module.exports = {
         .addChoices({name: 'webp',value: 'webp'}, {name: 'png', value: 'png'}, {name: 'jpg', value: 'jpg'}, {name: 'jpeg', value: 'jpeg'})
         .setRequired(true))
       .addNumberOption(o => o
-          .setName('size')
-          .setDescription('At what size do you want the icon to be? (pixel)')
-          .addChoices({name: '16',value: 16},{name: '32',value: 32},{name: '56',value: 56},{name: '64',value: 64},{name: '96',value: 96},{name: '128',value: 128},{name: '256',value: 256},{name: '300',value: 300},{name: '512',value: 512},{name: '600',value: 600},{name: '1024',value: 1024},{name: '2048',value: 2048},{name: '4096',value: 4096})
-          .setRequired(true)))
+        .setName('size')
+        .setDescription('At what size do you want the icon to be? (pixel)')
+        .addChoices({name: '16',value: 16},{name: '32',value: 32},{name: '56',value: 56},{name: '64',value: 64},{name: '96',value: 96},{name: '128',value: 128},{name: '256',value: 256},{name: '300',value: 300},{name: '512',value: 512},{name: '600',value: 600},{name: '1024',value: 1024},{name: '2048',value: 2048},{name: '4096',value: 4096})
+        .setRequired(true))
+      .addBooleanOption(o => o
+        .setName('name')
+        .setDescription('If you also want to get the name of the role (default: true)')))
     .addSubcommand(sc => sc
       .setName('rcolor')
       .setDescription("Getting all Colors of all roles")
@@ -31,10 +34,16 @@ module.exports = {
         .setRequired(true)))
     .addSubcommand(sc => sc
       .setName("emojis")
-      .setDescription("Getting all emojis of a server"))
+      .setDescription("Getting all emojis of a server")
+      .addBooleanOption(o => o
+        .setName('name')
+        .setDescription('If you also want to get the name of the emojis (default: true)')))
     .addSubcommand(sc => sc
       .setName('stickers')
-      .setDescription('Getting all stickers of a server')),
+      .setDescription('Getting all stickers of a server')
+      .addBooleanOption(o => o
+        .setName('name')
+        .setDescription('If you also want to get the name of the stickers (default: true)'))),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
     const sc = interaction.options.getSubcommand();
@@ -58,14 +67,20 @@ module.exports = {
       const guildRoles = await interaction.guild.roles.fetch();
       const format = interaction.options.getString("format");
       const size = interaction.options.getNumber("size");
+      const name = interaction.options.getBoolean('name');
+      if (name === null) name = true;
       let ArrayURL = [];
 
       guildRoles.forEach(e => {
-        if (e.iconURL()) ArrayURL.push(`${e.iconURL({ format: format, size: size })} for ${e.name}`);
+        if (e.iconURL()) {
+          if (name) ArrayURL.push(`${e.iconURL({ format: format, size: size })} for ${e.name}`);
+          else if (!name) ArrayURL.push(`${e.iconURL({ format: format, size: size })}`);
+        };
       });
 
       if (ArrayURL) {
-        CreateAndWrite('/Tmp/log.txt', ArrayURL.join("\n"));
+        if (name) CreateAndWrite('/Tmp/log.txt', ArrayURL.join("\n"));
+        else if (!name) CreateAndWrite('/Tmp/log.txt', ArrayURL.join(' '));
         interaction.followUp({files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')]});
       }
       else if (!ArrayURL) {
@@ -95,15 +110,19 @@ module.exports = {
     else if (sc === "emojis") {
       await interaction.guild.fetch();
       let emojis = await interaction.guild.emojis.fetch();
+      let name = interaction.options.getBoolean('name');
+      if (name === null) name = true;
       let emojiArr = [];
 
       emojis.forEach(e => {
-        emojiArr.push(`${e.url} for ${e.name}`);
+        if (name) emojiArr.push(`${e.url} for ${e.name}`);
+        else if (!name) emojiArr.push(`${e.url}`);
       });
       
-      CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"));
-
       if (emojiArr.length) {
+        if (name) CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"));
+        else if (!name) CreateAndWrite('/Tmp/log.txt', emojiArr.join(' '));
+
         interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')] });
       }
       else if (!emojiArr.length) {
@@ -113,15 +132,20 @@ module.exports = {
     else if (sc === "stickers") {
       await interaction.guild.fetch();
       let stickers = await interaction.guild.stickers.fetch();
+      let name = interaction.options.getBoolean('name');
+      if (name === null) name = true;
       let stickersArr = [];
 
       stickers.forEach(e => {
-        stickersArr.push(`${e.url} for ${e.name}`);
+        if (name) stickersArr.push(`${e.url} for ${e.name}`);
+        else if (!name) stickersArr.push(`${e.url}`);
       });
 
-      CreateAndWrite('/Tmp/log.txt', stickersArr.join("\n"));
-
+      
       if (stickersArr.length) {
+        if (name) CreateAndWrite('/Tmp/log.txt', stickersArr.join("\n"));
+        else if (!name) CreateAndWrite('Tmp/log.txt', stickersArr.join(' '))
+
         interaction.followUp({ files: [new MessageAttachment('./Tmp/log.txt', 'result.txt')] });
       }
       else if (!stickersArr.length) {
