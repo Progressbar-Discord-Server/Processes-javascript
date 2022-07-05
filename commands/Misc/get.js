@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { CreateAndWrite } = require('../Util/someFun.js')
+const { CreateAndWrite } = require('../../Util/someFun.js')
 const { MessageAttachment } = require('discord.js')
 
 module.exports = {
