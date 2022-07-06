@@ -2,7 +2,7 @@ const { Client, Collection } = require('discord.js');
 const { GetCommandFile, GetMessageFile, GetEventFile } = require('./Util/GetJSFile.js')
 const { token, clientId } = require('./config.json');
 
-client = new Client({ intents: 33282, presence: { status: 'idle' }});
+client = new Client({ intents: 34306, presence: { status: 'idle' }});
 client.db = require('./Util/database');
 
 // initiation of all slash commands
