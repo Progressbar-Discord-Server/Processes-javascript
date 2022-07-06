@@ -1,0 +1,13 @@
+//This file is a template for creating your own command
+
+
+const { SlashCommandBuilder } = require("@discordjs/builders")
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName("the name of your command")
+    .setDescription("the description of your command"),
+  async execute(interaction) {
+    interaction.reply("*code of the command here!*")
+  }
+}

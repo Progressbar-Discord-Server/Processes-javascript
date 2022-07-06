@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { Client, Collection } = require('discord.js');
-const { token } = require('./config.json');
+const { token, clientId } = require('./config.json');
 
 client = new Client({ intents: 33282, presence: { status: 'idle' }});
 client.db = require('./Util/database')
@@ -81,5 +81,7 @@ client.on("interactionCreate", async interaction => {
     };
   };
 });
+
+console.log(`https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=1644971949567&scope=bot%20applications.commands`)
 
 client.login(token);
