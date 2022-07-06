@@ -5,6 +5,8 @@ module.exports = {
   on: false,
   async execute() {
     client.db.Cases.sync();
+    client.db.Star.sync();
+    
     let guilds = await client.guilds.fetch()
   
     guilds.forEach(async guild => {
