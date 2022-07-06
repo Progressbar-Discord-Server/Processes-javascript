@@ -5,13 +5,13 @@ async function GetCommandFile(Where) {
 
   for (const folder of Folder) {
     const commandFiles = fs.readdirSync(`${__dirname}/../commands/${folder}`).filter(file => file.endsWith(".js"));
-    console.log(`Next commands are loading from "${folder}"`);
+    console.log(`  Next commands are loading from "${folder}"`);
 
     for (const file of commandFiles) {
       try {
         const command = require(`${__dirname}/../commands/${folder}/${file}`);
         Where.set(command.data.name, command);
-        console.log(`  Command "${command.data.name}" has been loaded`);
+        console.log(`    Command "${command.data.name}" has been loaded`);
       } catch (err) {
         console.error(err);
       };
@@ -24,13 +24,13 @@ async function GetMessageFile(Where) {
 
   for (const folder of Folder) {
     const messagesFiles = fs.readdirSync(`${__dirname}/../messages/${folder}`).filter(file => file.endsWith(".js"));
-    console.log(`Next messages are loading from "${folder}"`);
+    console.log(`  Next messages are loading from "${folder}"`);
   
     for (const file of messagesFiles) {
      try {
         const message = require(`${__dirname}/../messages/${folder}/${file}`);
         Where.set(message.message, message);
-        console.log(`  Message "${message.message}" has been loaded`);
+        console.log(`    Message "${message.message}" has been loaded`);
      } catch (err) {
         console.error(err);
       };
@@ -43,7 +43,7 @@ async function GetEventFile(client) {
 
   for (const folder of Folder) {
     const eventFiles = fs.readdirSync(`${__dirname}/../events/${folder}`).filter(file => file.endsWith(".js"));
-    console.log(`Next Events are loading from "${folder}"`);
+    console.log(`  Next Events are loading from "${folder}"`);
 
     for (const file of eventFiles) {
       try {
@@ -54,7 +54,7 @@ async function GetEventFile(client) {
         else if (!event.on) {
           client.once(event.name, event.execute);
         };
-        console.log(`  Event ${event.name} has been loaded`)
+        console.log(`    Event ${event.name} has been loaded`)
       } catch (err) {
         console.error(err);
       };

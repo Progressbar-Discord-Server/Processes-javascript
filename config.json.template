@@ -4,5 +4,6 @@
   "guildId":"The id of the discord server",
   "logCha":"The id of a log channel",
   "starBoardCha":"The Starboard channel"
+  "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it",
   "sqlPass":"A password for the database, can be empty"
 }

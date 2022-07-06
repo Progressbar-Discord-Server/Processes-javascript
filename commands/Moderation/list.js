@@ -92,7 +92,7 @@ module.exports = {
         interaction.followUp({ content: list });
       }
       else if (list === "") {
-        interaction.followUp({ content: "There is no warn" });
+        interaction.followUp({ content: "There is no bans" });
       };
     }
     else if (subcommand === "kicks") {
@@ -127,8 +127,8 @@ module.exports = {
         interaction.followUp({ content: list });
       }
       else if (list === "") {
-        interaction.followUp({ content: "There is no warn" });
+        interaction.followUp({ content: "There is no kicks" });
       };
     };
   }
-}
+};

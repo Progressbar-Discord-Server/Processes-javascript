@@ -1,3 +1,5 @@
+const { showLink } = require('../../config.json')
+
 module.exports = {
   name: 'ready',
   on: false,
@@ -10,6 +12,9 @@ module.exports = {
       await guildFetched.channels.fetch()
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
     });
+    if (showLink) {
+      console.log(`https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=1644971949567&scope=bot%20applications.commands`);
+    }
   
     console.log(`Login as ${client.user.tag}`);
   }
