@@ -5,6 +5,7 @@ const { token, clientId } = require('./config.json');
 client = new Client({ intents: 33282, presence: { status: 'idle' }});
 client.db = require('./Util/database');
 
+// initiation of all slash commands
 client.commands = new Collection();
 const commandFolders = fs.readdirSync(`${__dirname}/commands`);
 
@@ -68,6 +69,16 @@ client.on('messageCreate', async messages => {
     console.error(err);
   };
 });
+
+client.on("messageReactionAdd", async (reaction, user) => {
+
+  try {
+    add(reaction, user);
+  } 
+  catch (err) {
+    console.error(err);
+  }
+})
 
 client.on("interactionCreate", async interaction => {
   if (!interaction.isCommand()) return;

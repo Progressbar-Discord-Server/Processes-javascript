@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
+const { sqlPass } = require('../config.json')
 
+// Once the database system will be changed, even minor change, pls change the 'password' entry to sqlPass
 const sequelize = new Sequelize('database', 'user', 'password', {
   host: 'localhost',
   dialect: 'sqlite',
