@@ -1,11 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { MessageEmbed } = require('discord.js');
-const { ChannelType } = require("discord-api-types/payloads/v10")
+const { ChannelType } = require("discord-api-types/v10")
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('slowmode')
-    .setDescription("set a slowmode in a channel")
+    .setDescription("Set a slowmode in a channel")
     .addChannelOption(o => o
       .setName("channel")
       .setDescription("What channel do you want to apply slowmode to?")
@@ -13,12 +13,12 @@ module.exports = {
       .addChannelTypes(ChannelType.GuildText))
     .addStringOption(o => o
       .setName('unit')
-      .setDescription('the unit of time')
+      .setDescription('The unit of time')
       .setRequired(true)
       .addChoices({ name: 'seconds', value: 'seconds' }, { name: 'minutes', value: 'minutes' }, { name: 'hours', value: 'hours' }))
     .addIntegerOption(o => o
       .setName("duration")
-      .setDescription('the duration')
+      .setDescription('The duration')
       .setRequired(true))
     .addStringOption(o => o
       .setName("reason")

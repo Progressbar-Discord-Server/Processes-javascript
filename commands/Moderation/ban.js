@@ -41,13 +41,10 @@ module.exports = {
       .setColor("#00FF00")
       .setDescription(`**${member.user.tag} has been banned for:** ${reason}`);
 
-    await member.user.send({ embeds: [dmEmbed] })
+    await member.user.send({ embeds: [dmEmbed] });
     if (!joke) {
       await member.ban({ days: days, reason: reason });
-    }
 
-    await interaction.reply({ embeds: [replyEmbed] });
-    if (!joke) {
       db.create({
         Executor: interaction.member.user.id,
         userID: member.user.id,
@@ -55,5 +52,6 @@ module.exports = {
         type: "ban"
       });
     };
+    await interaction.reply({ embeds: [replyEmbed] });
   }
 }

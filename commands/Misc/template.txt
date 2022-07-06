@@ -1,6 +1,5 @@
 //This file is a template for creating your own command
 
-
 const { SlashCommandBuilder } = require("@discordjs/builders")
 
 module.exports = {
