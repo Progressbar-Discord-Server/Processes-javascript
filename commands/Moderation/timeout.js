@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, GuildMember } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -17,6 +17,8 @@ module.exports = {
 		.addIntegerOption(o => o
 			.setName("duration")
 			.setDescription('How long should this user be timed out for? (max 28 days)')
+			.setMaxValue(60)
+			.setMinValue(1)
 			.setRequired(true))
 		.addStringOption(o => o
 			.setName("reason")
@@ -28,6 +30,10 @@ module.exports = {
 		const unit = interaction.options.getString('unit');
 		let reason = interaction.options.getString('reason') || "No reason provided";
 		const replyEmbed = new MessageEmbed();
+
+		if (!(member instanceof GuildMember)) {
+			await interaction.guild.member.fetch(member)
+		}
 
 		if (member.id === interaction.client.user.id) {
 			if (!reason || reason === "No reason provided")return interaction.reply(`Timed out undefined for ${RealLen} ${unit}`);
@@ -41,17 +47,17 @@ module.exports = {
 		if (length > 2.419e+9) {
 			replyEmbed.setColor("#FF0000");
 			replyEmbed.setDescription(`**I cannot timeout ${user.tag} for that long! You provided a time longer than 28 days!**`);
-			await interaction.reply({embeds:[replyEmbed]});
+			await interaction.reply({ embeds:[replyEmbed] });
 		}
 		else {
-			member.timeout(length, reason + " | Timeout by " + interaction.member.user.tag)
+			member.timeout(length, reason + " | Timeout by " + interaction.member.user)
 			.then(async () => {
 				replyEmbed.setDescription(`Timed out ${member} for **${RealLen} ${unit}** for **"${reason}".**`);
 				replyEmbed.setColor("#00FF00");
 				await interaction.reply({embeds:[replyEmbed]});
 			})
 			.catch(async error => {
-				console.log(error);
+				console.error(error);
 				replyEmbed.setDescription(`**I cannot timeout ${member.tag}! They have admin permissions!**`);
 				replyEmbed.setColor("#FF0000");
 				await interaction.reply({embeds: [replyEmbed], ephemeral: true});

@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, GuildMember } = require('discord.js');
+const { logCha } = require('../../config.json')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -21,6 +22,7 @@ module.exports = {
       .setName("time")
       .setDescription("How long to ban this member?")),
   async execute(interaction) {
+    interaction.deferReply()
     const member = interaction.options.getMember("member", true);
     const guild = interaction.guild;
     const db = interaction.client.db.Cases;
@@ -31,27 +33,45 @@ module.exports = {
     if (!(member instanceof GuildMember)) {
       await guild.members.fetch(member);
     };
-
-    if (member.id === interaction.client.user.id) return interaction.reply("❌ Why would you ban me? 😢");
-
+    
+    if (member.id === interaction.client.user.id) return interaction.followUp("❌ Why would you ban me? 😢");
+    
+    
     const dmEmbed = new MessageEmbed()
-      .setColor("#FF0000")
+      .setColor("#f04a47")
       .setDescription(`You have been banned for: ${reason}`);
     const replyEmbed = new MessageEmbed()
-      .setColor("#00FF00")
+      .setColor("#43b582")
       .setDescription(`**${member.user.tag} has been banned for:** ${reason}`);
+    const logEmbed = new MessageEmbed()
+      .setColor("#f04a47")
+      .addFields(
+      {name: '**User**', value: `${member}`, inline: true },
+      {name: '**Moderator**', value: `${interaction.member}`, inline: true},
+      {name: '**Reason**', value: `${reason}`, inline: true}
+      )
+      
+      await member.user.send({ embeds: [dmEmbed] });
+      
+      if (!joke) {
+        try {
+          await member.ban({ days: days, reason: reason });
+        } catch (err) {
+          console.error(err)
+          return interaction.followUp('Erf, i can\'t do that')
+        }
+        
+        db.create({
+          Executor: interaction.user.id,
+          userID: member.user.id,
+          reason: reason,
+          type: "ban"
+        });
+        
+      };
+      let logChannel = await guild.channels.fetch(logCha)
+      logChannel.send({ embeds: [logEmbed] })
 
-    await member.user.send({ embeds: [dmEmbed] });
-    if (!joke) {
-      await member.ban({ days: days, reason: reason });
-
-      db.create({
-        Executor: interaction.member.user.id,
-        userID: member.user.id,
-        reason: reason,
-        type: "ban"
-      });
-    };
-    await interaction.reply({ embeds: [replyEmbed] });
-  }
+      await interaction.followUp({ embeds: [replyEmbed] });
+    }
 }

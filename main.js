@@ -50,7 +50,7 @@ client.once('ready', async () => {
   guilds.forEach(async guild => {
     let guildFetched = await guild.fetch()
     await guildFetched.channels.fetch()
-    console.log(`Channels of ${guildFetched.name} loaded`)
+    console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
   });
 
   console.log(`Login as ${client.user.tag}`);
