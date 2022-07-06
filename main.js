@@ -58,7 +58,6 @@ client.once('ready', async () => {
 
 client.on('messageCreate', async messages => {
   if (messages.author.id === client.user.id) return;
-  console.log(messages.content)
   const message = client.messages.get(messages.content);
 
   if (!message) return;
