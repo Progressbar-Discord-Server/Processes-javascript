@@ -3,5 +3,6 @@
   "clientId":"The id of the bot",
   "guildId":"The id of the discord server",
   "logCha":"The id of a log channel",
+  "starBoardCha":"The Starboard channel"
   "sqlPass":"A password for the database, can be empty"
 }
