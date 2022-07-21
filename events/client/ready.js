@@ -1,4 +1,5 @@
 const { showLink } = require('../../config.json')
+const { ProcessDOS } = require('../../Util/Dos.js')
 
 module.exports = {
   name: 'ready',
@@ -15,9 +16,10 @@ module.exports = {
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
     });
     if (showLink) {
-      console.log(`https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=1644971949567&scope=bot%20applications.commands`);
+      console.log(`https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=1644971949567&scope=bot%20applications.commands`);
     }
   
     console.log(`Login as ${client.user.tag}`);
+    ProcessDOS(client)
   }
-}
+};

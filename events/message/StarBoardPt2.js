@@ -4,7 +4,7 @@ module.exports = {
   name: 'messageReactionRemove',
   on: true,
   async execute(reaction, user) {
-    if (starBoard) return;
+    if (!starBoard) return;
     if (reaction.emoji.name !== '⭐') return;
 
     const db = reaction.client.db.Star;

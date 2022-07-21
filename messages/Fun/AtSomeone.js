@@ -4,16 +4,15 @@ const { AtSomeone } = require('../../config.json') || false;
 module.exports = {
   message: '@someone',
   async execute(message) {
-    if (AtSomeone) {
-      let memberList = await message.guild.members.fetch({ force: true });
-      let member = memberList.random();
+    if (!AtSomeone) return;
+    let memberList = await message.guild.members.fetch({ force: true });
+    let member = memberList.random();
 
-      if (!(member instanceof GuildMember)) {
-        await message.guild.members.fetch(member);
-      }
-      
-      let messageSent = message.channel.send(`<@${member.user.id}>`);
-      messageSent.delete()
-    };
+    if (!(member instanceof GuildMember)) {
+      await message.guild.members.fetch(member);
+    }
+
+    let messageSent = message.channel.send(`<@${member.user.id}>`);
+    messageSent.delete()
   }
 };
