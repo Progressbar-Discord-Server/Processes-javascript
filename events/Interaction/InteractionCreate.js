@@ -1,8 +1,10 @@
+const { InteractionType } = require('discord.js')
+
 module.exports = {
-  name: '',
+  name: 'interactionCreate',
   on: true,
   async execute(interaction) {
-    if (!interaction.isCommand()) return;
+    if (interaction.type !== InteractionType.ApplicationCommand) return;
 
     const command = client.commands.get(interaction.commandName);
   
@@ -13,9 +15,9 @@ module.exports = {
     } catch (err) {
       console.error(err);
       try {
-        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+        await interaction.reply({ content: `There was an error while executing this command!\n\`\`\`${err} \`\`\``, ephemeral: true });
       } catch {
-        await interaction.followUp('There was an error while executing this command!');
+        await interaction.followUp({content: `There was an error while executing this command!\n\`\`\` ${err} \`\`\``, ephemeral: true});
       };
     };
   }
