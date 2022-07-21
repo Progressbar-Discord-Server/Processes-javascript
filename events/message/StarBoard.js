@@ -1,10 +1,11 @@
-const { starBoardCha } = require('../../config.json');
+const { starBoardCha, starBoard } = require('../../config.json');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   name: 'messageReactionAdd',
   on: true,
   async execute(reaction, user) {
+    if (!starBoard) return;
     const message = reaction.message;
     if (message.channel.id === starBoardCha || reaction.emoji.name !== '⭐') return;
     let db = reaction.client.db.Star;
