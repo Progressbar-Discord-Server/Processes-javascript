@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { ChannelType } = require("discord-api-types/v10")
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
     const RealLen = interaction.options.getInteger('duration');
 
     const reason = interaction.options.getString('reason') || "No reason provided";
-    const replyEmbed = new MessageEmbed();
+    const replyEmbed = new EmbedBuilder();
     let length = RealLen;
 
     if (RealLen === 0) {

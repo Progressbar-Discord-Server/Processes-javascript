@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -22,8 +22,8 @@ module.exports = {
     const reason = interaction.options.getString("reason");
     const joke = interaction.options.getBoolean("joke");
     const db = interaction.client.db.Cases;
-    const replyEmbed = new MessageEmbed().setColor("#00FF00");
-    const dmEmbed = new MessageEmbed().setColor("#FF0000");
+    const replyEmbed = new EmbedBuilder().setColor("#00FF00");
+    const dmEmbed = new EmbedBuilder().setColor("#FF0000");
 
     if (user.id = interaction.client.id) return interaction.reply("I just deleted my own warn <:troll:869197146786766849>");
 

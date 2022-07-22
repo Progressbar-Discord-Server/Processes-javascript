@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
-const { GuildMember, MessageEmbed } = require("discord.js")
+const { GuildMember, EmbedBuilder } = require("discord.js")
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,7 +17,7 @@ module.exports = {
         .setRequired(true))),*/
   async execute(interaction) {
     const sc = interaction.options.getSubcommand();
-    const replyEmbed = new MessageEmbed();
+    const replyEmbed = new EmbedBuilder();
     
     if (sc === "user") {
       const member = interaction.options.getMember("user");

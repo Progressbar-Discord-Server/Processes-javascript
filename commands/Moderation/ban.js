@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, GuildMember } = require('discord.js');
+const { EmbedBuilder, GuildMember } = require('discord.js');
 const { logCha } = require('../../config.json')
 
 module.exports = {
@@ -37,13 +37,13 @@ module.exports = {
     if (member.id === interaction.client.user.id) return interaction.followUp("❌ Why would you ban me? 😢");
     
     
-    const dmEmbed = new MessageEmbed()
+    const dmEmbed = new EmbedBuilder()
       .setColor("#f04a47")
       .setDescription(`You have been banned for: ${reason}`);
-    const replyEmbed = new MessageEmbed()
+    const replyEmbed = new EmbedBuilder()
       .setColor("#43b582")
       .setDescription(`**${member.user.tag} has been banned for:** ${reason}`);
-    const logEmbed = new MessageEmbed()
+    const logEmbed = new EmbedBuilder()
       .setColor("#f04a47")
       .addFields(
       {name: '**User**', value: `${member}`, inline: true },

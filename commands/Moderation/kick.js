@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -20,7 +20,7 @@ module.exports = {
   async execute(interaction) {
     let member = interaction.options.getMember("user");
     const reason = interaction.options.getString("reason");
-    const replyEmbed = new MessageEmbed().setColor("#00FF00");
+    const replyEmbed = new EmbedBuilder().setColor("#00FF00");
 
     if (member.id === interaction.client.user.id) return interaction.reply("❌ Why would you kick me? 😢");
 

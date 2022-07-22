@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { ChannelType } = require('discord-api-types/v10');
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
       CREATE_PRIVATE_THREADS: false,
     }, { reason: reason, type: 0 });
     
-    const replyEmbed = new MessageEmbed()
+    const replyEmbed = new EmbedBuilder()
       .setColor("#00FF00")
       .setDescription("Channel locked");
     

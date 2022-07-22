@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { ChannelType } = require('discord-api-types/v10')
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
       .setName("reason")
       .setDescription("Why should this channel be unlocked?")),
   async execute(interaction) {
-    const replyEmbed = new MessageEmbed()
+    const replyEmbed = new EmbedBuilder()
     let channel = interaction.options.getChannel("channel");
     let reason = interaction.options.getString("reason") || "No reason provided";
 

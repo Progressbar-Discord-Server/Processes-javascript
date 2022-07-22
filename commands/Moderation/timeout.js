@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, GuildMember } = require('discord.js');
+const { EmbedBuilder, GuildMember } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -29,7 +29,7 @@ module.exports = {
 		let length = interaction.options.getInteger('duration');
 		const unit = interaction.options.getString('unit');
 		let reason = interaction.options.getString('reason') || "No reason provided";
-		const replyEmbed = new MessageEmbed();
+		const replyEmbed = new EmbedBuilder();
 
 		if (!(member instanceof GuildMember)) {
 			await interaction.guild.member.fetch(member)

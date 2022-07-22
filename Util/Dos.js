@@ -128,7 +128,7 @@ async function ProcessDOS(client) {
         }
         break
       }
-      case 'cls': {
+      case 'cls': case 'clear': {
         console.log('\033c');
         break
       }
@@ -140,7 +140,7 @@ async function ProcessDOS(client) {
         console.log(line.split(" ").slice(1).join(""))
         break
       }
-      case 'type': {
+      case 'type': case 'cat': {
         let file = line.split(" ").slice(1).join(" ")
         if (!file) { console.log('Required parameter missing'); break }
         cmd.setPrompt(" ")
