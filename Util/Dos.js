@@ -44,6 +44,7 @@ async function ProcessDOS(client) {
         console.log("status <status> <activity> <description>      Changes the status of the bot")
         console.log("send <channel-id> <message>                   Sends a message on the specified channel")
         console.log("dir                                           Lists the current directory")
+        console.log("tail <channel-id> [Amount-of-messages]        Lists message in the channel given")
         console.log("type <file>                                   Show the contents of a file")
         console.log("cd [directory]                                Change directory")
         console.log("cls                                           Clears the screen")
@@ -97,7 +98,7 @@ async function ProcessDOS(client) {
       }
       case 'cd': case 'cd..': {
         let newDir = line.split(" ").slice(1).join(" ")
-        if (newDir == ".." || line.split(" ")[0] == "cd..") {
+        if (newDir === ".." || line.split(" ")[0] === "cd..") {
           if (depth == 0) break
           depth--
           dir.pop()
@@ -129,7 +130,7 @@ async function ProcessDOS(client) {
         break
       }
       case 'cls': case 'clear': {
-        console.log('\033c');
+        console.clear();
         break
       }
       case 'send': {
@@ -138,6 +139,17 @@ async function ProcessDOS(client) {
       }
       case 'echo': {
         console.log(line.split(" ").slice(1).join(""))
+        break
+      }
+      case 'tail': {
+        if (drive === "C" || curServer == null) {console.log("Please, enter a server in the 'S' drive");break}
+        let channel = line.split(" ")[1]
+        if (!channel) {console.log('A channel id is required'); break}
+        let MessageAmount = line.split(" ")[2] || 10
+        let Messages = await client.guilds.cache.get(curServer).channels.cache.get(channel).messages.fetch({limit: MessageAmount})
+        Messages.forEach(e => {
+          console.log(`${e.author.tag.padEnd(20)}${e.content}`)
+        })
         break
       }
       case 'type': case 'cat': {

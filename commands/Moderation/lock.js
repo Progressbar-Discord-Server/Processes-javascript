@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { ChannelType } = require('discord-api-types/v10');
 
 module.exports = {
@@ -11,14 +10,19 @@ module.exports = {
       .setDescription("The channel to lock")
       .addChannelTypes(ChannelType.GuildText)
       .setRequired(true))
+    .addRoleOption(o => o
+      .setName('role')
+      .setDescription("The role to lock access, can be @eveyone")
+      .setRequired(true))
     .addStringOption(o => o
       .setName("reason")
       .setDescription("Why should this channel be locked?")),
   async execute(interaction) {
-    let channel = interaction.options.getChannel("channel");
-    let reason = interaction.options.getString("reason") || "No reason provided";
-    
-    channel.permissionOverwrites.edit(interaction.guildId, {
+    const channel = interaction.options.getChannel("channel");
+    const reason = interaction.options.getString("reason") || "No reason provided";
+    const role = interaction.options.getRole('role', true)
+
+    channel.permissionOverwrites.edit(role.id, {
       SEND_MESSAGES: false,
       SEND_MESSAGES_IN_THREADS: false,
       CREATE_PUBLIC_THREADS: false,
