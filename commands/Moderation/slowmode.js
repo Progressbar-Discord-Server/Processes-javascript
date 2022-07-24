@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { ChannelType } = require("discord-api-types/v10")
 
 module.exports = {
