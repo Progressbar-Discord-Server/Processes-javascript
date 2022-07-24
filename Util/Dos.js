@@ -142,13 +142,13 @@ async function ProcessDOS(client) {
         break
       }
       case 'tail': {
-        if (drive === "C" || curServer == null) {console.log("Please, enter a server in the 'S' drive");break}
+        if (drive === "C" || curServer == null) {console.log("Please, enter a server in the 'S' drive"); break}
         let channel = line.split(" ")[1]
         if (!channel) {console.log('A channel id is required'); break}
         let MessageAmount = line.split(" ")[2] || 10
         let Messages = await client.guilds.cache.get(curServer).channels.cache.get(channel).messages.fetch({limit: MessageAmount})
         Messages.forEach(e => {
-          console.log(`${e.author.tag.padEnd(20)}${e.content}`)
+          console.log(`${e.id.padEnd(20)}${e.author.tag.padEnd(13)}${e.content}`)
         })
         break
       }
