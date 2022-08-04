@@ -79,7 +79,6 @@ module.exports = {
           };
         });
 
-        console.log(ArrayURL)
         if (ArrayURL.length) {
           if (name) await CreateAndWrite('/Tmp/log.txt', ArrayURL.join("\n"));
           else if (!name) await CreateAndWrite('/Tmp/log.txt', ArrayURL.join(' '));
