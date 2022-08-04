@@ -59,7 +59,7 @@ module.exports = {
 
         if (ArrName.length) {
           CreateAndWrite('/Tmp/log.txt', ArrName.join("\n"));
-          interaction.followUp({ files: [new AttachmentBuilder('./Tmp/log.txt', 'result.txt')] });
+          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
         }
         else if (!ArrName.length) interaction.followUp("Why does not even a single role exist?");
         break
@@ -83,7 +83,7 @@ module.exports = {
         if (ArrayURL.length) {
           if (name) await CreateAndWrite('/Tmp/log.txt', ArrayURL.join("\n"));
           else if (!name) await CreateAndWrite('/Tmp/log.txt', ArrayURL.join(' '));
-          interaction.followUp({ files: [new AttachmentBuilder('./Tmp/log.txt', 'result.txt')] });
+          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
         }
         else if (!ArrayURL.length) interaction.followUp("No role found with an icon");
         break
@@ -102,7 +102,7 @@ module.exports = {
 
         if (ArrColor.length) {
           CreateAndWrite('/Tmp/log.txt', ArrColor.join("\n"));
-          interaction.followUp({ files: [new AttachmentBuilder('./Tmp/log.txt', 'result.txt')] });
+          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
         }
         else if (!ArrColor.length) interaction.followUp("No role found to have color");
         break
@@ -123,7 +123,7 @@ module.exports = {
           if (name) CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"));
           else if (!name) CreateAndWrite('/Tmp/log.txt', emojiArr.join(' '));
 
-          interaction.followUp({ files: [new AttachmentBuilder('./Tmp/log.txt', 'result.txt')] });
+          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
         }
         else if (!emojiArr.length) interaction.followUp("No emojis found");
         break
@@ -145,7 +145,7 @@ module.exports = {
           if (name) CreateAndWrite('/Tmp/log.txt', stickersArr.join("\n"));
           else if (!name) CreateAndWrite('Tmp/log.txt', stickersArr.join(' '))
 
-          interaction.followUp({ files: [new AttachmentBuilder('./Tmp/log.txt', 'result.txt')] });
+          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
         }
         else if (!stickersArr.length) interaction.followUp("No stickers found");
         break
