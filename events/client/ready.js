@@ -1,10 +1,11 @@
 const { showLink } = require('../../config.json')
 const { ProcessDOS } = require('../../Util/Dos.js')
+const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
   name: 'ready',
   on: false,
-  async execute() {
+  async execute(client) {
     client.db.Cases.sync();
     client.db.Star.sync();
     
@@ -16,7 +17,10 @@ module.exports = {
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
     });
     if (showLink) {
-      console.log(`https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=1644971949567&scope=bot%20applications.commands`);
+      console.log(client.generateInvite({
+        permissions: PermissionsBitField.All,
+        scopes: ["applications.commands", "bot"]
+      }))
     }
   
     console.log(`Login as ${client.user.tag}`);

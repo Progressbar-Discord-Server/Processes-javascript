@@ -17,7 +17,9 @@ module.exports = {
       try {
         await interaction.reply({ content: `There was an error while executing this command!\n\`\`\`${err} \`\`\``, ephemeral: true });
       } catch {
-        await interaction.followUp({content: `There was an error while executing this command!\n\`\`\` ${err} \`\`\``, ephemeral: true});
+        try {
+         await interaction.followUp({content: `There was an error while executing this command!\n\`\`\` ${err} \`\`\``, ephemeral: true});
+        } catch {}
       };
     };
   }

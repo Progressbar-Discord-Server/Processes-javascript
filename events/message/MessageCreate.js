@@ -4,9 +4,9 @@ module.exports = {
   async execute(messages) {
     if (messages.author.id === client.user.id) return;
     const message = client.messages.get(messages.content);
-  
-    if (!message) return;
-  
+    
+    if (!message) {client.messages.forEach(e => {if (e.code) e.code()}); return}
+    
     try {
       await message.execute(messages);
     } catch (err) {
