@@ -1,6 +1,23 @@
-const { CreateAndWrite } = require('../../Util/someFun.js')
 const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js')
-// const http = require("node:http")
+const { PastebinDevKey } = require('../../config.json')
+const axios = require('axios').default
+
+async function sendAsPastebin(data, interaction) {
+  axios({
+    method: 'post',
+    url: 'https://pastebin.com/api/api_post.php',
+    data: `api_dev_key=${PastebinDevKey}&api_option=paste&api_paste_private=1&api_paste_expire_date=10M&api_paste_code=${data}`
+  })
+  .then(r => {
+    interaction.followUp({content: r.data})
+  })
+  .catch(e => {
+    if (e.response) {
+      e.response
+      interaction.followUp({content: `ERROR: \`${e.response.status}, ${e.response.data}\``})
+    }
+  });
+}
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,12 +32,31 @@ module.exports = {
       .addStringOption(o => o
         .setName("format")
         .setDescription("In what format do you want the icons?")
-        .addChoices({ name: 'webp', value: 'webp' }, { name: 'png', value: 'png' }, { name: 'jpg', value: 'jpg' }, { name: 'jpeg', value: 'jpeg' })
+        .addChoices(
+          { name: 'webp', value: 'webp' },
+          { name: 'png', value: 'png' },
+          { name: 'jpg', value: 'jpg' },
+          { name: 'jpeg', value: 'jpeg' }
+        )
         .setRequired(true))
       .addNumberOption(o => o
         .setName('size')
         .setDescription('At what size do you want the icon to be? (pixel)')
-        .addChoices({ name: '16', value: 16 }, { name: '32', value: 32 }, { name: '56', value: 56 }, { name: '64', value: 64 }, { name: '96', value: 96 }, { name: '128', value: 128 }, { name: '256', value: 256 }, { name: '300', value: 300 }, { name: '512', value: 512 }, { name: '600', value: 600 }, { name: '1024', value: 1024 }, { name: '2048', value: 2048 }, { name: '4096', value: 4096 })
+        .addChoices(
+          { name: '16', value: 16 },
+          { name: '32', value: 32 },
+          { name: '56', value: 56 },
+          { name: '64', value: 64 },
+          { name: '96', value: 96 },
+          { name: '128', value: 128 },
+          { name: '256', value: 256 },
+          { name: '300', value: 300 }, 
+          { name: '512', value: 512 },
+          { name: '600', value: 600 },
+          { name: '1024', value: 1024 },
+          { name: '2048', value: 2048 },
+          { name: '4096', value: 4096 }
+        )
         .setRequired(true))
       .addBooleanOption(o => o
         .setName('name')
@@ -58,8 +94,7 @@ module.exports = {
         });
 
         if (ArrName.length) {
-          CreateAndWrite('/Tmp/log.txt', ArrName.join("\n"));
-          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
+          await sendAsPastebin(ArrName.join("\n"), interaction)
         }
         else if (!ArrName.length) interaction.followUp("Why does not even a single role exist?");
         break
@@ -78,11 +113,10 @@ module.exports = {
             else if (!name) ArrayURL.push(`${e.iconURL({ format: format, size: size })}`);
           };
         });
-
+        
         if (ArrayURL.length) {
-          if (name) await CreateAndWrite('/Tmp/log.txt', ArrayURL.join("\n"));
-          else if (!name) await CreateAndWrite('/Tmp/log.txt', ArrayURL.join(' '));
-          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
+          if (name) sendAsPastebin(ArrayURL.join("\n"), interaction)
+          else if (!name) sendAsPastebin(ArrayURL.join(""), interaction)
         }
         else if (!ArrayURL.length) interaction.followUp("No role found with an icon");
         break
@@ -99,10 +133,7 @@ module.exports = {
           if (hex && color !== '#000000' || !hex && color !== 0) ArrColor.push(`${color} for ${e.name}`);
         });
 
-        if (ArrColor.length) {
-          CreateAndWrite('/Tmp/log.txt', ArrColor.join("\n"));
-          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
-        }
+        if (ArrColor.length) sendAsPastebin(ArrColor.join("\n"), interaction);
         else if (!ArrColor.length) interaction.followUp("No role found to have color");
         break
       }
@@ -119,12 +150,10 @@ module.exports = {
         });
 
         if (emojiArr.length) {
-          if (name) CreateAndWrite('/Tmp/log.txt', emojiArr.join("\n"));
-          else if (!name) CreateAndWrite('/Tmp/log.txt', emojiArr.join(' '));
-
-          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
+          if (name) sendAsPastebin(emojiArr.join("\n"), interaction);
+          else if (!name) sendAsPastebin(emojiArr.join(' '), interaction);
         }
-        else if (!emojiArr.length) interaction.followUp("No emojis found");
+        else if (!emojiArr.length) interaction.followUp({content: "No emoji found"})
         break
       }
       case "stickers": {
@@ -141,10 +170,8 @@ module.exports = {
 
 
         if (stickersArr.length) {
-          if (name) CreateAndWrite('/Tmp/log.txt', stickersArr.join("\n"));
-          else if (!name) CreateAndWrite('Tmp/log.txt', stickersArr.join(' '))
-
-          interaction.followUp({ files: [new AttachmentBuilder('/Tmp/log.txt', 'result.txt')] });
+          if (name) sendAsPastebin(stickersArr.join("\n"), interaction);
+          else if (!name) sendAsPastebin(stickersArr.join(' '), interaction)
         }
         else if (!stickersArr.length) interaction.followUp("No stickers found");
         break
