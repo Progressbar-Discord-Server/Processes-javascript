@@ -1,10 +1,11 @@
 const { ChannelType } = require('discord.js')
 
 module.exports = {
+  message: "CrossPost",
   async code(messages) {
     await messages.fetch()
     if (messages.author === "282286160494067712" && messages.channel.type === ChannelType.GuildNews) {
-      this.execute(messages)
+      this.execute(messages);
     }
   },
   async execute(messages) {

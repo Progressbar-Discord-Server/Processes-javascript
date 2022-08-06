@@ -9,15 +9,15 @@ client.db = require('./Util/database');
 client.commands = new Collection();
 console.log('Initialization of / commands')
 GetCommandFile(client.commands);
-console.log("  All Commands have been loaded");
+console.log(" └ All Commands have been loaded");
 
 console.log('Initialization of messages')
 client.messages = new Collection();
 GetMessageFile(client.messages);
-console.log("  All Messages has been loaded");
+console.log(" └ All Messages has been loaded");
 
 console.log('Initialization of events')
 GetEventFile(client)
-console.log('  All Events has been loaded')
+console.log(' └ All Events has been loaded')
 
 client.login(token);
