@@ -1,4 +1,5 @@
 const fs = require('node:fs')
+const { Collection } = require('discord.js')
 
 async function GetCommandFile(Where) {
   const Folder = fs.readdirSync(`${__dirname}/../commands`)
@@ -68,7 +69,7 @@ async function GetEventFile(client) {
   };
 };
 
-async function GetJsFile() {
+async function GetJsFile(client) {
   // initiation of all slash commands
   client.commands = new Collection();
   console.log(' Initialization of / commands')
@@ -85,4 +86,4 @@ async function GetJsFile() {
   console.log('  All Events has been loaded')
 }
 
-module.exports = { GetCommandFile, GetMessageFile, GetEventFile }
+module.exports = { GetJsFile }

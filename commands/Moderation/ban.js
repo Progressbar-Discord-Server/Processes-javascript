@@ -32,10 +32,14 @@ module.exports = {
     if (!(member instanceof GuildMember)) {
       await guild.members.fetch(member);
     };
-    
+
+    if (member.id === interaction.user.id) {
+      return interaction.followUp("Why do you want to ban yourself?");
+    }
+
     if (member.id === interaction.client.user.id) return interaction.followUp("❌ Why would you ban me? 😢");
-    
-    
+
+    if (member.bannable) {
     const dmEmbed = new EmbedBuilder()
       .setColor("#f04a47")
       .setDescription(`You have been banned for: ${reason}`);
@@ -45,32 +49,27 @@ module.exports = {
     const logEmbed = new EmbedBuilder()
       .setColor("#f04a47")
       .addFields(
-      {name: '**User**', value: `${member}`, inline: true },
-      {name: '**Moderator**', value: `${interaction.member}`, inline: true},
-      {name: '**Reason**', value: `${reason}`, inline: true}
-      )
-      
+        { name: '**User**', value: `${member}`, inline: true },
+        { name: '**Moderator**', value: `${interaction.member}`, inline: true },
+        { name: '**Reason**', value: `${reason}`, inline: true }
+      );
+
       await member.user.send({ embeds: [dmEmbed] });
       
       if (!joke) {
-        try {
-          await member.ban({ days: days, reason: reason });
-        } catch (err) {
-          console.error(err)
-          return interaction.followUp('Erf, i can\'t do that')
-        }
-        
+        await member.ban({ days: days, reason: reason });
         db.create({
           Executor: interaction.user.id,
           userID: member.user.id,
           reason: reason,
           type: "ban"
         });
-        
-      };
-      let logChannel = await guild.channels.fetch(logCha)
-      logChannel.send({ embeds: [logEmbed] })
-
+        let logChannel = await guild.channels.fetch(logCha)
+        logChannel.send({ embeds: [logEmbed] })
+      }
+  
       await interaction.followUp({ embeds: [replyEmbed] });
     }
+    else return interaction.followUp('Erf, i can\'t do that')
+  }
 }
