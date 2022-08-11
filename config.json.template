@@ -6,5 +6,6 @@
   "starBoardCha":"The Starboard channel"
   "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it",
   "sqlPass": "A password for the database, can be empty",
-  "PastebinDevKey": "A key to the api of Pastebin"
+  "PastebinDevKey": "A key to the api of Pastebin",
+  "OwnerId": "The id of the owner of the bot, can be an Array"
 }
