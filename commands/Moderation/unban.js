@@ -12,19 +12,19 @@ module.exports = {
       .setName("reason")
       .setDescription("Why should this user be unbanned?")),
   async execute(interaction) {
-    let member = interaction.options.getMember("user");
-    let reason = interaction.options.getString("reason");
+    const user = interaction.options.getUser("user");
+    const reason = interaction.options.getString("reason") || "No reason provided";
     const replyEmbed = new EmbedBuilder();
-    if (!reason) reason = "No reason provided";
+    const guild = interaction.guild
 
-    await member.unban();
+    await guild.bans.remove(user, reason);
     
     if (reason === String) {
       replyEmbed.setColor("#00FF00");
-      replyEmbed.setDescription(`${user.tag} has been unbanned with the reason ${reason}`);
+      replyEmbed.setDescription(`**${user.tag} has been unbanned with the reason:** ${reason}`);
     }
     else if (reason !== String) {
-      replyEmbed.setDescription(`${user.tag} has been unbanned`);
+      replyEmbed.setDescription(`**${user.tag} has been unbanned**`);
       replyEmbed.setColor("#00FF00");
     }
     interaction.reply({embeds:[replyEmbed]});
