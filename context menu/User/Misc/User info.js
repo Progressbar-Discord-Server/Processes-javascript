@@ -12,7 +12,7 @@ module.exports = {
     
     let roles = []
     member.roles.cache.forEach(e => {
-      if (e.name !== "@everyone") roles.push(`<@${e.id}>`)
+      if (e.name !== "@everyone") roles.push(`<@&${e.id}>`)
     })
     
     interaction.reply({
