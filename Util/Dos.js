@@ -9,7 +9,7 @@ async function ProcessDOS(client) {
   let drvlabel = "SERVERS"
   let depth = 0
   let curServer = null
-  let curC = null 
+  let curC = null
   let drvS = {}
   let drvC = {}
   let inRepl = false
@@ -61,6 +61,7 @@ async function ProcessDOS(client) {
         log("help                                        Displays this help")
         log("exit                                        Terminates the bot and console")
         log("reload                                      Reload Command or server, depending on the drive in which executed")
+        log("deploy                                      Deploy slash (/) commands")
         break
       }
       case 'status': {
@@ -161,11 +162,11 @@ async function ProcessDOS(client) {
         break
       }
       case 'tail': {
-        if (drive === "C" || curServer == null) {console.log("Please, enter a server in the 'S' drive"); break}
+        if (drive === "C" || curServer == null) { console.log("Please, enter a server in the 'S' drive"); break }
         let channel = line.split(" ")[1]
-        if (!channel) {console.log('A channel id is required'); break}
+        if (!channel) { console.log('A channel id is required'); break }
         let MessageAmount = line.split(" ")[2] || 10
-        let Messages = await client.guilds.cache.get(curServer).channels.cache.get(channel).messages.fetch({limit: MessageAmount})
+        let Messages = await client.guilds.cache.get(curServer).channels.cache.get(channel).messages.fetch({ limit: MessageAmount })
         Messages.forEach(e => {
           console.log(`${e.id.padEnd(20)}${e.author.tag.padEnd(13)}${e.content}`)
         })
@@ -190,20 +191,6 @@ async function ProcessDOS(client) {
         console.log()
         break
       }
-      case 'c:': case 'C:': {
-        drive = 'C'
-        drvlabel = 'COMMANDS'
-        depth = 0
-        dir = ["\\"]
-        break
-      }
-      case 'S:': case 's:': {
-        drive = 'S'
-        drvlabel = 'SERVERS'
-        depth = 0
-        dir = ["\\"]
-        break
-      }
       case "reload": {
         switch (drive) {
           case "S": {
@@ -221,6 +208,31 @@ async function ProcessDOS(client) {
             break
           }
         };
+      }
+      case "deploy": {
+        const { send } = require("../deploy-commands.js");
+        const { token, guildId, beta } = require("../config.json");
+
+        let all = []
+        client.commands.forEach(e => { if (!beta && e.name !== "test" || beta) all.push(e.data.toJSON()) })
+        client.contextMenu.forEach(e => all.push(e.data.toJSON()))
+
+        send(all, token, guildId, client.user.id);
+        break;
+      }
+      case 'c:': case 'C:': {
+        drive = 'C'
+        drvlabel = 'COMMANDS'
+        depth = 0
+        dir = ["\\"]
+        break
+      }
+      case 'S:': case 's:': {
+        drive = 'S'
+        drvlabel = 'SERVERS'
+        depth = 0
+        dir = ["\\"]
+        break
       }
       case '': break
       default: console.log("Bad command or file name")

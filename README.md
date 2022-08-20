@@ -1,6 +1,6 @@
-# Progressbar Ruler Discord Bot 
+# Processes Discord Bot 
 
-This is a moderation bot for the Progressbar95 Fan Discord Server. 
+This is a moderation bot for the [Progressbar95 Fan Server](https://discord.gg/HWFYmwsFX9). 
 
 ## Setting up
 

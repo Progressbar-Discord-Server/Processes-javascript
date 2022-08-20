@@ -1,4 +1,3 @@
-const { ModalSubmitInteraction } = require("discord.js");
 const { ContextMenuCommandBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
 const { ban } = require("../../../Util/Moderation");
 
