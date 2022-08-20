@@ -14,6 +14,7 @@ module.exports = {
     guilds.forEach(async guild => {
       let guildFetched = await guild.fetch()
       await guildFetched.channels.fetch()
+      guildFetched.members.fetchMe()
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
     });
     if (showLink) {

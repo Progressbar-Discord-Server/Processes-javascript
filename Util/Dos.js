@@ -1,6 +1,5 @@
-const fs = require('node:fs')
+const fs = require('node:fs');
 const readline = require('readline');
-const { basename } = require('path');
 
 async function ProcessDOS(client) {
   const cmd = readline.createInterface(process.stdin, process.stdout);
@@ -14,6 +13,10 @@ async function ProcessDOS(client) {
   let drvS = {}
   let drvC = {}
   let inRepl = false
+  let object = {}
+  let pm2 = false
+  if (process.env.PM2_USAGE) pm2 = true
+  console.log("The object 'object' is used for setting a variable inside for use later with the eval command")
   drvS.rootdirs = client.guilds.cache
   drvS.subdirs = null
   drvC.rootdirs = fs.readdirSync(`${__dirname}/../commands`);
@@ -26,8 +29,13 @@ async function ProcessDOS(client) {
     if (inRepl) return
     switch (line.trim().split(" ")[0]) {
       case 'exit': {
-        cmd.close()
-        process.exit(0)
+        if (!pm2) {
+          cmd.close()
+          await client.destroy()
+          process.exit(0)
+        }
+        else if (pm2) console.log("You are using pm2, to exit the command line, use Ctrl+C.\nIf you want to reload command file, use reload in the C: drive")
+        break
       }
       case 'eval': {
         try {
@@ -38,19 +46,21 @@ async function ProcessDOS(client) {
         break
       }
       case 'help': case 'man': {
-        console.log("Process DOS help")
-        console.log("Commands:\n")
-        console.log("eval <code>                                   Evaluates code")
-        console.log("status <status> <activity> <description>      Changes the status of the bot")
-        console.log("send <channel-id> <message>                   Sends a message on the specified channel")
-        console.log("dir                                           Lists the current directory")
-        console.log("tail <channel-id> [Amount-of-messages]        Lists message in the channel given")
-        console.log("type <file>                                   Show the contents of a file")
-        console.log("cd [directory]                                Change directory")
-        console.log("cls                                           Clears the screen")
-        console.log("echo <text>                                   Displays text on the screen")
-        console.log("help                                          Displays this help")
-        console.log("exit                                          Terminates the bot and console")
+        const log = console.log
+        log("Process DOS help")
+        log("Commands:\n")
+        log("eval <code>                                 Evaluates code")
+        log("status <status> <activity> <description>    Changes the status of the bot")
+        log("send <channel-id> <message>                 Sends a message on the specified channel")
+        log("dir                                         Lists the current directory")
+        log("tail <channel-id> [Amount-of-messages]      Lists message in the channel given")
+        log("type <file>                                 Show the contents of a file")
+        log("cd [directory]                              Change directory")
+        log("cls                                         Clears the screen")
+        log("echo <text>                                 Displays text on the screen")
+        log("help                                        Displays this help")
+        log("exit                                        Terminates the bot and console")
+        log("reload                                      Reload Command or server, depending on the drive in which executed")
         break
       }
       case 'status': {
@@ -74,8 +84,9 @@ async function ProcessDOS(client) {
         switch (drive) {
           case 'S': {
             if (depth == 0) {
-              drvS.rootdirs.forEach(i => {
-                console.log(i.name.padEnd(20) + "<DIR>      ")
+              drvS.rootdirs.forEach(async i => {
+                if (i.name == undefined) await i.fetch()
+                console.log(i.name.padEnd(20) + ` (${i.id})`.padEnd(23) + "<DIR>      ")
               })
             } else {
               drvS.subdirs = client.guilds.cache.get(`${curServer}`)
@@ -108,10 +119,18 @@ async function ProcessDOS(client) {
         }
         switch (drive) {
           case 'S': {
-            if (drvS.rootdirs.find(i => i.name === newDir)) {
-              dir.push(newDir)
+            if (drvS.rootdirs.find(i => i.name === newDir) || drvS.rootdirs.find(i => i.id === newDir)) {
               depth++
-              curServer = client.guilds.cache.find(guild => guild.name === newDir).id
+              if (!isNaN(+newDir)) {
+                let server = client.guilds.cache.find(g => g.id === newDir)
+                curServer = server.id
+                dir.push(server.name)
+              }
+              else if (isNaN(+newDir)) {
+                let server = client.guilds.cache.find(g => g.name === newDir)
+                curServer = server.id
+                dir.push(server.name)
+              }
             } else {
               console.log("Invalid directory")
             }
@@ -166,7 +185,6 @@ async function ProcessDOS(client) {
             fs.readFile(`${__dirname}/../commands/${curC}/${file.toLowerCase()}`, 'utf8', (err, data) => {
               if (err) { console.log(`File not found - ${file.toLowerCase()}`); return }
               console.log(data)
-
             })
         }
         console.log()
@@ -186,9 +204,27 @@ async function ProcessDOS(client) {
         dir = ["\\"]
         break
       }
+      case "reload": {
+        switch (drive) {
+          case "S": {
+            console.log("Reloading servers, Please wait...")
+            await client.guilds.fetch()
+            drvS.rootdirs = client.guilds.cache
+            console.log("Reload finished")
+            break
+          }
+          case "C": {
+            const { ReloadJsFile } = require('./GetJSFile.js');
+            console.log("Reloading commands, Please wait...");
+            await ReloadJsFile(client);
+            console.log("Reload finished.");
+            break
+          }
+        };
+      }
       case '': break
       default: console.log("Bad command or file name")
-    }
+    };
     cmd.setPrompt(`${drive}:${dir.join("")}>`)
     cmd.prompt();
   })

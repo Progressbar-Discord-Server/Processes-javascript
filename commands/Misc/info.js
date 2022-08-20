@@ -65,8 +65,8 @@ module.exports = {
       
       let date = new Date(guild.createdAt);
 
-      let icon = guild.iconURL;
-      if (icon) {replyEmbed.setThumbnail(guild.iconURL({ format: "png", size: 4096 }))};
+      let icon = guild.iconURL({format: "png", size: 4096});
+      if (icon) {replyEmbed.setThumbnail(icon)};
       replyEmbed.setAuthor({name: `${guild.name}`, iconURL: icon});
       replyEmbed.setColor(`#${Math.floor(Math.random()*16777215).toString(16)}`);
       replyEmbed.addFields(

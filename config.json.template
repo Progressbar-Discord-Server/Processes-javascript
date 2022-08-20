@@ -1,11 +1,13 @@
 {
-  "Token":"The token of the bot",
-  "clientId":"The id of the bot",
-  "guildId":"The id of the discord server",
-  "logCha":"The id of a log channel",
-  "starBoardCha":"The Starboard channel"
-  "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it",
+  "token": "The token of the bot",
+  "clientId": "The id of the bot",
+  "guildId": "The id of the discord server",
+  "logCha": "The id of a log channel",
+  "starBoard": "Do you want the starboard to be activated?"
+  "starBoardCha": "The Starboard channel (complete if starBoard is true)"
+  "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it, and 'true' to activate",
   "sqlPass": "A password for the database, can be empty",
   "PastebinDevKey": "A key to the api of Pastebin",
-  "OwnerId": "The id of the owner of the bot, can be an Array"
+  "OwnerId": "The id of the owner of the bot, can be an Array",
+  "test": "do you want the test command to be pushed like other? set 'true' here else, set false"
 }

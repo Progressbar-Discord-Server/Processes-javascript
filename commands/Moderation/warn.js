@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { warn } = require('../../Util/Moderation.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -14,31 +15,8 @@ module.exports = {
       .setRequired(true))
     .addBooleanOption(o => o
       .setName("joke")
-      .setDescription("Is this command a joke?"))
-  ,
+      .setDescription("Is this command a joke?")),
   async execute(interaction) {
-    const user = interaction.options.getUser("user");
-    const reason = interaction.options.getString("reason");
-    const joke = interaction.options.getBoolean("joke");
-    const db = interaction.client.db.Cases;
-    const replyEmbed = new EmbedBuilder().setColor("#00FF00");
-    const dmEmbed = new EmbedBuilder().setColor("#FF0000");
-
-    if (user.id = interaction.client.id) return interaction.reply("I just deleted my own warn <:troll:869197146786766849>");
-
-    replyEmbed.setDescription(`Warned ${user.tag}: ${reason}`);
-    dmEmbed.setDescription(`You have been warned for: ${reason}`);
-
-    interaction.reply({ embeds: [replyEmbed] });
-    user.send({ embeds: [dmEmbed] });
-
-    if (!joke) {
-      db.create({
-        type: "warn",
-        reason: reason,
-        Executor: interaction.member.user.tag,
-        userID: user.id
-      });
-    };
+    warn(interaction, interaction.options.getUser("user", true), interaction.options.getString("reason", true), interaction.options.getBoolean("joke", true), interaction.client.db.Cases)
   }
 };
