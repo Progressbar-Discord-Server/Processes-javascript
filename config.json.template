@@ -9,5 +9,5 @@
   "sqlPass": "A password for the database, can be empty",
   "PastebinDevKey": "A key to the api of Pastebin",
   "OwnerId": "The id of the owner of the bot, can be an Array",
-  "test": "do you want the test command to be pushed like other? set 'true' here else, set false"
+  "beta": "do you want the test command to be pushed like other? set 'true' here else, set false"
 }

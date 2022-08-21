@@ -17,6 +17,7 @@ module.exports = {
       .setName("joke")
       .setDescription("Is this command a joke?")),
   async execute(interaction) {
+    await interaction.deferReply()
     warn(interaction, interaction.options.getUser("user", true), interaction.options.getString("reason", true), interaction.options.getBoolean("joke", true), interaction.client.db.Cases)
   }
 };
