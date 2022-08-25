@@ -1,5 +1,5 @@
-const { CommandInteraction } = require('discord.js');
-const { SlashCommandBuilder, EmbedBuilder, GuildMember } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { timeout } = require("../../Util/Moderation.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -20,51 +20,14 @@ module.exports = {
 			.setMaxValue(60)
 			.setMinValue(1)
 			.setRequired(true))
+		.addBooleanOption(o => o
+			.setName("joke")
+			.setDescription("Is this supposed to be a joke?")
+			.setRequired(true))
 		.addStringOption(o => o
 			.setName("reason")
 			.setDescription('Why should this user be timed out?')),
 	async execute(interaction) {
-		const member = interaction.options.getMember('user');
-		const RealLen = interaction.options.getInteger('duration');
-		const unit = interaction.options.getString('unit');
-		const reason = interaction.options.getString('reason') || "No reason provided";
-		let length = RealLen;
-		const replyEmbed = new EmbedBuilder();
-
-		if (!(member instanceof GuildMember)) {
-			await interaction.guild.member.fetch(member)
-		}
-
-		if (member.id === interaction.client.user.id) {
-			if (!reason || reason === "No reason provided") return interaction.reply(`Timed out undefined for ${RealLen} ${unit}`);
-			else if (reason || reason !== "No reason provided") return interaction.reply(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
-		};
-
-		switch (unit) {
-			case "seconds": length = Math.floor(length * 1000);
-			case "minutes": length = Math.floor(length * 60 * 1000);
-			case "hours": length = Math.floor(length * 60 * 60 * 1000);
-			case "days": length = Math.floor(length * 24 * 60 * 60 * 1000);
-		}
-
-		if (length > 2.419e+9) {
-			replyEmbed.setColor("#FF0000");
-			replyEmbed.setDescription(`**I cannot timeout ${user.tag} for *that* long! You provided a time longer than 28 days!**`);
-			await interaction.reply({ embeds: [replyEmbed] });
-		}
-		else if (length < 2.419e+9) {
-			member.timeout(length, reason + "| Timeout by" + interaction.user.tag)
-				.then(async () => {
-					replyEmbed.setDescription(`Timed out ${member} for **${RealLen} ${unit}** for **"${reason}".**`);
-					replyEmbed.setColor("#00FF00");
-					await interaction.reply({ embeds: [replyEmbed] });
-				})
-				.catch(async error => {
-					console.error(error);
-					replyEmbed.setDescription(`**I cannot timeout ${member.tag}! They have admin permissions!**`);
-					replyEmbed.setColor("#FF0000");
-					await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
-				})
-		}
+		timeout(interaction, interaction.options.getMember('member', true), interaction.options.getString('reason'), interaction.options.getString('unit', true), interaction.options.getInteger('duration', true), interaction.options.getBoolean('joke', true), interaction.client.db.Cases)
 	},
 };

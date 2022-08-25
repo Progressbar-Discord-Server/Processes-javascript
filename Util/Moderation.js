@@ -10,7 +10,7 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
 
   const dmEmbed = new EmbedBuilder()
     .setColor("#f04a47")
-    .setDescription(`You have been banned from ${guild.name}` + (reason === "No reason provided" ? "" : ` for ${reason}`));
+    .setDescription(`**You have been banned from ${guild.name} for**: ${reason}`);
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
     .setDescription(`**${member.user.tag} has been banned for:** ${reason}`);
@@ -26,7 +26,7 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
   if (member.bannable) {
     if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to ban yourself?")
     if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you ban me? 😢")
-    
+
     await member.user.send({ embeds: [dmEmbed] }).catch(e => console.error(`Couldn't message ${member.user.tag} (ban)`))
 
     if (!joke) {
@@ -60,10 +60,10 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
 
   const dmEmbed = new EmbedBuilder()
     .setColor("#f04a47")
-    .setDescription(`You have been kicked from ${guild.name}` + (reason === "No reason provided" ? "" : ` for ${reason}`));
+    .setDescription(`**You have been kicked from ${guild.name} for**: ${reason}`);
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
-    .setDescription(`**${member.user.tag} has been kicked` + (reason === "No reason provided"? "**" : `for:** ${reason}`));
+    .setDescription(`**${member.user.tag} has been kicked for:** ${reason}`);
   const logEmbed = new EmbedBuilder()
     .setDescription("Kick")
     .setColor("#f04a47")
@@ -76,9 +76,9 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
   if (member.kickable) {
     if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to kick yourself?")
     if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you kick me? 😢")
-    
-    await member.user.send({ embeds: [dmEmbed] }).catch(e => {console.error(`Couldn't message ${member.user.tag} (kick)`)})
-    
+
+    await member.user.send({ embeds: [dmEmbed] }).catch(e => { console.error(`Couldn't message ${member.user.tag} (kick)`) })
+
     if (!joke) {
       try {
         guild.members.kick(member.user, { reason: reason });
@@ -95,7 +95,7 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
       });
 
       let logChannel = await interaction.guild.channels.fetch(logCha)
-      await logChannel.send({embeds: [logEmbed]})
+      await logChannel.send({ embeds: [logEmbed] })
     }
     interaction.followUp({ embeds: [replyEmbed] })
   } else if (!member.bannable) interaction.followUp("Erf, I can't do that");
@@ -108,7 +108,7 @@ async function warn(interaction, user, reason, joke = false, db) {
 
   const dmEmbed = new EmbedBuilder()
     .setColor("#f04a47")
-    .setDescription(`You have been warned from ${interaction.guild.name}` + reason === "No reason provided" ? "" : ` for ${reason}`);
+    .setDescription(`**You have been warned from ${interaction.guild.name} for**: ${reason}`);
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
     .setDescription(`**${user.tag} has been warned for:** ${reason}`);
@@ -135,8 +135,48 @@ async function warn(interaction, user, reason, joke = false, db) {
     await logChannel.send({ embeds: [logEmbed] })
   };
 
-  await user.send({ embeds: [dmEmbed] }).catch(e => {console.error(`Couldn't message ${user.tag} (warn)`)})
+  await user.send({ embeds: [dmEmbed] }).catch(e => { console.error(`Couldn't message ${user.tag} (warn)`) })
   await interaction.followUp({ embeds: [replyEmbed] })
 }
 
-module.exports = { ban, kick, warn }
+async function timeout(interaction, member, reason, unit, RealLen, joke = false, db) {
+  let length = RealLen;
+
+  if (!(member instanceof GuildMember)) {
+    await interaction.guild.member.fetch(member)
+  }
+
+  if (member.id === interaction.client.user.id) {
+    if (!reason || reason === "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit}`);
+    else if (reason || reason !== "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
+  };
+
+  switch (unit) {
+    case "seconds": length = Math.floor(length * 1000);
+    case "minutes": length = Math.floor(length * 60 * 1000);
+    case "hours": length = Math.floor(length * 60 * 60 * 1000);
+    case "days": length = Math.floor(length * 24 * 60 * 60 * 1000);
+  }
+
+  if (length > 2.419e+9) {
+    replyEmbed.setColor("#FF0000");
+    replyEmbed.setDescription(`**I cannot timeout ${member.user.tag} for *that* long! You provided a time longer than 28 days!**`);
+    await interaction.followUp({ embeds: [replyEmbed] });
+  }
+  else if (length < 2.419e+9) {
+    if (!joke) {
+      await member.timeout(length, reason + "| Timeout by" + interaction.user.tag).then(() => {
+        db.create({
+          type: "timeout",
+          reason: reason,
+          Executor: interaction.user.tag,
+          userID: member.user.id
+        })
+      }).catch(err => {console.error(err);return interaction.followUp(`Couldn't ban ${member.user.tag}: \`\`\`${err}\`\`\``)})
+    }
+    replyEmbed
+
+  }
+}
+
+module.exports = { ban, kick, warn, timeout }
