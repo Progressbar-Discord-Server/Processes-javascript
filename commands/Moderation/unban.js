@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, escapeMarkdown } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -21,10 +21,10 @@ module.exports = {
     
     if (reason === String) {
       replyEmbed.setColor("#00FF00");
-      replyEmbed.setDescription(`**${user.tag} has been unbanned with the reason:** ${reason}`);
+      replyEmbed.setDescription(`**${escapeMarkdown(user.tag)} has been unbanned with the reason:** ${reason}`);
     }
     else if (reason !== String) {
-      replyEmbed.setDescription(`**${user.tag} has been unbanned**`);
+      replyEmbed.setDescription(`**${escapeMarkdown(user.tag)} has been unbanned**`);
       replyEmbed.setColor("#00FF00");
     }
     interaction.reply({embeds:[replyEmbed]});

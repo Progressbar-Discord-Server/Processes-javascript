@@ -1,4 +1,4 @@
-const { User, GuildMember, EmbedBuilder } = require('discord.js')
+const { User, GuildMember, EmbedBuilder, escapeMarkdown } = require('discord.js')
 const { logCha } = require('../config.json')
 
 async function ban(interaction, member, reason = "No reason provided", joke = false, db) {
@@ -13,13 +13,13 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
     .setDescription(`**You have been banned from ${guild.name} for**: ${reason}`);
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
-    .setDescription(`**${member.user.tag} has been banned for:** ${reason}`);
+    .setDescription(`**${escapeMarkdown(member.user.tag)} has been banned for:** ${reason}`);
   const logEmbed = new EmbedBuilder()
     .setDescription("Ban")
     .setColor("#f04a47")
     .addFields(
-      { name: "**User**", value: member.user.tag, inline: true },
-      { name: "**Moderator**", value: interaction.user.tag, inline: true },
+      { name: "**User**", value: escapeMarkdown(member.user.tag), inline: true },
+      { name: "**Moderator**", value: escapeMarkdown(interaction.user.tag), inline: true },
       { name: "**Reason**", value: reason, inline: true }
     );
 
@@ -63,13 +63,13 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
     .setDescription(`**You have been kicked from ${guild.name} for**: ${reason}`);
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
-    .setDescription(`**${member.user.tag} has been kicked for:** ${reason}`);
+    .setDescription(`**${escapeMarkdown(member.user.tag)} has been kicked for:** ${reason}`);
   const logEmbed = new EmbedBuilder()
     .setDescription("Kick")
     .setColor("#f04a47")
     .addFields(
-      { name: "**User**", value: member.user.tag, inline: true },
-      { name: "**Moderator**", value: interaction.user.tag, inline: true },
+      { name: "**User**", value: escapeMarkdown(member.user.tag), inline: true },
+      { name: "**Moderator**", value: escapeMarkdown(interaction.user.tag), inline: true },
       { name: "**Reason**", value: reason, inline: true }
     );
 
@@ -111,13 +111,13 @@ async function warn(interaction, user, reason, joke = false, db) {
     .setDescription(`**You have been warned from ${interaction.guild.name} for**: ${reason}`);
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
-    .setDescription(`**${user.tag} has been warned for:** ${reason}`);
+    .setDescription(`**${escapeMarkdown(user.tag)} has been warned for:** ${reason}`);
   const logEmbed = new EmbedBuilder()
     .setDescription("Warn")
     .setColor("#f04a47")
     .addFields(
-      { name: "**User**", value: user.tag, inline: true },
-      { name: "**Moderator**", value: interaction.user.tag, inline: true },
+      { name: "**User**", value: escapeMarkdown(user.tag), inline: true },
+      { name: "**Moderator**", value: escapeMarkdown(interaction.user.tag), inline: true },
       { name: "**Reason**", value: reason, inline: true }
     );
 
@@ -160,7 +160,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
 
   if (length > 2.419e+9) {
     replyEmbed.setColor("#FF0000");
-    replyEmbed.setDescription(`**I cannot timeout ${member.user.tag} for *that* long! You provided a time longer than 28 days!**`);
+    replyEmbed.setDescription(`**I cannot timeout ${escapeMarkdown(member.user.tag)} for *that* long! You provided a time longer than 28 days!**`);
     await interaction.followUp({ embeds: [replyEmbed] });
   }
   else if (length < 2.419e+9) {
@@ -172,7 +172,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
           Executor: interaction.user.tag,
           userID: member.user.id
         })
-      }).catch(err => {console.error(err);return interaction.followUp(`Couldn't ban ${member.user.tag}: \`\`\`${err}\`\`\``)})
+      }).catch(err => {console.error(err);return interaction.followUp(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``)})
     }
     replyEmbed
 

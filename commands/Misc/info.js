@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, GuildMember, EmbedBuilder } = require("discord.js")
+const { SlashCommandBuilder, GuildMember, EmbedBuilder, escapeMarkdown } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,10 +24,8 @@ module.exports = {
       if (!(member instanceof GuildMember)) {
         await interaction.guild.members.fetch(member);
       };
-      
-      let Avatar = member.displayAvatarURL({extension: "png",size: 4096});
 
-      replyEmbed.setAuthor({name: member.user.tag, iconURL: Avatar});
+      replyEmbed.setAuthor({name: member.user.tag, iconURL: member.displayAvatarURL({extension: "png",size: 4096})});
       replyEmbed.setColor(`#${Math.floor(Math.random()*16777215).toString(16)}`);
       replyEmbed.setThumbnail(Avatar);
     }
@@ -70,7 +68,7 @@ module.exports = {
       replyEmbed.setAuthor({name: `${guild.name}`, iconURL: icon});
       replyEmbed.setColor(`#${Math.floor(Math.random()*16777215).toString(16)}`);
       replyEmbed.addFields(
-        {name: "**Owner**", value: `${owner.user.tag}`, inline: true},
+        {name: "**Owner**", value: `${escapeMarkdown(owner.user.tag)}`, inline: true},
         {name: "**Active threads**", value: `${threads.threads.size}`, inline: true},
         {name: "**Text channels**", value: `${text}`, inline: true},
         {name: "**Voice channels**", value: `${voice}`, inline: true},

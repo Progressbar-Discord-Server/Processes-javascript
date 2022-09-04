@@ -1,6 +1,6 @@
-const { SlashCommandBuilder } = require('discord.js')
-const { PastebinDevKey } = require('../../config.json')
-const axios = require('axios').default
+const { SlashCommandBuilder } = require('discord.js');
+const { PastebinDevKey } = require('../../config.json');
+const axios = require('axios').default;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -54,6 +54,15 @@ module.exports = {
           .setName("hex")
           .setDescription("Do you want to get a hex value?")
           .setRequired(true))))
+    .addSubcommandGroup(scg => scg
+      .setName("guild")
+      .setDescription("Get information about the guild")
+      .addSubcommand(sc => sc
+        .setName("description")
+        .setDescription("Get the description of the server"))
+      .addSubcommand(sc => sc
+        .setName("name")
+        .setDescription("Why would you?")))
     .addSubcommand(sc => sc
       .setName("emojis")
       .setDescription("Getting all emojis of a server")
@@ -68,9 +77,8 @@ module.exports = {
         .setDescription('If you also want to get the name of the stickers (default: true)'))),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
-    const sc = interaction.options.getSubcommand();
 
-    switch (sc) {
+    switch (interaction.options.getSubcommand()) {
       case /*role*/ "name": {
         const guildRoles = await interaction.guild.roles.fetch();
 
@@ -123,6 +131,14 @@ module.exports = {
         else if (!ArrColor.length) interaction.followUp("No role found to have color");
         break
       }
+      case /*guild*/ "description": {
+        await interaction.guild.fetch()
+        return interaction.followUp(`The description of this server is \`${interaction.guild.description}\``)
+      }
+      case /*guild*/ "name": {
+        await interaction.guild.fetch()
+        return interaction.followUp(`The name of this server is \`${interaction.guild.name}\``)
+      }
       case "emojis": {
         await interaction.guild.fetch();
         let emojis = await interaction.guild.emojis.fetch();
@@ -167,9 +183,7 @@ module.exports = {
 }
 
 async function sendAsPastebin(data, interaction) {
-  axios({
-    method: 'post',
-    url: 'https://pastebin.com/api/api_post.php',
+  axios.post("https://pastebin.com/api/api_post.php", {
     data: `api_dev_key=${PastebinDevKey}&api_option=paste&api_paste_private=1&api_paste_code=${data}&api_paste_expire_date=10M`
   })
     .then(r => {
