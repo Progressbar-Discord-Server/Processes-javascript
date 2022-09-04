@@ -1,0 +1,17 @@
+{
+  "autoSnippet.snippets": [
+
+    {
+      "pattern": "**/*.h",
+      "snippet": "header-template"
+    },
+    {
+      "pattern": "**/*.cpp",
+      "snippet": "body-template"
+    },
+    {
+      "language": "javascript",
+      "snippet": "Discord Slash Commands"
+    }
+  ]
+}

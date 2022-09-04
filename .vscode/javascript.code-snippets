@@ -1,0 +1,16 @@
+{
+	"Discord Slash Commands": {
+		"body": [
+			"const { SlashCommandBuilder } = require('discord.js')",
+			"",
+			"module.exports = {",
+			"  data: new SlashCommandBuilder()",
+			"    .setName('$0')",
+			"    .setDescription(\"\"),",
+			"  async execute(interaction) {",
+			"",
+			"  }",
+			"}"
+		]
+	}
+}

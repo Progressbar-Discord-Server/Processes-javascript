@@ -208,6 +208,7 @@ async function ProcessDOS(client) {
             break
           }
         };
+        break
       }
       case "deploy": {
         const { send } = require("../deploy-commands.js");

@@ -73,9 +73,9 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
       { name: "**Reason**", value: reason, inline: true }
     );
 
+  if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to kick yourself?")
+  if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you kick me? 😢")
   if (member.kickable) {
-    if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to kick yourself?")
-    if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you kick me? 😢")
 
     await member.user.send({ embeds: [dmEmbed] }).catch(e => { console.error(`Couldn't message ${member.user.tag} (kick)`) })
 
@@ -172,7 +172,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
           Executor: interaction.user.tag,
           userID: member.user.id
         })
-      }).catch(err => {console.error(err);return interaction.followUp(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``)})
+      }).catch(err => { console.error(err); return interaction.followUp(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``) })
     }
     replyEmbed
 
