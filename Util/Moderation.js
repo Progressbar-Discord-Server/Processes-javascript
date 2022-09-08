@@ -23,10 +23,10 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
       { name: "**Reason**", value: reason, inline: true }
     );
 
-  if (member.bannable) {
-    if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to ban yourself?")
-    if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you ban me? 😢")
+  if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to ban yourself?")
+  if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you ban me? 😢")
 
+  if (member.bannable) {
     await member.user.send({ embeds: [dmEmbed] }).catch(e => console.error(`Couldn't message ${member.user.tag} (ban)`))
 
     if (!joke) {
@@ -47,8 +47,8 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
       let logChannel = await interaction.guild.channels.fetch(logCha)
       await logChannel.send({ embeds: [logEmbed] }).catch(console.error)
     }
-    interaction.followUp({ embeds: [replyEmbed] }).catch(console.error)
-  } else if (!member.bannable) interaction.followUp("Erf, I can't do that");
+  }
+  interaction.followUp({ embeds: [replyEmbed] }).catch(console.error)
 }
 
 async function kick(interaction, member, reason = "No reason provided", joke = false, db) {
@@ -75,6 +75,7 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
 
   if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to kick yourself?")
   if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you kick me? 😢")
+  
   if (member.kickable) {
 
     await member.user.send({ embeds: [dmEmbed] }).catch(e => { console.error(`Couldn't message ${member.user.tag} (kick)`) })
@@ -97,8 +98,8 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
       let logChannel = await interaction.guild.channels.fetch(logCha)
       await logChannel.send({ embeds: [logEmbed] })
     }
-    interaction.followUp({ embeds: [replyEmbed] })
-  } else if (!member.bannable) interaction.followUp("Erf, I can't do that");
+  }
+  interaction.followUp({ embeds: [replyEmbed] })
 }
 
 async function warn(interaction, user, reason, joke = false, db) {
