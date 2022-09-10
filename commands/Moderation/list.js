@@ -22,7 +22,7 @@ module.exports = {
       .addStringOption(o => o
         .setName("user")
         .setDescription("The user to list kicks (Id)"))),
-  async execute(interaction) {
+  async execute(interaction) {/*
     const sc = interaction.options.getSubcommand();
     switch (sc) {
       case "warns": {
@@ -130,6 +130,7 @@ module.exports = {
           interaction.followUp({ content: "There is no kicks" });
         };
       };
-    }
+    }*/
+    interaction.reply("This command isn't ready yet")
   }
 };
