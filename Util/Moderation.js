@@ -122,7 +122,7 @@ async function warn(interaction, user, reason, joke = false, db) {
       { name: "**Reason**", value: reason, inline: true }
     );
 
-  if (user.id === interaction.client.user.id) return interaction.followUp("I just deleted my own warn <:troll:990669002999201852>")
+  if (user.id === interaction.client.user.id) return interaction.followUp("I just deleted my own warn <:trollface:990669002999201852>")
 
   if (!joke) {
     db.create({

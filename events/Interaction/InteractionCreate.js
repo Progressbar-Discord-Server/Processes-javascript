@@ -2,6 +2,8 @@ module.exports = {
   name: 'interactionCreate',
   on: true,
   async execute(interaction) {
+    if (interaction.partial) return;
+    
     if (interaction.type == 2) {
       if (interaction.commandType == 1) {
         const command = client.commands.get(interaction.commandName);

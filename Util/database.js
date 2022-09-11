@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const { sqlPass } = require('../config.json')
 
-// Once the database system will be changed, even minor change, pls change the 'password' entry to sqlPass
 const sequelize = new Sequelize('database', 'user', sqlPass, {
   host: 'localhost',
   dialect: 'sqlite',
@@ -18,14 +17,6 @@ const Star = sequelize.define('message', {
     type: Sequelize.TEXT,
     defaultValue: null,
     unique: true,
-  },
-  StaredItself: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
-  },
-  NumberStar: {
-    type: Sequelize.NUMBER,
-    defaultValue: 0,
   }
 })
 

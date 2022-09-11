@@ -17,6 +17,7 @@ module.exports = {
       guildFetched.members.fetchMe()
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
     });
+    
     if (showLink) {
       console.log(client.generateInvite({
         permissions: PermissionsBitField.All,

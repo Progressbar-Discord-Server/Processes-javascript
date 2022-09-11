@@ -16,6 +16,6 @@ module.exports = {
         e.deferReply()
         kick(e, interaction.targetMember, e.fields.getTextInputValue("reason"), undefined, interaction.client.db.Cases)
       }).catch(err => { console.error(err); interaction.editReply({content: `There was an error while executing this context menu!\n\`\`\`${err} \`\`\``, ephemeral: true}).catch(e => {})});
-    }
+    } else interaction.reply({content: `${escapeMarkdown(interaction.targetMember.user.tag)} can't be banned!`, ephemeral: true})
   }
 }

@@ -1,4 +1,4 @@
-const { ContextMenuCommandBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
+const { ContextMenuCommandBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, escapeMarkdown } = require("discord.js");
 const { ban } = require("../../../Util/Moderation");
 
 module.exports = {
@@ -16,6 +16,6 @@ module.exports = {
         await e.deferReply(); await e.deleteReply()
         ban(interaction, interaction.targetMember, e.fields.getTextInputValue("reason"), undefined, e.client.db.Cases)
       }).catch(err => { console.error(err); interaction.editReply({content: `There was an error while executing this context menu!\n\`\`\`${err} \`\`\``}).catch(e => {})});
-    }
+    } else interaction.reply({content: `${escapeMarkdown(interaction.targetMember.user.tag)} can't be banned!`, ephemeral: true})
   }
 }

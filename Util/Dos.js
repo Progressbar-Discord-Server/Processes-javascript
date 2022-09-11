@@ -91,7 +91,7 @@ async function ProcessDOS(client) {
               })
             } else {
               drvS.subdirs = client.guilds.cache.get(`${curServer}`)
-              drvS.subdirs.channels.cache.forEach(c => console.log(`${c.id} ${c.name.substring(0, 15).padEnd(16)} CHN`))
+              drvS.subdirs.channels.cache.forEach(c => console.log(`${c.id.padEnd(19)} ${c.name.substring(0, 15).padEnd(16)} CHN`))
             }
           }
             break
@@ -212,13 +212,13 @@ async function ProcessDOS(client) {
       }
       case "deploy": {
         const { send } = require("../deploy-commands.js");
-        const { token, guildId, beta } = require("../config.json");
+        const { guildId, beta } = require("../config.json");
 
         let all = []
         client.commands.forEach(e => { if (!beta && e.name !== "test" || beta) all.push(e.data.toJSON()) })
         client.contextMenu.forEach(e => all.push(e.data.toJSON()))
 
-        send(all, token, guildId, client.user.id);
+        send(all, client.token, guildId, client.user.id);
         break;
       }
       case 'c:': case 'C:': {
