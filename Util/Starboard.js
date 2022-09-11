@@ -27,7 +27,7 @@ async function StarboardAdd(reaction) {
   else if (dbData) {
     const starEmbed = createEmbed(message)
     const button = createButton(message.url)
-    
+
     reaction.client.channels.cache.get(starBoardCha).messages.fetch(dbData.messageIdBot)
       .then((e) => {
         e.edit({ content: `⭐ **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed], components: [button] })
@@ -60,7 +60,7 @@ function createEmbed(message) {
 
   const embed = new EmbedBuilder()
     .setAuthor({ name: message.author.tag, iconURL: typeof avatar === "string" ? avatar : undefined })
-    .setColor("#337fd5")
+    .setColor(Math.floor(Math.random()*16777215).toString(16))
     .setTimestamp(new Date())
 
   if (message.content) embed.setDescription(message.content)
