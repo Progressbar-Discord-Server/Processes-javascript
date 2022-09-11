@@ -12,7 +12,7 @@ async function StarboardAdd(reaction) {
 
   const dbData = await db.findOne({ where: { messageId: message.id } })
 
-  if (rcount >= 1 && !dbData) {
+  if (rcount >= 5 && !dbData) {
     const starEmbed = createEmbed(message)
     reaction.client.channels.cache.get(starBoardCha).send({ content: `**${rcount}**⭐ | <#${message.channel.id}>`, embeds: [starEmbed] })
       .then(async ownmessage => {
