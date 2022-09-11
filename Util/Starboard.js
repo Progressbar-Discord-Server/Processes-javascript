@@ -1,4 +1,3 @@
-const { Message } = require("discord.js");
 const { EmbedBuilder } = require("discord.js")
 const { starBoardCha } = require("../config.json")
 
@@ -14,7 +13,7 @@ async function StarboardAdd(reaction) {
 
   if (rcount >= 5 && !dbData) {
     const starEmbed = createEmbed(message)
-    reaction.client.channels.cache.get(starBoardCha).send({ content: `**${rcount}**⭐ | <#${message.channel.id}>`, embeds: [starEmbed] })
+    reaction.client.channels.cache.get(starBoardCha).send({ content: `⭐ **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed] })
       .then(async ownmessage => {
         await db.create({
           messageId: message.id,
@@ -27,7 +26,7 @@ async function StarboardAdd(reaction) {
     const starEmbed = createEmbed(message)
     reaction.client.channels.cache.get(starBoardCha).messages.fetch(dbData.messageIdBot)
       .then(e => {
-        e.edit({ content: `**${rcount}**⭐ | <#${message.channel.id}>`, embeds: [starEmbed] })
+        e.edit({ content: `⭐ **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed] })
       })
   }
 }
@@ -42,12 +41,11 @@ async function StarboardRemove(reaction) {
   const dbData = await db.findOne({ where: { messageId: message.id } })
   if (!dbData) return
 
-  const avatar = reaction.message.author.avatarURL({ extension: "png", size: 4096 })
   const starEmbed = createEmbed(message)
 
   reaction.client.channels.cache.get(starBoardCha).messages.fetch(dbData.messageIdBot)
     .then(e => {
-      e.edit({ content: `**${rcount}** ⭐ | <#${message.channel.id}>`, embeds: [starEmbed] })
+      e.edit({ content: `⭐ **${rcount}**  | <#${message.channel.id}>`, embeds: [starEmbed] })
     })
 
 }
