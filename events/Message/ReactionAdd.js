@@ -10,8 +10,8 @@ module.exports = {
     }
     else if (reaction.partial) {
       reaction.fetch().then(e => {
-          if (starBoard) StarboardAdd(e)
-      })
+        if (starBoard) StarboardAdd(e)
+      }).catch(console.error)
     }
   }
-};
+}

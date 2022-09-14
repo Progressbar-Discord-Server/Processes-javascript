@@ -60,12 +60,16 @@ function createEmbed(message) {
 
   const embed = new EmbedBuilder()
     .setAuthor({ name: message.author.tag, iconURL: typeof avatar === "string" ? avatar : undefined })
-    .setColor(Math.floor(Math.random()*16777215).toString(16))
-    .setTimestamp(new Date())
+    .setColor(Math.floor(Math.random() * 16777215).toString(16))
+    .setTimestamp(new Date());
+
+  let yesnt = true
+
+  message.embeds.forEach(e => {
+    if (e.description && yesnt) { embed.setDescription(e.description); yesnt = false }
+  })
 
   if (message.content) embed.setDescription(message.content)
-  else if (!message.content && message.embeds[0].description) embed.setDescription(message.embeds[0].description)
-
   if (message.attachments.size) embed.setImage(message.attachments.first().url)
 
   return embed

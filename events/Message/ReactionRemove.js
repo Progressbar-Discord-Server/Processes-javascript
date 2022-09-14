@@ -9,13 +9,9 @@ module.exports = {
       if (starBoard) StarboardRemove(reaction)
     }
     else if (reaction.partial) {
-      if (reaction.message.id != undefined &&
-        reaction.count != undefined &&
-        reaction.emoji.name != undefined &&
-        reaction.message.content != undefined &&
-        reaction.message.author.id != undefined) {
-        if (starBoard) StarboardRemove(reaction)
-      }
+      reaction.fetch().then(e => {
+        if (starBoard) StarboardRemove(e)
+      }).catch(console.error)
     }
   }
 }

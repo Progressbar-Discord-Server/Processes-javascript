@@ -104,9 +104,10 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
 
 async function warn(interaction, user, reason, joke = false, db) {
   if (!(user instanceof User)) {
-    interaction.client.users.fetch(user)
+    await interaction.client.users.fetch(user)
   }
 
+  const avatar = await user.avatarURL({extention: 'png', size: 4096})
   const dmEmbed = new EmbedBuilder()
     .setColor("#f04a47")
     .setDescription(`**You have been warned from ${interaction.guild.name} for**: ${reason}`);
@@ -114,8 +115,9 @@ async function warn(interaction, user, reason, joke = false, db) {
     .setColor("#43b582")
     .setDescription(`**${escapeMarkdown(user.tag)} has been warned for:** ${reason}`);
   const logEmbed = new EmbedBuilder()
-    .setDescription("Warn")
+    .setAuthor({name: `Case idk | Warn | ${user.tag} | ${user.id}`, iconURL: (avatar ? avatar : undefined)})
     .setColor("#f04a47")
+    .setTimestamp(new Date())
     .addFields(
       { name: "**User**", value: escapeMarkdown(user.tag), inline: true },
       { name: "**Moderator**", value: escapeMarkdown(interaction.user.tag), inline: true },
@@ -125,12 +127,14 @@ async function warn(interaction, user, reason, joke = false, db) {
   if (user.id === interaction.client.user.id) return interaction.followUp("I just deleted my own warn <:trollface:990669002999201852>")
 
   if (!joke) {
-    db.create({
+    const dbcr = await db.create({
       type: "warn",
       reason: reason,
       Executor: interaction.user.tag,
       userID: user.id
     });
+    
+    logEmbed.setAuthor({name: `Case ${dbcr.id} | Warn | ${user.tag} | ${user.id}`, iconURL: (avatar ? avatar : undefined)})
 
     let logChannel = await interaction.guild.channels.fetch(logCha)
     await logChannel.send({ embeds: [logEmbed] })
@@ -144,12 +148,12 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
   let length = RealLen;
 
   if (!(member instanceof GuildMember)) {
-    await interaction.guild.member.fetch(member)
+    await interaction.guild.members.fetch(member)
   }
 
   if (member.id === interaction.client.user.id) {
-    if (!reason || reason === "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit}`);
-    else if (reason || reason !== "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
+    if (reason === "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit}`);
+    else if (reason !== "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
   };
 
   switch (unit) {
