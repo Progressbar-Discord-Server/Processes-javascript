@@ -12,7 +12,7 @@ module.exports = {
       await message.guild.members.fetch(member);
     }
 
-    let messageSent = message.channel.send(`<@${member.user.id}>`);
+    let messageSent = await message.channel.send(`<@${member.user.id}>`);
     messageSent.delete()
   }
 };
