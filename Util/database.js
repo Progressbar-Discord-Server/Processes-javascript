@@ -11,12 +11,14 @@ const sequelize = new Sequelize('database', 'user', sqlPass, {
 const Star = sequelize.define('message', {
   messageId: {
     type: Sequelize.TEXT,
-    unique: true,
   },
   messageIdBot: {
     type: Sequelize.TEXT,
     defaultValue: null,
     unique: true,
+  },
+  emoji: {
+    type: Sequelize.TEXT,
   }
 })
 
