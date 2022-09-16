@@ -3,11 +3,13 @@
   "clientId": "The id of the bot",
   "guildId": "The id of the discord server",
   "logCha": "The id of a log channel",
-  "starBoard": "Do you want the starboard to be activated?"
-  "starBoardCha": "The Starboard channel (complete if starBoard is true)"
+  "starBoard": "Do you want the starboard to be activated?",
+  "starBoardReac": [
+    {"emoji": "the reaction to respond to", "id": "The id of the channel/thread"}
+  ],
   "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it, and 'true' to activate",
   "sqlPass": "A password for the database, can be empty",
-  "PastebinDevKey": "A key to the api of Pastebin",
+  "PasteeDevKey": "A key to the api of Paste.ee",
   "OwnerId": "The id of the owner of the bot, can be an Array",
   "beta": "do you want the test command to be pushed like other? set 'true' here else, set false"
 }

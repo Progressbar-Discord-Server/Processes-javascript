@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, codeBlock } = require('discord.js');
-const { PastebinDevKey } = require('../../config.json');
+const { PasteeDevKey } = require('../../config.json');
 const axios = require('axios').default;
 
 module.exports = {
@@ -152,7 +152,7 @@ module.exports = {
           case "features": {
             if (!interaction.options.getString("invite")) {
               await interaction.guild.fetch()
-              return interaction.followUp({ content: `${interaction.guild.name} has ${interaction.guild.features.length} features: \n${codeBlock(interaction.guild.features.join("\n"))}`})
+              return interaction.followUp({ content: `${interaction.guild.name} has ${interaction.guild.features.length} features: \n${codeBlock(interaction.guild.features.join("\n"))}` })
             }
             else if (interaction.options.getString("invite")) {
               interaction.client.fetchInvite(interaction.options.getString("invite"))
@@ -214,15 +214,22 @@ module.exports = {
 }
 
 async function sendAsPastebin(data, interaction) {
-  axios.post("https://pastebin.com/api/api_post.php", {
-    data: `api_dev_key=${PastebinDevKey}&api_option=paste&api_paste_private=1&api_paste_code=${data}&api_paste_expire_date=10M`
+  axios.post("https://api.paste.ee/v1/pastes", {
+    key: PasteeDevKey,
+    sections: [
+      {name: "Processes Data", contents: data}
+    ]
   })
     .then(r => {
-      interaction.followUp({ content: r.data })
+      if (r.data.success) interaction.followUp({ content: r.data.link })
+      else {
+        console.error(r.data); 
+        interaction.followUp("An error ocurred, Pls, check console")
+      }
     })
     .catch(e => {
       if (e.response) {
-        interaction.followUp({ content: `ERROR: \`${e.response.status}, ${e.response.data}\`` })
+        interaction.followUp({ content: `ERROR: \`${e.response.status}, ${e.response.data.errors[0].message}\`` })
       }
     });
 }
