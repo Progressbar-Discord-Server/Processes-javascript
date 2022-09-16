@@ -1,25 +1,44 @@
 const { ButtonBuilder, ActionRowBuilder, EmbedBuilder } = require("discord.js")
-const { starBoardCha } = require("../config.json")
+const { starBoardEmoji } = require("../config.json")
 
-async function StarboardAdd(reaction) {
-  if (reaction.emoji.name !== "⭐") return;
+function StarboardAdd(reaction) {
+  starBoardEmoji.forEach(async e => {
+    if (reaction.emoji.name === e.emoji) await brainAdd(reaction, e)
+  })
+}
+
+function StarboardRemove(reaction) {
+  starBoardEmoji.forEach(async e => {
+    if (reaction.emoji.name === e.emoji) await brainRemove(reaction, e)
+  })
+}
+
+async function brainAdd(reaction, setting) {
   const message = reaction.message
   let rcount = reaction.count
   const db = reaction.client.db.Star
 
+  let ChaThd
+  if (setting.thread) {
+    ChaThd = await reaction.client.channels.cache.get(setting.ChaId).threads.fetch()
+    ChaThd = ChaThd.threads.get(setting.ThdId)
+  }
+  else ChaThd = reaction.client.channels.cache.get(setting.ChaId)
+
   if (reaction.users.cache.has(message.author.id)) rcount--
 
-  const dbData = await db.findOne({ where: { messageId: message.id } })
+  const dbData = await db.findOne({ where: { messageId: message.id, emoji: setting.emoji } })
 
-  if (rcount >= 5 && !dbData) {
+  if (rcount >= 1 && !dbData) {
     const starEmbed = createEmbed(message)
     const button = createButton(message.url)
 
-    reaction.client.channels.cache.get(starBoardCha).send({ content: `⭐ **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed], components: [button] })
+    ChaThd.send({ content: `${setting.emoji} **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed], components: [button] })
       .then(async ownmessage => {
         await db.create({
           messageId: message.id,
-          messageIdBot: ownmessage.id
+          messageIdBot: ownmessage.id,
+          emoji: setting.emoji
         })
       })
       .catch(console.error)
@@ -28,19 +47,23 @@ async function StarboardAdd(reaction) {
     const starEmbed = createEmbed(message)
     const button = createButton(message.url)
 
-    reaction.client.channels.cache.get(starBoardCha).messages.fetch(dbData.messageIdBot)
+    ChaThd.messages.fetch(dbData.messageIdBot)
       .then((e) => {
-        e.edit({ content: `⭐ **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed], components: [button] })
+        e.edit({ content: `${setting.emoji} **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed], components: [button] })
       })
   }
 }
 
-async function StarboardRemove(reaction) {
+async function brainRemove(reaction, setting) {
   const message = reaction.message
   let rcount = reaction.count
   const db = reaction.client.db.Star
 
   if (reaction.users.cache.has(message.author.id)) rcount -= 1
+
+  let ChaThd
+  if (setting.thread) ChaThd = await reaction.client.channels.cache.get(setting.ChaId).threads.fetch(setting.ThdId)
+  else ChaThd = reaction.client.channels.cache.get(setting.ChaId)
 
   const dbData = await db.findOne({ where: { messageId: message.id } })
   if (!dbData) return
@@ -48,11 +71,10 @@ async function StarboardRemove(reaction) {
   const starEmbed = createEmbed(message)
   const button = createButton(message.url)
 
-  reaction.client.channels.cache.get(starBoardCha).messages.fetch(dbData.messageIdBot)
+  ChaThd.messages.fetch(dbData.messageIdBot)
     .then(e => {
-      e.edit({ content: `⭐ **${rcount}**  | <#${message.channel.id}>`, embeds: [starEmbed], components: [button] })
+      e.edit({ content: `${setting.emoji} **${rcount}**  | <#${message.channel.id}>`, embeds: [starEmbed], components: [button] })
     })
-
 }
 
 function createEmbed(message) {
@@ -65,11 +87,13 @@ function createEmbed(message) {
 
   let yesnt = true
 
-  message.embeds.forEach(e => {
-    if (e.description && yesnt) { embed.setDescription(e.description); yesnt = false }
-  })
-
   if (message.content) embed.setDescription(message.content)
+  else {
+    message.embeds.forEach(e => {
+      if (e.description && yesnt) { embed.setDescription(e.description); yesnt = false }
+    })
+  }
+
   if (message.attachments.size) embed.setImage(message.attachments.first().url)
 
   return embed
