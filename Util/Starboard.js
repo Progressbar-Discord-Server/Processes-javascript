@@ -62,7 +62,7 @@ async function brainRemove(reaction, setting) {
   if (setting.thread && setting.ThdId) ChaThd = await reaction.client.channels.cache.get(setting.ChaId).threads.fetch(setting.ThdId)
   else ChaThd = reaction.client.channels.cache.get(setting.ChaId)
 
-  const dbData = await db.findOne({ where: { messageId: message.id } })
+  const dbData = await db.findOne({ where: { messageId: message.id, emoji: setting.emoji } })
   if (!dbData) return
 
   const starEmbed = createEmbed(message)
