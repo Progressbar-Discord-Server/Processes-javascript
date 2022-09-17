@@ -28,19 +28,19 @@ module.exports = {
           .setName('size')
           .setDescription('At what size do you want the icon to be? (pixel)')
           .addChoices(
-            { name: '16', value: 16 },
-            { name: '32', value: 32 },
-            { name: '56', value: 56 },
-            { name: '64', value: 64 },
-            { name: '96', value: 96 },
-            { name: '128', value: 128 },
-            { name: '256', value: 256 },
-            { name: '300', value: 300 },
-            { name: '512', value: 512 },
-            { name: '600', value: 600 },
-            { name: '1024', value: 1024 },
+            { name: '4096', value: 4096 },
             { name: '2048', value: 2048 },
-            { name: '4096', value: 4096 }
+            { name: '1024', value: 1024 },
+            { name: '600', value: 600 },
+            { name: '512', value: 512 },
+            { name: '300', value: 300 },
+            { name: '256', value: 256 },
+            { name: '128', value: 128 },
+            { name: '96', value: 96 },
+            { name: '64', value: 64 },
+            { name: '56', value: 56 },
+            { name: '32', value: 32 },
+            { name: '16', value: 16 }
           )
           .setRequired(true))
         .addBooleanOption(o => o
@@ -81,7 +81,7 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
     const sc = interaction.options.getSubcommand(true)
 
-    switch (interaction.options.getSubcommandGroup(true)) {
+    switch (interaction.options.getSubcommandGroup()) {
       case "role": {
         switch (sc) {
           case "name": {
@@ -93,7 +93,7 @@ module.exports = {
             });
 
             if (ArrName.length) {
-              await sendAsPastebin(ArrName.join("\n"), interaction)
+              await sendAsPaste(ArrName.join("\n"), interaction)
             }
             else if (!ArrName.length) interaction.followUp("Why does not even a single role exist?");
             break
@@ -114,8 +114,8 @@ module.exports = {
             });
 
             if (ArrayURL.length) {
-              if (name) sendAsPastebin(ArrayURL.join("\n"), interaction)
-              else if (!name) sendAsPastebin(ArrayURL.join(""), interaction)
+              if (name) sendAsPaste(ArrayURL.join("\n"), interaction)
+              else if (!name) sendAsPaste(ArrayURL.join(""), interaction)
             }
             else if (!ArrayURL.length) interaction.followUp("No role found with an icon");
             break
@@ -132,7 +132,7 @@ module.exports = {
               if (hex && color !== '#000000' || !hex && color !== 0) ArrColor.push(`${color} for ${e.name}`);
             });
 
-            if (ArrColor.length) sendAsPastebin(ArrColor.join("\n"), interaction);
+            if (ArrColor.length) sendAsPaste(ArrColor.join("\n"), interaction);
             else if (!ArrColor.length) interaction.followUp("No role found to have color");
             break
           }
@@ -180,8 +180,8 @@ module.exports = {
             });
 
             if (emojiArr.length) {
-              if (name) sendAsPastebin(emojiArr.join("\n"), interaction);
-              else if (!name) sendAsPastebin(emojiArr.join(' '), interaction);
+              if (name) await sendAsPaste(emojiArr.join("\n"), interaction);
+              else if (!name) await sendAsPaste(emojiArr.join(' '), interaction);
             }
             else if (!emojiArr.length) interaction.followUp({ content: "No emoji found" })
             break
@@ -200,8 +200,8 @@ module.exports = {
 
 
             if (stickersArr.length) {
-              if (name) sendAsPastebin(stickersArr.join("\n"), interaction);
-              else if (!name) sendAsPastebin(stickersArr.join(' '), interaction)
+              if (name) sendAsPaste(stickersArr.join("\n"), interaction);
+              else if (!name) sendAsPaste(stickersArr.join(' '), interaction)
             }
             else if (!stickersArr.length) interaction.followUp("No stickers found");
             break
@@ -213,7 +213,7 @@ module.exports = {
   }
 }
 
-async function sendAsPastebin(data, interaction) {
+async function sendAsPaste(data, interaction) {
   axios.post("https://api.paste.ee/v1/pastes", {
     key: PasteeDevKey,
     sections: [

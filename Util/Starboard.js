@@ -3,13 +3,13 @@ const { starBoardEmoji } = require("../config.json")
 
 function StarboardAdd(reaction) {
   starBoardEmoji.forEach(async e => {
-    if (reaction.emoji.name === e.emoji) await brainAdd(reaction, e)
+    if (reaction.emoji.name === e.emoji && e.ChaId) await brainAdd(reaction, e)
   })
 }
 
 function StarboardRemove(reaction) {
   starBoardEmoji.forEach(async e => {
-    if (reaction.emoji.name === e.emoji) await brainRemove(reaction, e)
+    if (reaction.emoji.name === e.emoji && e.ChaId) await brainRemove(reaction, e)
   })
 }
 
@@ -19,10 +19,7 @@ async function brainAdd(reaction, setting) {
   const db = reaction.client.db.Star
 
   let ChaThd
-  if (setting.thread) {
-    ChaThd = await reaction.client.channels.cache.get(setting.ChaId).threads.fetch()
-    ChaThd = ChaThd.threads.get(setting.ThdId)
-  }
+  if (setting.thread) ChaThd = await reaction.client.channels.cache.get(setting.ChaId).threads.fetch(setting.ThdId)
   else ChaThd = reaction.client.channels.cache.get(setting.ChaId)
 
   if (reaction.users.cache.has(message.author.id)) rcount--
@@ -62,7 +59,7 @@ async function brainRemove(reaction, setting) {
   if (reaction.users.cache.has(message.author.id)) rcount -= 1
 
   let ChaThd
-  if (setting.thread) ChaThd = await reaction.client.channels.cache.get(setting.ChaId).threads.fetch(setting.ThdId)
+  if (setting.thread && setting.ThdId) ChaThd = await reaction.client.channels.cache.get(setting.ChaId).threads.fetch(setting.ThdId)
   else ChaThd = reaction.client.channels.cache.get(setting.ChaId)
 
   const dbData = await db.findOne({ where: { messageId: message.id } })
