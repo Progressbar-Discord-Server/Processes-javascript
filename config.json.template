@@ -5,7 +5,7 @@
   "logCha": "The id of a log channel",
   "starBoard": "Do you want the starboard to be activated?",
   "starBoardEmoji": [
-    {"emoji": "the reaction to respond to", "id": "The id of the channel", "thread": true, "ThdId": "The id of the thread if the thread part in this object is true"}
+    {"emoji": "the reaction to respond to", "ChaId": "The id of the channel", "thread": true, "ThdId": "The id of the thread if the thread part in this object is true"}
   ],
   "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it, and 'true' to activate",
   "sqlPass": "A password for the database, can be empty",
