@@ -1,5 +1,6 @@
 const { ButtonBuilder, ActionRowBuilder, EmbedBuilder } = require("discord.js")
 const { starBoardEmoji } = require("../config.json")
+const { Op } = require("sequelize")
 
 function StarboardAdd(reaction) {
   starBoardEmoji.forEach(async e => {
