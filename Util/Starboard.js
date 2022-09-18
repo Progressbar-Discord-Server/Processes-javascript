@@ -24,7 +24,7 @@ async function brainAdd(reaction, setting) {
 
   if (reaction.users.cache.has(message.author.id)) rcount--
 
-  const dbData = await db.findOne({ where: { messageId: message.id, emoji: setting.emoji } })
+  const dbData = await db.findOne({where: {[Op.and]: [{ messageId: message.id }, { emoji: setting.emoji }]}})
 
   if (rcount >= 5 && !dbData) {
     const starEmbed = createEmbed(message)

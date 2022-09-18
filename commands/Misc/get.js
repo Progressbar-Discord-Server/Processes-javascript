@@ -222,7 +222,7 @@ async function sendAsPaste(data, interaction) {
   })
     .then(r => {
       if (r.data.success) interaction.followUp({ content: r.data.link })
-      else {
+      else if (r.data.success) {
         console.error(r.data); 
         interaction.followUp("An error ocurred, Pls, check console")
       }

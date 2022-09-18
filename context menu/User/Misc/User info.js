@@ -1,3 +1,4 @@
+const { GuildMember } = require("discord.js");
 const { ContextMenuCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
@@ -5,11 +6,15 @@ module.exports = {
     .setName("User Info")
     .setType(2),
   async execute(interaction) {
+    interaction.deferReply({ephemeral: true})
     const member = interaction.targetMember
 
-    await interaction.guild.members.fetch(member)
+    if (!(member instanceof GuildMember)) {
+      await interaction.guild.members.fetch(member)
+    }
+
     await interaction.client.users.fetch(member.user)
-    
+
     let roles = []
     member.roles.cache.forEach(e => {
       if (e.name !== "@everyone") roles.push(`<@&${e.id}>`)
