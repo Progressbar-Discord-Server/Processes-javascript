@@ -6,7 +6,7 @@ module.exports = {
     .setName("User Info")
     .setType(2),
   async execute(interaction) {
-    interaction.deferReply({ephemeral: true})
+    await interaction.deferReply({ephemeral: true})
     const member = interaction.targetMember
 
     if (!(member instanceof GuildMember)) {
@@ -20,7 +20,7 @@ module.exports = {
       if (e.name !== "@everyone") roles.push(`<@&${e.id}>`)
     })
     
-    interaction.reply({
+    interaction.followUp({
       ephemeral: true, embeds: [new EmbedBuilder()
         .setAuthor({ name: member.user.tag, iconURL: member.user.avatarURL({ extension: "png", size: 4096 }) })
         .setDescription(`<@${member.user.id}>`)
