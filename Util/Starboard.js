@@ -27,7 +27,7 @@ async function brainAdd(reaction, setting) {
 
   const dbData = await db.findOne({ where: { messageId: message.id, emoji: setting.emoji } })
 
-  if (rcount >= 1 && !dbData) {
+  if (rcount >= 5 && !dbData) {
     const starEmbed = await createEmbed(message)
     const buttons = await createButton(message)
 
