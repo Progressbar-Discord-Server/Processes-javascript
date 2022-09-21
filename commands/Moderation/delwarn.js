@@ -9,9 +9,8 @@ module.exports = {
       .setDescription("Which case need to be deleted?")
       .setRequired(true)),
   async execute(interaction) {
-    let id = interaction.options.getNumber("case")
-    if (!id) return interaction.reply({ content: "I need a case id!", ephemeral: true })
-    interaction.deferReply({ ephemeral: true })
+    let id = interaction.options.getNumber("case", true)
+    await interaction.deferReply({ ephemeral: true })
     
     await interaction.client.db.Cases.destroy({ where: { id: id } })
 
