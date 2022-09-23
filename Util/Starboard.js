@@ -1,8 +1,8 @@
 const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, MessageType } = require("discord.js")
-const { starBoardEmoji, guildId } = require("../config.json")
+const { starBoardEmoji, guildMainId } = require("../config.json")
 
 function StarboardAdd(reaction) {
-  if (reaction.message.guildId !== guildId) return
+  if (reaction.message.guildId !== guildMainId) return
   starBoardEmoji.forEach(async e => {
     if (reaction.emoji.name === e.emoji && e.ChaId) await brainAdd(reaction, e)
   })
