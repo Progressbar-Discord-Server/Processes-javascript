@@ -212,13 +212,13 @@ async function ProcessDOS(client) {
       }
       case "deploy": {
         const { send } = require("../deploy-commands.js");
-        const { guildId, beta } = require("../config.json");
+        const { beta } = require("../config.json");
 
         let all = []
         client.commands.forEach(e => { if (!beta && e.name !== "test" || beta) all.push(e.data.toJSON()) })
         client.contextMenu.forEach(e => all.push(e.data.toJSON()))
 
-        send(all, client.token, guildId, client.user.id);
+        send(all, client.token, client.user.id);
         break;
       }
       case 'c:': case 'C:': {
