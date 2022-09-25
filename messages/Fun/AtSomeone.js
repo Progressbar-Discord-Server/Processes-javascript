@@ -3,6 +3,7 @@ const { AtSomeone } = require('../../config.json') || false;
 
 module.exports = {
   message: '@someone',
+  onlyCode: false,
   async execute(message) {
     if (!AtSomeone) return;
     let memberList = await message.guild.members.fetch({ force: true });
