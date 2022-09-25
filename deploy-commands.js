@@ -38,15 +38,15 @@ if (require.main === module) {
   send(all, token, clientId)
 }
 
-async function send(all, token, clientId) {
+async function send(commands, token, clientId) {
   const rest = new REST({ version: '10' }).setToken(token);
 
-  console.log(`Started refreshing ${all.length} slash commands.`);
+  console.log(`Started refreshing ${commands.length} slash commands.`);
   await rest.put(
     Routes.applicationCommands(clientId),
-    { body: all },
+    { body: commands },
   ).catch(e => { console.error(e) });
-  console.log(`Successfully reloaded ${all.length} slash commands.`);
+  console.log(`Successfully reloaded ${commands.length} slash commands.`);
 };
 
 
