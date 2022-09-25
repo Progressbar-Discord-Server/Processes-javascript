@@ -1,3 +1,4 @@
+const { PermissionFlagsBits } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const { timeout } = require("../../Util/Moderation.js")
 
@@ -5,6 +6,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('timeout')
 		.setDescription(`Timeout a member for up to 28 days.`)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
 		.addUserOption(o => o
 			.setName("user")
 			.setDescription("The user to timeout")

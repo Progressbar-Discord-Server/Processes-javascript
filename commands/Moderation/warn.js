@@ -1,10 +1,11 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { warn } = require('../../Util/Moderation.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('warn')
     .setDescription("warn a user")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .addUserOption(o => o
       .setName("user")
       .setDescription("the user to warn")

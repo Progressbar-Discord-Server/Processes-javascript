@@ -1,10 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { ChannelType } = require("discord-api-types/v10")
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { ChannelType } = require("discord-api-types/v10");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('slowmode')
     .setDescription("Set a slowmode in a channel")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
     .addChannelOption(o => o
       .setName("channel")
       .setDescription("What channel do you want to apply slowmode to?")

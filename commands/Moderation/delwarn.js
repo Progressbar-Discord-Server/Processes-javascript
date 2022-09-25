@@ -1,9 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('delogs')
     .setDescription("Delete a case")
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .addNumberOption(o => o
       .setName("case")
       .setDescription("Which case need to be deleted?")
