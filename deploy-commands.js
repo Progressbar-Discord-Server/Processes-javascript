@@ -19,18 +19,17 @@ if (require.main === module) {
 
   const contextMenu = [];
 
-  for (const type of fs.readdirSync(`${__dirname}/context menu`)) {
-    for (const folder of fs.readdirSync(`${__dirname}/context menu/${type}`)) {
-      for (const file of fs.readdirSync(`${__dirname}/context menu/${type}/${folder}`).filter(file => file.endsWith(".js"))) {
-        try {
-          const contextmenu = require(`${__dirname}/context menu/${type}/${folder}/${file}`);
-          contextMenu.push(contextmenu.data.toJSON());
-        } catch (err) {
-          console.error(err);
-        }
+  for (const folder of fs.readdirSync(`${__dirname}/context menu`)) {
+    for (const file of fs.readdirSync(`${__dirname}/context menu/${folder}`).filter(file => file.endsWith(".js"))) {
+      try {
+        const contextmenu = require(`${__dirname}/context menu/${folder}/${file}`);
+        contextMenu.push(contextmenu.data.toJSON());
+      } catch (err) {
+        console.error(err);
       }
     }
   }
+
 
   const all = [];
   commands.forEach(e => { if (!beta && e.name !== "test" || beta) all.push(e) })
@@ -41,12 +40,12 @@ if (require.main === module) {
 async function send(commands, token, clientId) {
   const rest = new REST({ version: '10' }).setToken(token);
 
-  console.log(`Started refreshing ${commands.length} slash commands.`);
+  console.log(`Started refreshing ${commands.length} interaction commands.`);
   await rest.put(
     Routes.applicationCommands(clientId),
     { body: commands },
   ).catch(e => { console.error(e) });
-  console.log(`Successfully reloaded ${commands.length} slash commands.`);
+  console.log(`Successfully reloaded ${commands.length} interaction commands.`);
 };
 
 

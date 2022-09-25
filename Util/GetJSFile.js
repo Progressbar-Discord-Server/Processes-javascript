@@ -2,21 +2,19 @@ const fs = require('node:fs')
 const { Collection } = require('discord.js');
 
 async function GetContextMenuFiles(Where, printAndOther = true) {
-  for (const type of fs.readdirSync(`${__dirname}/../context menu`)) {
-    let special = "┌"
+  let special = "┌"
 
-    for (const folder of fs.readdirSync(`${__dirname}/../context menu/${type}`)) {
-      if (printAndOther) console.log(` ${special} Next Context Menu are loading from "${folder}"`);
-      special = "├"
-    
-      for (const file of fs.readdirSync(`${__dirname}/../context menu/${type}/${folder}`).filter(file => file.endsWith(".js"))) {
-        try {
-          const contextMenu = require(`${__dirname}/../context menu/${type}/${folder}/${file}`);
-          Where.set(contextMenu.data.name, contextMenu);
-          if (printAndOther) console.log(` │   Context Menu "${contextMenu.data.name}" has been loaded`);
-        } catch (err) {
-          console.error(err);
-        };
+  for (const folder of fs.readdirSync(`${__dirname}/../context menu`)) {
+    if (printAndOther) console.log(` ${special} Next Context Menu are loading from "${folder}"`);
+    special = "├"
+
+    for (const file of fs.readdirSync(`${__dirname}/../context menu/${folder}`).filter(file => file.endsWith(".js"))) {
+      try {
+        const contextMenu = require(`${__dirname}/../context menu/${folder}/${file}`);
+        Where.set(contextMenu.data.name, contextMenu);
+        if (printAndOther) console.log(` │   Context Menu "${contextMenu.data.name}" has been loaded`);
+      } catch (err) {
+        console.error(err);
       };
     };
   };
@@ -110,7 +108,7 @@ async function ReloadJsFile(client) {
   client.commands = new Collection();
   client.messages = new Collection();
   client.contextMenu = new Collection();
-  
+
   Object.keys(require.cache).forEach(key => delete require.cache[key])
 
   await GetCommandFiles(client.commands, false);

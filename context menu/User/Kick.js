@@ -1,5 +1,5 @@
 const { ContextMenuCommandBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require('discord.js')
-const { kick } = require('../../../Util/Moderation')
+const { kick } = require('../../Util/Moderation')
 
 module.exports = {
   data: new ContextMenuCommandBuilder()

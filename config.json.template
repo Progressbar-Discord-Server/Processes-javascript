@@ -5,6 +5,9 @@
   "guildMainId": "The id of the Main discord server"
   "logCha": "The id of a log channel",
   "debugCha": "the id of the debug channel, where all unhandled errors will get",
+  "reddit": "Do you want the reddit system to work?",
+  "redditCha": "the channel where reddit post get sent",
+  "redditTalkCha": "the id of the channel where you talk about reddit",
   "starBoard": "Do you want the starboard to be activated?",
   "starBoardEmoji": [
     {"emoji": "the reaction to respond to", "ChaId": "The id of the channel", "thread": true, "ThdId": "The id of the thread if the thread part in this object is true"}
