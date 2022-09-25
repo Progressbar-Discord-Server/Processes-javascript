@@ -36,13 +36,13 @@ module.exports = {
 
     // Errors handler
     process.on("uncaughtException", async (err, origin) => {
-      console.error(err)
-      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UncaughtException").setFields({ name: "Error", value: err, inline: true }, { name: "From", value: origin, inline: true })] }).catch(() => { })
+      console.log(err)
+      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UncaughtException").setFields({ name: "Error", value: `${err}`, inline: true }, { name: "From", value: `${origin}`, inline: true })] }).catch(() => {})
     });
 
     process.on("unhandledRejection", async (err, promise) => {
-      console.error(err)
-      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UnhandledRejection").setFields({ name: "Error", value: err, inline: true }, { name: "From", value: promise, inline: true })] }).catch(() => { })
+      console.log(err)
+      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UnhandledRejection").setFields({ name: "Error", value: `${err}`, inline: true }, { name: "From", value: `${promise}`, inline: true })] }).catch(() => {})
     });
     return client
   }
