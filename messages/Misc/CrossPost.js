@@ -5,7 +5,7 @@ module.exports = {
   onlyCode: true,
   async code(messages) {
     await messages.fetch()
-    if (messages.author === "282286160494067712" && messages.channel.type === ChannelType.GuildAnnouncement) {
+    if (messages.author.id === "282286160494067712" && messages.channel.type === ChannelType.GuildAnnouncement) {
       this.execute(messages);
     }
   },
