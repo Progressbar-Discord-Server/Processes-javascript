@@ -1,4 +1,4 @@
-const { redditCha, redditTalkCha } = require("../../config.json")
+const { redditCha } = require("../../config.json")
 
 module.exports = {
   message: "reddit",
@@ -10,6 +10,6 @@ module.exports = {
     }
   },
   async execute(messages) {
-    await (await messages.client.channels.fetch(redditTalkCha)).threads.create({name: messages.embeds[0].title})
+    messages.startThread({name: messages.embeds[0].title})
   }
 }
