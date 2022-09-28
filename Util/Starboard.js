@@ -1,4 +1,4 @@
-const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, MessageType } = require("discord.js")
+const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, MessageType, Message } = require("discord.js")
 const { starBoardEmoji, guildMainId } = require("../config.json")
 
 function StarboardAdd(reaction) {
@@ -28,6 +28,13 @@ async function brainAdd(reaction, setting) {
   const dbData = await db.findOne({ where: { messageId: message.id, emoji: setting.emoji } })
 
   if (rcount >= 5 && !dbData) {
+    let mesDate = new Date(message.createdTimestamp)
+    let now = new Date()
+    let diffTime = Math.abs(now.getTime - mesDate.getTime)
+    let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+    
+    if (diffDays >= 20) return;
+    
     const starEmbed = await createEmbed(message)
     const buttons = await createButton(message)
 

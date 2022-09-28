@@ -35,14 +35,17 @@ module.exports = {
 
 
     // Errors handler
-    process.on("uncaughtException", async (err, origin) => {
-      console.log(err)
-      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UncaughtException").setFields({ name: "Error", value: `${err}`, inline: true }, { name: "From", value: `${origin}`, inline: true })] }).catch(() => {})
+    process.on("uncaughtException", async err => {
+      console.error(err)
+      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UncaughtException").setFields({ name: "Error", value: `${err}`, inline: true }, { name: "From", value: `${err.stack}`, inline: true })] }).catch(() => {})
     });
 
-    process.on("unhandledRejection", async (err, promise) => {
-      console.log(err)
-      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UnhandledRejection").setFields({ name: "Error", value: `${err}`, inline: true }, { name: "From", value: `${promise}`, inline: true })] }).catch(() => {})
+    process.on("unhandledRejection", async err => {
+      console.error(err)
+      let stack
+      if (err instanceof Error) stack = err.stack
+      else stack = err
+      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UnhandledRejection").setFields({ name: "Error", value: `${err}`, inline: true }, { name: "From", value: `${stack}`, inline: true })] }).catch(() => {})
     });
     return client
   }
