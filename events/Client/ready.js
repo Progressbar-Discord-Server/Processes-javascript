@@ -37,15 +37,53 @@ module.exports = {
     // Errors handler
     process.on("uncaughtException", async err => {
       console.error(err)
-      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UncaughtException").setFields({ name: "Error", value: `${err}`, inline: true }, { name: "From", value: `${err.stack}`, inline: true })] }).catch(() => {})
+      if (client.debugCha) client.debugCha.send({
+        embeds: [new EmbedBuilder({
+          author: { name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" },
+          description: "UncaughtException",
+          fields: [
+            {
+              name: "Error",
+              value: `${err}\n\n${err.message}`,
+              inline: true
+            },
+            {
+              name: "From",
+              value: `${err.stack}`,
+              inline: true
+            }
+          ]
+        })]
+      }).catch(() => {})
     });
 
     process.on("unhandledRejection", async err => {
       console.error(err)
-      let stack
-      if (err instanceof Error) stack = err.stack
+      let stack = ""
+      let message = ""
+      if (err instanceof Error) {
+        if (err.message === "Received one or more errors") return;
+        stack = err.stack
+        message = err.message
+      }
       else stack = err
-      if (client.debugCha) client.debugCha.send({ embeds: [new EmbedBuilder().setAuthor({ name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" }).setDescription("UnhandledRejection").setFields({ name: "Error", value: `${err}`, inline: true }, { name: "From", value: `${stack}`, inline: true })] }).catch(() => {})
+      if (client.debugCha) client.debugCha.send({
+        embeds: [new EmbedBuilder({
+          author: { name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" },
+          description: "UnhandledRejection",
+          fields: [
+            {
+              name: "Error",
+              value: `${err}\n\n${message}`,
+              inline: true
+            },
+            {
+              name: "From",
+              value: `${stack}`,
+              inline: true
+            }]
+        })]
+      }).catch(() => {})
     });
     return client
   }
