@@ -2,7 +2,7 @@
   "token": "The token of the bot",
   "clientId": "The id of the bot",
   "guildId": "The id of a discord server for pushing / commands, can be an Array",
-  "guildMainId": "The id of the Main discord server"
+  "guildMainId": "The id of the Main discord server",
   "logCha": "The id of a log channel",
   "debugCha": "the id of the debug channel, where all unhandled errors will get",
   "reddit": "Do you want the reddit system to work?",
