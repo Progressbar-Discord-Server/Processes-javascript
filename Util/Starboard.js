@@ -32,13 +32,13 @@ async function brainAdd(reaction, setting) {
     let now = new Date()
     let diffTime = Math.abs(now.getTime - mesDate.getTime)
     let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-    
+
     if (diffDays >= 20) return;
-    
+
     const starEmbed = await createEmbed(message)
     const buttons = await createButton(message)
 
-    ChaThd.send({ content: `${setting.emoji} **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed], components: buttons })
+    ChaThd.send({ content: `${setting.emoji} **${rcount}** | <#${message.channel.id}>`, embeds: starEmbed, components: buttons })
       .then(async ownmessage => {
         await db.create({
           messageId: message.id,
@@ -54,7 +54,7 @@ async function brainAdd(reaction, setting) {
 
     ChaThd.messages.fetch(dbData.messageIdBot)
       .then((e) => {
-        e.edit({ content: `${setting.emoji} **${rcount}** | <#${message.channel.id}>`, embeds: [starEmbed], components: buttons })
+        e.edit({ content: `${setting.emoji} **${rcount}** | <#${message.channel.id}>`, embeds: starEmbed, components: buttons })
       })
   }
 }
@@ -74,11 +74,11 @@ async function brainRemove(reaction, setting) {
   else ChaThd = await reaction.client.channels.fetch(setting.ChaId)
 
   const starEmbed = await createEmbed(message)
-  const button = await createButton(message)
+  const buttons = await createButton(message)
 
   ChaThd.messages.fetch(dbData.messageIdBot)
     .then(e => {
-      e.edit({ content: `${setting.emoji} **${rcount}**  | <#${message.channel.id}>`, embeds: [starEmbed], components: [button] })
+      e.edit({ content: `${setting.emoji} **${rcount}**  | <#${message.channel.id}>`, embeds: starEmbed, components: buttons })
     })
 }
 
@@ -99,38 +99,35 @@ async function createEmbed(MainMessage) {
   if (MainMessage.attachments.size) embed.setImage(MainMessage.attachments.first().url)
 
   if (MainMessage.type === MessageType.Reply) {
-    let reference = await MainMessage.fetchReference()
-    if (reference.content) embed.setFields({ name: "Replied to:", value: reference.content })
-    else if (reference.embeds[0]) {
-      let yesnt = true
-      reference.embeds.forEach(e => { if (e.description && yesnt) { embed.setFields({ name: "Replied to:", value: e.description }); yesnt = false } })
-    }
+    await MainMessage.fetchReference().then(reference => {
+      if (reference.content) embed.setFields({ name: "Replied to:", value: reference.content })
+      else if (reference.embeds[0]) {
+        let yesnt = true
+        reference.embeds.forEach(e => { if (e.description && yesnt) { embed.setFields({ name: "Replied to:", value: e.description }); yesnt = false } })
+      }
+    })
   }
 
-  return embed
+  return [embed]
 }
 
 async function createButton(message) {
-  let mainButton = new ActionRowBuilder()
+  let buttons = [new ActionRowBuilder()
     .addComponents(new ButtonBuilder()
       .setLabel("Original Message")
       .setStyle("Link")
       .setURL(message.url)
-    )
+    )]
 
   if (message.type === MessageType.Reply) {
-    let reference = await message.fetchReference()
-    let replyButton = new ActionRowBuilder()
+    await message.fetchReference().then(reference => buttons.push(new ActionRowBuilder()
       .addComponents(new ButtonBuilder()
         .setLabel("Reply Message")
         .setStyle("Link")
         .setURL(reference.url)
-      )
-    return [mainButton, replyButton]
+      )))
   }
-  else {
-    return [mainButton]
-  }
+  return buttons
 }
 
 module.exports = { StarboardAdd, StarboardRemove }
