@@ -38,8 +38,8 @@ module.exports = {
             .setDescription(`<@${member.user.id}>`)
             .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
             .addFields(
-              { name: "**Joined**", value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:d>`, inline: true },
-              { name: "**Registered**", value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:d>`, inline: true },
+              { name: "**Joined**", value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:f> (<t:${Math.floor(member.joinedTimestamp / 1000)}:R>)`, inline: true },
+              { name: "**Registered**", value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:f> (<t:${Math.floor(member.user.createdTimestamp / 1000)}:R>)`, inline: true },
               { name: `**Roles [${member.roles.cache.size - 1}]**`, value: roles.join(", ") ? roles.join(", ") : "*none*" },
             )
           ]
@@ -49,7 +49,7 @@ module.exports = {
       case "server": {
         await interaction.guild.fetch()
 
-        const replyEmbed = new EmbedBuilder().setAuthor({name: interaction.guild.name, iconURL: interaction.guild.iconURL({extension: 'png', size: 4096})}).setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`).setFooter({text: `Id: ${interaction.guild.id}`}).setTimestamp(interaction.guild.createdAt)
+        const replyEmbed = new EmbedBuilder().setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL({ extension: 'png', size: 4096 }) }).setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`).setFooter({ text: `Id: ${interaction.guild.id}` }).setTimestamp(interaction.guild.createdAt)
 
         let owner = await interaction.guild.fetchOwner()
 
@@ -67,23 +67,23 @@ module.exports = {
             emojiCount++
           })
         })
-        
+
         let stickerCont = 0
         await interaction.guild.stickers.fetch().then(e => {
           e.forEach(i => {
             stickerCont++
           })
         })
-        
+
         replyEmbed.setFields(
-          {name: "Owner", value: `${owner.user.tag}`, inline: true},
-          {name: "Roles", value: `${roleCount}`, inline: true},
-          {name: "Members", value: `${interaction.guild.memberCount}`, inline: true},
-          {name: "Emojis", value: `${emojiCount}`, inline: true},
-          {name: "Stickers", value: `${stickerCont}`, inline: true},
-          {name: "Rules", value: `<#${interaction.guild.rulesChannelId}>`, inline: true}
+          { name: "Owner", value: `${owner.user.tag}`, inline: true },
+          { name: "Roles", value: `${roleCount}`, inline: true },
+          { name: "Members", value: `${interaction.guild.memberCount}`, inline: true },
+          { name: "Emojis", value: `${emojiCount}`, inline: true },
+          { name: "Stickers", value: `${stickerCont}`, inline: true },
+          { name: "Rules", value: `<#${interaction.guild.rulesChannelId}>`, inline: true }
         )
-        interaction.followUp({embeds: [replyEmbed]})
+        interaction.followUp({ embeds: [replyEmbed] })
         break
       }
     }

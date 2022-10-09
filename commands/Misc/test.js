@@ -1,3 +1,4 @@
+const { CommandInteraction } = require("discord.js");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -23,9 +24,10 @@ module.exports = {
       )
     ),
   async execute(interaction) {
-    switch (interaction.option.getSubcommand()) {
+    switch (interaction.options.getSubcommand()) {
       case "simple": {
-        interaction.reply({ content: interaction.option.getString("content"), ephemeral: interaction.option.getBoolean("ephemeral") })
+        interaction.reply({ content: interaction.options.getString("content"), ephemeral: interaction.options.getBoolean("ephemeral") })
+        break
       }
       case "other": {
         const { ActionRowBuilder, SelectMenuBuilder, EmbedBuilder } = require("discord.js");

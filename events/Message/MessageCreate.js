@@ -8,8 +8,8 @@ module.exports = {
     client.messages.forEach(e => { if (e.code) e.code(messages).catch(console.error) })
 
     const message = client.messages.get(messages.content);
-    if (!message || message?.onlyCode) return;
+    if (message?.onlyCode) return;
 
-    message.execute(messages).catch(console.error);
+    if (message?.execute) message.execute(messages).catch(console.error);
   }
 }
