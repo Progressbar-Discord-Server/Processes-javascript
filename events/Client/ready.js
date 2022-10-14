@@ -21,9 +21,9 @@ module.exports = {
       await guildFetched.members.fetchMe()
       let channels = await guildFetched.channels.fetch()
       channels.forEach(async channel => {
-        await channel.fetch()
+        await channel.fetch().catch(() => {})
         if (channel.threads) {
-          await Promise.all([channel.threads.fetchActive(), channel.threads.fetchArchived()])
+          await Promise.all([channel.threads.fetchActive(), channel.threads.fetchArchived()]).catch(() => {})
         }
       })
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
