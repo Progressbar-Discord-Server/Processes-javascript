@@ -1,3 +1,4 @@
+const { Client } = require('discord.js');
 const { PermissionsBitField, EmbedBuilder } = require('discord.js');
 const { showLink, debugCha } = require('../../config.json');
 const { ProcessDOS } = require('../../Util/Dos.js');
@@ -17,8 +18,14 @@ module.exports = {
 
     guilds.forEach(async guild => {
       let guildFetched = await guild.fetch()
-      await guildFetched.channels.fetch()
       await guildFetched.members.fetchMe()
+      let channels = await guildFetched.channels.fetch()
+      channels.forEach(async channel => {
+        await channel.fetch()
+        if (channel.threads) {
+          await Promise.all([channel.threads.fetchActive(), channel.threads.fetchArchived()])
+        }
+      })
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
     })
 
@@ -54,7 +61,7 @@ module.exports = {
             }
           ]
         })]
-      }).catch(() => {})
+      }).catch(() => { })
     });
 
     process.on("unhandledRejection", async err => {
@@ -83,7 +90,7 @@ module.exports = {
               inline: true
             }]
         })]
-      }).catch(() => {})
+      }).catch(() => { })
     });
     return client
   }
