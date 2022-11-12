@@ -146,12 +146,12 @@ async function warn(interaction, user, reason, joke = false, db) {
 
 async function timeout(interaction, member, reason, unit, RealLen, joke = false, db) {
   let length = RealLen;
-
+  
   if (!(member instanceof GuildMember)) {
-    await interaction.guild.members.fetch(member)
+    member = await interaction.guild.members.fetch(member)
   }
 
-  if (member.id === interaction.client.user.id) {
+  if (member.user.id === interaction.client.user.id) {
     if (reason === "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit}`);
     else if (reason !== "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
   };
@@ -179,9 +179,9 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
         })
       }).catch(err => { console.error(err); return interaction.followUp(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``) })
     }
-    replyEmbed
-
+    
   }
+  await interaction.followUp(replyEmbed)
 }
 
 module.exports = { ban, kick, warn, timeout }
