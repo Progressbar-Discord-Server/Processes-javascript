@@ -20,10 +20,11 @@ module.exports = {
       await guildFetched.members.fetchMe()
       let channels = await guildFetched.channels.fetch()
       channels.forEach(async channel => {
-        await channel.fetch().catch(() => {})
-        if (channel.threads && channel.permissionsFor(client.id).has(PermissionsBitField.Flags.ReadMessageHistory)) {
-          await Promise.all([channel.threads.fetchActive(), channel.threads.fetchArchived()]).catch(() => {})
-        }
+        await channel.fetch().then(async e => {
+          if (e.threads && e.permissionsFor(client.id).has(PermissionsBitField.Flags.ReadMessageHistory)) {
+            await Promise.all([e.threads.fetchActive(), e.threads.fetchArchived()]).catch(() => {})
+          }
+        }).catch(() => {})
       })
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
     })

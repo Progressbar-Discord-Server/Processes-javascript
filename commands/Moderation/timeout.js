@@ -30,6 +30,7 @@ module.exports = {
 			.setName("reason")
 			.setDescription('Why should this user be timed out?')),
 	async execute(interaction) {
+		interaction.deferReply()
 		timeout(interaction, interaction.options.getMember('member', true), interaction.options.getString('reason'), interaction.options.getString('unit', true), interaction.options.getInteger('duration', true), interaction.options.getBoolean('joke', true), interaction.client.db.Cases)
 	},
 };
