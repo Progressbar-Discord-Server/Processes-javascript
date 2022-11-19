@@ -189,7 +189,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
           userID: member.user.id
         })
         await interaction.followUp({embeds: [replyEmbed]})
-      }).catch(err => { console.error(err); replyEmbed.setDescription(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``);return interaction.followUp({embeds: [replyEmbed]}) })
+      }).catch(err => { console.error(err); replyEmbed.setDescription(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``);replyEmbed.setColor("#ff0000");return interaction.followUp({embeds: [replyEmbed]}) })
     }
     else if (joke) {
       await interaction.followUp({embeds: [replyEmbed]})
