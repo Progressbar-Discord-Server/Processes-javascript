@@ -156,8 +156,14 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
 
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
-    .setDescription(`**${escapeMarkdown(member.user.tag)} has been timed out for ${RealLen} ${unit} for "${reason}".**`);
 
+  if (reason !== "No reason provided") {
+    replyEmbed.setDescription(`**${escapeMarkdown(member.user.tag)} has been timed out for ${RealLen} ${unit} for "${reason}".**`);
+  }
+  else if (reason === "No reason provided") {
+    replyEmbed.setDescription(`**${escapeMarkdown(member.user.tag)} has been timed out for ${RealLen} ${unit}.**`)
+  }
+    
   if (member.user.id === interaction.client.user.id) {
     if (reason === "No reason provided") {
       replyEmbed.setDescription(`Timed out undefined for ${RealLen} ${unit}`)
