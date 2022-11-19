@@ -146,7 +146,7 @@ async function warn(interaction, user, reason, joke = false, db) {
 
 async function timeout(interaction, member, reason, unit, RealLen, joke = false, db) {
   let length = RealLen;
-  console.log(member)
+  
   if (!(member instanceof GuildMember)) {
     member = await interaction.guild.members.fetch(member)
   }
