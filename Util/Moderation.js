@@ -181,18 +181,20 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
   }
   else if (length < 2.419e+9) {
     if (!joke) {
-      await member.timeout(length, reason + "| Timeout by" + interaction.user.tag).then(() => {
+      member.timeout(length, reason + "| Timeout by" + interaction.user.tag).then(async () => {
         db.create({
           type: "timeout",
           reason: reason,
           Executor: interaction.user.tag,
           userID: member.user.id
         })
-      }).catch(err => { console.error(err); return interaction.followUp(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``) })
+        await interaction.followUp({embeds: [replyEmbed]})
+      }).catch(err => { console.error(err); replyEmbed.setDescription(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``);return interaction.followUp({embeds: [replyEmbed]}) })
     }
-    
+    else if (joke) {
+      await interaction.followUp({embeds: [replyEmbed]})
+    }
   }
-  await interaction.followUp({embeds: [replyEmbed]})
 }
 
 module.exports = { ban, kick, warn, timeout }
