@@ -144,8 +144,11 @@ async function warn(interaction, user, reason, joke = false, db) {
   await interaction.followUp({ embeds: [replyEmbed] })
 }
 
-async function timeout(interaction, member, reason = "No reason provided", unit, RealLen, joke = false, db) {
+async function timeout(interaction, member, reason , unit, RealLen, joke = false, db) {
   let length = RealLen;
+  if (reason) {
+    reason = "No reason provided"
+  }
   
   if (!(member instanceof GuildMember)) {
     member = await interaction.guild.members.fetch(member)
