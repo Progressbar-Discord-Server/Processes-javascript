@@ -151,7 +151,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
     member = await interaction.guild.members.fetch(member)
   }
 
-  if (member.user.id === interaction.client.user.id) {
+  if (member.user.id === interaction.client.id) {
     if (reason === "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit}`);
     else if (reason !== "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
   };
