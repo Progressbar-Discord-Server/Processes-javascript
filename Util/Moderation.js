@@ -192,7 +192,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
     }
     
   }
-  await interaction.followUp({embeds: replyEmbed})
+  await interaction.followUp({embeds: [replyEmbed]})
 }
 
 module.exports = { ban, kick, warn, timeout }
