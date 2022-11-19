@@ -75,7 +75,7 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
 
   if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to kick yourself?")
   if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you kick me? 😢")
-  
+
   if (member.kickable) {
 
     await member.user.send({ embeds: [dmEmbed] }).catch(e => { console.error(`Couldn't message ${member.user.tag} (kick)`) })
@@ -107,7 +107,7 @@ async function warn(interaction, user, reason, joke = false, db) {
     await interaction.client.users.fetch(user)
   }
 
-  const avatar = await user.avatarURL({extention: 'png', size: 4096})
+  const avatar = await user.avatarURL({ extention: 'png', size: 4096 })
   const dmEmbed = new EmbedBuilder()
     .setColor("#f04a47")
     .setDescription(`**You have been warned from ${interaction.guild.name} for**: ${reason}`);
@@ -115,7 +115,7 @@ async function warn(interaction, user, reason, joke = false, db) {
     .setColor("#43b582")
     .setDescription(`**${escapeMarkdown(user.tag)} has been warned for:** ${reason}`);
   const logEmbed = new EmbedBuilder()
-    .setAuthor({name: `Case idk | Warn | ${user.tag} | ${user.id}`, iconURL: (avatar ? avatar : undefined)})
+    .setAuthor({ name: `Case idk | Warn | ${user.tag} | ${user.id}`, iconURL: (avatar ? avatar : undefined) })
     .setColor("#f04a47")
     .setTimestamp(new Date())
     .addFields(
@@ -133,8 +133,8 @@ async function warn(interaction, user, reason, joke = false, db) {
       Executor: interaction.user.tag,
       userID: user.id
     });
-    
-    logEmbed.setAuthor({name: `Case ${dbcr.id} | Warn | ${user.tag} | ${user.id}`, iconURL: (avatar ? avatar : undefined)})
+
+    logEmbed.setAuthor({ name: `Case ${dbcr.id} | Warn | ${user.tag} | ${user.id}`, iconURL: (avatar ? avatar : undefined) })
 
     let logChannel = await interaction.guild.channels.fetch(logCha)
     await logChannel.send({ embeds: [logEmbed] })
@@ -144,12 +144,12 @@ async function warn(interaction, user, reason, joke = false, db) {
   await interaction.followUp({ embeds: [replyEmbed] })
 }
 
-async function timeout(interaction, member, reason , unit, RealLen, joke = false, db) {
+async function timeout(interaction, member, reason, unit, RealLen, joke = false, db) {
   let length = RealLen;
   if (reason) {
     reason = "No reason provided"
   }
-  
+
   if (!(member instanceof GuildMember)) {
     member = await interaction.guild.members.fetch(member)
   }
@@ -160,21 +160,24 @@ async function timeout(interaction, member, reason , unit, RealLen, joke = false
 
   if (member.user.id === interaction.client.user.id) {
     if (reason === "No reason provided") {
-    replyEmbed.setDescription(`Timed out undefined for ${RealLen} ${unit}`)
-      return interaction.followUp({embeds: [replyEmbed]});
+      replyEmbed.setDescription(`Timed out undefined for ${RealLen} ${unit}`)
+      return interaction.followUp({ embeds: [replyEmbed] });
     }
     else if (reason !== "No reason provided") {
       replyEmbed.setDescription(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
-      return interaction.followUp({embeds: [replyEmbed]})
+      return interaction.followUp({ embeds: [replyEmbed] })
     }
   };
 
+  if (joke) {
+    return interaction.followUp({ embeds: [replyEmbed] })
+  }
 
   switch (unit) {
-    case "seconds": {length = Math.floor(length * 1000);break}
-    case "minutes": {length = Math.floor(length * 60 * 1000);break}
-    case "hours": {length = Math.floor(length * 60 * 60 * 1000);break}
-    case "days": {length = Math.floor(length * 24 * 60 * 60 * 1000);break}
+    case "seconds": { length = Math.floor(length * 1000); break }
+    case "minutes": { length = Math.floor(length * 60 * 1000); break }
+    case "hours": { length = Math.floor(length * 60 * 60 * 1000); break }
+    case "days": { length = Math.floor(length * 24 * 60 * 60 * 1000); break }
   }
 
   if (length > 2.419e+9) {
@@ -191,11 +194,8 @@ async function timeout(interaction, member, reason , unit, RealLen, joke = false
           Executor: interaction.user.tag,
           userID: member.user.id
         })
-        await interaction.followUp({embeds: [replyEmbed]})
-      }).catch(err => { console.error(err); replyEmbed.setDescription(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``);replyEmbed.setColor("#ff0000");return interaction.followUp({embeds: [replyEmbed]}) })
-    }
-    else if (joke) {
-      await interaction.followUp({embeds: [replyEmbed]})
+        await interaction.followUp({ embeds: [replyEmbed] })
+      }).catch(err => { console.error(err); replyEmbed.setDescription(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``); replyEmbed.setColor("#ff0000"); return interaction.followUp({ embeds: [replyEmbed] }) })
     }
   }
 }
