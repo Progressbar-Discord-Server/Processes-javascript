@@ -151,10 +151,21 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
     member = await interaction.guild.members.fetch(member)
   }
 
+  const replyEmbed = new EmbedBuilder()
+    .setColor("#43b582")
+    .setDescription(`**${escapeMarkdown(member.user.tag)} has been timeout for ${RealLen} ${unit} for **${reason}.**`);
+
   if (member.user.id === interaction.client.user.id) {
-    if (reason === "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit}`);
-    else if (reason !== "No reason provided") return interaction.followUp(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
+    if (reason === "No reason provided") {
+    replyEmbed.setDescription(`Timed out undefined for ${RealLen} ${unit}`)
+      return interaction.followUp({embeds: [replyEmbed]});
+    }
+    else if (reason !== "No reason provided") {
+      replyEmbed.setDescription(`Timed out undefined for ${RealLen} ${unit} for **${reason}.**`)
+      return interaction.followUp({embeds: [replyEmbed]})
+    }
   };
+
 
   switch (unit) {
     case "seconds": length = Math.floor(length * 1000);
@@ -166,7 +177,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
   if (length > 2.419e+9) {
     replyEmbed.setColor("#FF0000");
     replyEmbed.setDescription(`**I cannot timeout ${escapeMarkdown(member.user.tag)} for *that* long! You provided a time longer than 28 days!**`);
-    await interaction.followUp({ embeds: [replyEmbed] });
+    return interaction.followUp({ embeds: [replyEmbed] });
   }
   else if (length < 2.419e+9) {
     if (!joke) {
@@ -181,7 +192,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
     }
     
   }
-  await interaction.followUp(replyEmbed)
+  await interaction.followUp({embeds: replyEmbed})
 }
 
 module.exports = { ban, kick, warn, timeout }
