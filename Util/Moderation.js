@@ -168,10 +168,10 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
 
 
   switch (unit) {
-    case "seconds": length = Math.floor(length * 1000);
-    case "minutes": length = Math.floor(length * 60 * 1000);
-    case "hours": length = Math.floor(length * 60 * 60 * 1000);
-    case "days": length = Math.floor(length * 24 * 60 * 60 * 1000);
+    case "seconds": {length = Math.floor(length * 1000);break}
+    case "minutes": {length = Math.floor(length * 60 * 1000);break}
+    case "hours": {length = Math.floor(length * 60 * 60 * 1000);break}
+    case "days": {length = Math.floor(length * 24 * 60 * 60 * 1000);break}
   }
 
   if (length > 2.419e+9) {
