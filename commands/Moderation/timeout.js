@@ -1,5 +1,4 @@
-const { PermissionFlagsBits } = require('discord.js');
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { timeout } = require("../../Util/Moderation.js")
 
 module.exports = {
@@ -31,6 +30,6 @@ module.exports = {
 			.setDescription('Why should this user be timed out?')),
 	async execute(interaction) {
 		interaction.deferReply()
-		timeout(interaction, interaction.options.getMember('member', true), interaction.options.getString('reason'), interaction.options.getString('unit', true), interaction.options.getInteger('duration', true), interaction.options.getBoolean('joke', true), interaction.client.db.Cases)
+		timeout(interaction, interaction.options.getMember('user', true), interaction.options.getString('reason'), interaction.options.getString('unit', true), interaction.options.getInteger('duration', true), interaction.options.getBoolean('joke', true), interaction.client.db.Cases)
 	},
 };
