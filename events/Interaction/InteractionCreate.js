@@ -5,7 +5,7 @@ module.exports = {
   on: true,
   async execute(interaction) {
     if (interaction.partial) return;
-    
+
     if (interaction.type == InteractionType.ApplicationCommand) {
       if (interaction.commandType == 1) {
         const command = client.commands.get(interaction.commandName);
@@ -35,8 +35,8 @@ module.exports = {
           arr.push(interaction.guild.roles.fetch(roleId))
         })
         await interaction.member.fetch()
-        arr = await Promise.all(arr).catch(e => {})
-        
+        arr = await Promise.all(arr).catch(e => { })
+
         const roles = interaction.member.roles;
 
         let response = []
@@ -54,9 +54,8 @@ module.exports = {
           else if (!role) {
             console.log(`${role.id} doesn't exist`)
           }
-          
-          interaction.followUp(`${codeBlock("diff", response.join("\n"))}`)
         });
+        interaction.followUp(`${codeBlock("diff", response.join("\n"))}`)
       }
     }
     else if (interaction.isModalSubmit) {
