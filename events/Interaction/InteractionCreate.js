@@ -34,7 +34,8 @@ module.exports = {
         interaction.values.forEach(roleId => {
           arr.push(interaction.guild.roles.fetch(roleId))
         })
-        arr = await Promise.all(await interaction.member.fetch(), arr).catch(e => {});arr.slice(1)
+        await interaction.member.fetch()
+        arr = await Promise.all(arr).catch(e => {})
         
         const roles = interaction.member.roles;
 
