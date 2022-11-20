@@ -186,12 +186,12 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
     case "days": { length = Math.floor(length * 24 * 60 * 60 * 1000); break }
   }
 
-  if (length > 2.419e+9 + 1) {
+  if (length > 2.4192e+9) {
     replyEmbed.setColor("#FF0000");
     replyEmbed.setDescription(`**I cannot timeout ${escapeMarkdown(member.user.tag)} for *that* long! You provided a time longer than 28 days!**`);
     return interaction.followUp({ embeds: [replyEmbed] });
   }
-  else if (length <= 2.419e+9) {
+  else if (length <= 2.4192e+9) {
     if (!joke) {
       member.timeout(length, reason + "| Timeout by" + interaction.user.tag).then(async () => {
         db.create({
