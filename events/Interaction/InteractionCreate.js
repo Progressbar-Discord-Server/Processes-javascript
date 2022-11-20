@@ -1,10 +1,12 @@
+const { InteractionType, codeBlock } = require("discord.js");
+
 module.exports = {
   name: 'interactionCreate',
   on: true,
   async execute(interaction) {
     if (interaction.partial) return;
     
-    if (interaction.type == 2) {
+    if (interaction.type == InteractionType.ApplicationCommand) {
       if (interaction.commandType == 1) {
         const command = client.commands.get(interaction.commandName);
         if (!command) return;
@@ -24,32 +26,41 @@ module.exports = {
         });
       }
     }
-    else if (interaction.type == 3) {
+    else if (interaction.type == InteractionType.MessageComponent) {
       if (interaction.isSelectMenu) {
         if (interaction.customId !== "role-selector") return;
         await interaction.deferReply({ ephemeral: true })
-        await interaction.member.fetch();
+        let arr = []
+        interaction.values.forEach(roleId => {
+          arr.push(interaction.guild.roles.fetch(roleId))
+        })
+        arr = await Promise.all(await interaction.member.fetch(), arr).catch(e => {});arr.slice(1)
+        
         const roles = interaction.member.roles;
 
         let response = []
-        for (let roleId of interaction.values) {
-          const role = await interaction.guild.roles.fetch(roleId);
+        arr.forEach(async role => {
           if (role) {
             if (roles.cache.has(role.id)) {
               await roles.remove(role)
-              response.push(`Removed ${role.name}`)
+              response.push(`- ${role.name}`)
             }
             else if (!roles.cache.has(role.id)) {
               await roles.add(role)
-              response.push(`Added ${role.name}`)
+              response.push(`+ ${role.name}`)
             }
           }
           else if (!role) {
-            console.log(`${roleId} doesn't exist`)
+            console.log(`${role.id} doesn't exist`)
           }
-        }
-        interaction.followUp(response.join("\n"))
+          
+          interaction.followUp(`${codeBlock("diff", response.join("\n"))}`)
+        });
       }
+    }
+    else if (interaction.isModalSubmit) {
+      if (!interaction.customId.startsWith("edit-message")) return
+
     }
   }
 }
