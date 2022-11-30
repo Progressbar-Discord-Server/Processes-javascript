@@ -44,8 +44,8 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
         type: "ban",
       });
 
-      let logChannel = await interaction.guild.channels.fetch(logCha)
-      await logChannel.send({ embeds: [logEmbed] }).catch(console.error)
+      let logChannel = await interaction.client.channels.fetch(logCha).catch(e => { })
+      if (logChannel) await logChannel.send({ embeds: [logEmbed] }).catch(console.error)
     }
   }
   interaction.followUp({ embeds: [replyEmbed] }).catch(console.error)
@@ -95,8 +95,8 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
         type: "kick",
       });
 
-      let logChannel = await interaction.guild.channels.fetch(logCha)
-      await logChannel.send({ embeds: [logEmbed] })
+      let logChannel = await interaction.client.channels.fetch(logCha).catch(e => { })
+      if (logChannel) await logChannel.send({ embeds: [logEmbed] })
     }
   }
   interaction.followUp({ embeds: [replyEmbed] })
@@ -136,19 +136,16 @@ async function warn(interaction, user, reason, joke = false, db) {
 
     logEmbed.setAuthor({ name: `Case ${dbcr.id} | Warn | ${user.tag} | ${user.id}`, iconURL: (avatar ? avatar : undefined) })
 
-    let logChannel = await interaction.guild.channels.fetch(logCha)
-    await logChannel.send({ embeds: [logEmbed] })
+    let logChannel = await interaction.client.channels.fetch(logCha).catch(e => { })
+    if (logChannel) await logChannel.send({ embeds: [logEmbed] })
   };
 
   await user.send({ embeds: [dmEmbed] }).catch(e => { console.error(`Couldn't message ${user.tag} (warn)`) })
   await interaction.followUp({ embeds: [replyEmbed] })
 }
 
-async function timeout(interaction, member, reason, unit, RealLen, joke = false, db) {
+async function timeout(interaction, member, reason = "No reason provided", unit, RealLen, joke = false, db) {
   let length = RealLen;
-  if (reason == undefined) {
-    reason = "No reason provided"
-  }
 
   if (!(member instanceof GuildMember)) {
     member = await interaction.guild.members.fetch(member)
@@ -156,6 +153,17 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
 
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
+  const avatar = await member.user.avatarURL({ extention: 'png', size: 4096 })
+  const logEmbed = new EmbedBuilder()
+    .setAuthor({ name: `Case idk | Timeout | ${member.user.tag} | ${member.user.id}`, iconURL: (avatar ? avatar : undefined) })
+    .setColor("#f04a47")
+    .setTimestamp(new Date())
+    .addFields(
+      { name: "**User**", value: escapeMarkdown(member.user.tag), inline: true },
+      { name: "**Moderator**", value: escapeMarkdown(interaction.user.tag), inline: true },
+      { name: "**Reason**", value: reason, inline: true }
+    );
+
 
   if (reason !== "No reason provided") {
     replyEmbed.setDescription(`**${escapeMarkdown(member.user.tag)} has been timed out for ${RealLen} ${unit} for "${reason}".**`);
@@ -163,7 +171,7 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
   else if (reason === "No reason provided") {
     replyEmbed.setDescription(`**${escapeMarkdown(member.user.tag)} has been timed out for ${RealLen} ${unit}.**`)
   }
-    
+
   if (member.user.id === interaction.client.user.id) {
     if (reason === "No reason provided") {
       replyEmbed.setDescription(`Timed out undefined for ${RealLen} ${unit}`)
@@ -194,12 +202,17 @@ async function timeout(interaction, member, reason, unit, RealLen, joke = false,
   else if (length <= 2.4192e+9) {
     if (!joke) {
       member.timeout(length, reason + "| Timeout by" + interaction.user.tag).then(async () => {
-        db.create({
+        let dbcr = await db.create({
           type: "timeout",
           reason: reason,
           Executor: interaction.user.tag,
           userID: member.user.id
         })
+
+        logEmbed.setAuthor({ name: `Case ${dbcr.id} | Timeout | ${member.user.tag} | ${member.user.id}`, iconURL: (avatar ? avatar : undefined) })
+
+        let logChannel = await interaction.client.channels.fetch(logCha).catch(e => { })
+        if (logChannel) await logChannel.send({ embeds: [logEmbed] })
         await interaction.followUp({ embeds: [replyEmbed] })
       }).catch(err => { console.error(err); replyEmbed.setDescription(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``); replyEmbed.setColor("#ff0000"); return interaction.followUp({ embeds: [replyEmbed] }) })
     }
