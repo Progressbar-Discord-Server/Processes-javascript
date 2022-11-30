@@ -41,7 +41,7 @@ module.exports = {
 
         let response = []
         arr.forEach(async role => {
-          if (role) {
+          if (role != null) {
             if (roles.cache.has(role.id)) {
               await roles.remove(role)
               response.push(`- ${role.name}`)
@@ -51,10 +51,13 @@ module.exports = {
               response.push(`+ ${role.name}`)
             }
           }
-          else if (!role) {
-            console.log(`${role.id} doesn't exist`)
+          else if (role == null) {
+            let ownerIds = require("../../config.json").OwnerId
+            let rng = Math.floor(Math.random() * ownerIds.length)
+            response.push(`${role.id} doesn't exist, Please contact <@${ownerIds[rng]}>`)
           }
         });
+        debugger
         interaction.followUp(`${codeBlock("diff", response.join("\n"))}`)
       }
     }
