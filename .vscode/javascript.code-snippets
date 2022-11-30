@@ -1,0 +1,44 @@
+{
+	"Discord Slash Commands": {
+		"body": [
+			"const { SlashCommandBuilder } = require('discord.js')",
+			"",
+			"module.exports = {",
+			"  data: new SlashCommandBuilder()",
+			"    .setName('$0')",
+			"    .setDescription(\"\"),",
+			"  async execute(interaction) {",
+			"    ",
+			"  }",
+			"}"
+		]
+	},
+	"Discord User Context Menu": {
+		"body": [
+			"const { ContextMenuCommandBuilder } = require('discord.js');",
+			"",
+			"module.exports = {",
+			"  data: new ContextMenuCommandBuilder()",
+			"    .setName('$0')",
+			"    .setType(2),",
+			"  async execute(interaction) {",
+			"    ",
+			"  }",
+			"}"
+		]
+	},
+	"Discord Message Context Menu": {
+		"body": [
+			"const { ContextMenuCommandBuilder } = require('discord.js');",
+			"",
+			"module.exports = {",
+			"  data: new ContextMenuCommandBuilder()",
+			"    .setName('$0')",
+			"    .setType(3),",
+			"  async execute(interaction) {",
+			"    ",
+			"  }",
+			"}"
+		]
+	}
+}

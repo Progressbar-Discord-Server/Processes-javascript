@@ -1,0 +1,16 @@
+{
+  "autoSnippet.snippets": [
+    {
+      "pattern": "**/context menu/User/*.js",
+      "snippet": "Discord User Context Menu"
+    },
+    {
+      "pattern": "**/context menu/Messages/*.js",
+      "snippet": "Discord Message Context Menu"
+    },
+    {
+      "pattern": "**/commands/*.js",
+      "snippet": "Discord Slash Commands"
+    }
+  ]
+}
