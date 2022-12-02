@@ -40,14 +40,14 @@ module.exports = {
         const roles = interaction.member.roles;
 
         let response = []
-        arr.forEach(async role => {
+        arr.forEach(role => {
           if (role != null) {
             if (roles.cache.has(role.id)) {
-              await roles.remove(role)
+              roles.remove(role)
               response.push(`- ${role.name}`)
             }
             else if (!roles.cache.has(role.id)) {
-              await roles.add(role)
+              roles.add(role)
               response.push(`+ ${role.name}`)
             }
           }
@@ -57,8 +57,7 @@ module.exports = {
             response.push(`${role.id} doesn't exist, Please contact <@${ownerIds[rng]}>`)
           }
         });
-        debugger
-        interaction.followUp(`\`\`\`diff\n${response.join("\n")}`)
+        await interaction.followUp(`\`\`\`diff\n${response.join("\n")}\`\`\``)
       }
     }
     else if (interaction.isModalSubmit) {
