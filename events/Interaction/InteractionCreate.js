@@ -1,4 +1,4 @@
-const { InteractionType, codeBlock } = require("discord.js");
+const { InteractionType } = require("discord.js");
 
 module.exports = {
   name: 'interactionCreate',
@@ -58,7 +58,7 @@ module.exports = {
           }
         });
         debugger
-        interaction.followUp(`${codeBlock("diff", response.join("\n"))}`)
+        interaction.followUp(`\`\`\`diff\n${response.join("\n")}`)
       }
     }
     else if (interaction.isModalSubmit) {
