@@ -3,9 +3,17 @@ const { logCha } = require('../config.json')
 
 async function ban(interaction, member, reason = "No reason provided", joke = false, db) {
   const guild = interaction.guild
+  let crash = false
 
   if (!(member instanceof GuildMember)) {
-    await guild.members.fetch(member)
+    await guild.members.fetch(member).catch(e => {crash = true})
+  }
+
+  if (crash) {
+    const errorEmbed = new EmbedBuilder()
+    .setDescription("You can't ban someone that isn't in the server.")
+    .setColor("#ff0000")
+    return interaction.followUp({embeds: [errorEmbed]})
   }
 
   const dmEmbed = new EmbedBuilder()
@@ -53,9 +61,17 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
 
 async function kick(interaction, member, reason = "No reason provided", joke = false, db) {
   const guild = interaction.guild
+  let crash = false
 
   if (!(member instanceof GuildMember)) {
-    guild.members.fetch(member)
+    guild.members.fetch(member).catch(e => {crash = true})
+  }
+  
+  if (crash) {
+    const errorEmbed = new EmbedBuilder()
+    .setDescription("You can't kick someone that isn't in the server.")
+    .setColor("#ff0000")
+    return interaction.followUp({embeds: [errorEmbed]})
   }
 
   const dmEmbed = new EmbedBuilder()
@@ -103,8 +119,17 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
 }
 
 async function warn(interaction, user, reason, joke = false, db) {
+  let crash = false
+
   if (!(user instanceof User)) {
-    await interaction.client.users.fetch(user)
+    await interaction.client.users.fetch(user).catch(() => {crash = true})
+  }
+
+  if (crash) {
+    const errorEmbed = new EmbedBuilder()
+    .setDescription("You can't warn someone that isn't in the server.")
+    .setColor("#ff0000")
+    return interaction.followUp({embeds: [errorEmbed]})
   }
 
   const avatar = await user.avatarURL({ extention: 'png', size: 4096 })
@@ -146,9 +171,17 @@ async function warn(interaction, user, reason, joke = false, db) {
 
 async function timeout(interaction, member, reason = "No reason provided", unit, RealLen, joke = false, db) {
   let length = RealLen;
+  let crash = false
 
   if (!(member instanceof GuildMember)) {
-    member = await interaction.guild.members.fetch(member)
+    member = await interaction.guild.members.fetch(member).catch(() => {crash = true})
+  }
+
+  if (crash) {
+    const errorEmbed = new EmbedBuilder()
+    .setDescription("You can't timeout someone that isn't in the server.")
+    .setColor("#ff0000")
+    return interaction.followUp({embeds: [errorEmbed]})
   }
 
   const replyEmbed = new EmbedBuilder()
