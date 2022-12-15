@@ -10,8 +10,9 @@ module.exports = {
     base(client).then(async client => client.debugCha = await client.channels.fetch(debugCha))
   },
   async base(client) {
-    client.db.Cases.sync();
-    client.db.Star.sync();
+    Object.keys(client.db).forEach(e => {
+      client.db[e].sync();
+    })
 
     let guilds = await client.guilds.fetch()
 
