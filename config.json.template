@@ -13,6 +13,7 @@
     {"emoji": "the reaction to respond to", "ChaId": "The id of the channel", "thread": true, "ThdId": "The id of the thread if the thread part in this object is true"}
   ],
   "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it, and 'true' to activate",
+  "AutoMod": false, 
   "sqlPass": "A password for the database, can be empty",
   "PasteeDevKey": "A key to the api of Paste.ee",
   "OwnerId": "The id of the owner of the bot, can be an Array",

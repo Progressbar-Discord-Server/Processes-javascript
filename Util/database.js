@@ -38,4 +38,35 @@ const Cases = sequelize.define('cases', {
   }
 });
 
-module.exports = { Cases, Star }
+const Cards = sequelize.define('cards', {
+  userID: {
+    type: Sequelize.TEXT,
+    unique: true
+  },
+  Browns: {
+    type: Sequelize.NUMBER,
+    defaultValue: 0
+  },
+  Yellow: {
+    type: Sequelize.NUMBER,
+    defaultValue: 0
+  },
+  White: {
+    type: Sequelize.NUMBER,
+    defaultValue: 0
+  },
+  Orange: {
+    type: Sequelize.NUMBER,
+    defaultValue: 0
+  },
+  Red: {
+    type: Sequelize.NUMBER,
+    defaultValue: 0
+  },
+  Black: {
+    type: Sequelize.NUMBER,
+    defaultValue: 0
+  }
+})
+
+module.exports = { Cases, Star, Cards }

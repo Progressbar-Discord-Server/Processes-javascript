@@ -1,19 +1,12 @@
 const { User, GuildMember, EmbedBuilder, escapeMarkdown } = require('discord.js')
 const { logCha } = require('../config.json')
 
-async function ban(interaction, member, reason = "No reason provided", joke = false, db) {
+async function ban(interaction, member, reason = "No reason provided", joke = false, db, catcherror = console.error(err)) {
   const guild = interaction.guild
-  let crash = false
+  let fetch = false
 
   if (!(member instanceof GuildMember)) {
-    await guild.members.fetch(member).catch(e => {crash = true})
-  }
-
-  if (crash) {
-    const errorEmbed = new EmbedBuilder()
-    .setDescription("You can't ban someone that isn't in the server.")
-    .setColor("#ff0000")
-    return interaction.followUp({embeds: [errorEmbed]})
+    await guild.members.fetch(member).then(e => { fetch = true; member = e }).catch(() => { member = null })
   }
 
   const dmEmbed = new EmbedBuilder()
@@ -21,33 +14,31 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
     .setDescription(`**You have been banned from ${guild.name} for**: ${reason}`);
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
-    .setDescription(`**${escapeMarkdown(member.user.tag)} has been banned for:** ${reason}`);
+    .setDescription(`**${escapeMarkdown(getName(interaction.options.getUser("member").id, member.user, fetch))} has been banned for:** ${reason}`);
   const logEmbed = new EmbedBuilder()
     .setDescription("Ban")
     .setColor("#f04a47")
     .addFields(
-      { name: "**User**", value: escapeMarkdown(member.user.tag), inline: true },
+      { name: "**User**", value: escapeMarkdown(getName(interaction.options.getUser("member").id, member.user, fetch)), inline: true },
       { name: "**Moderator**", value: escapeMarkdown(interaction.user.tag), inline: true },
       { name: "**Reason**", value: reason, inline: true }
     );
 
-  if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to ban yourself?")
-  if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you ban me? 😢")
+  if (getName(interaction.options.getUser("member").id, member.user, fetch) === interaction.user.id) return interaction.followUp("Why do you want to ban yourself?")
+  if (getName(interaction.options.getUser("member").id, member.user, fetch) === interaction.client.user.id) return interaction.followUp("❌ Why would you ban me? 😢")
 
   if (member.bannable) {
     await member.user.send({ embeds: [dmEmbed] }).catch(e => console.error(`Couldn't message ${member.user.tag} (ban)`))
 
     if (!joke) {
-      try {
-        guild.members.ban(member.user, { reason: reason });
-      } catch (err) {
-        console.error(err)
+      await guild.members.ban(member.user, { reason: reason }).catch((err) => {
+        catcherror()
         return interaction.followUp("Couldn't ban that user")
-      }
+      })
 
       db.create({
         Executor: interaction.user.id,
-        userID: member.user.id,
+        userID: getName(interaction.options.getUser("member").id, member.user, fetch),
         reason: reason,
         type: "ban",
       });
@@ -61,17 +52,10 @@ async function ban(interaction, member, reason = "No reason provided", joke = fa
 
 async function kick(interaction, member, reason = "No reason provided", joke = false, db) {
   const guild = interaction.guild
-  let crash = false
+  let fetch = false
 
   if (!(member instanceof GuildMember)) {
-    guild.members.fetch(member).catch(e => {crash = true})
-  }
-  
-  if (crash) {
-    const errorEmbed = new EmbedBuilder()
-    .setDescription("You can't kick someone that isn't in the server.")
-    .setColor("#ff0000")
-    return interaction.followUp({embeds: [errorEmbed]})
+    guild.members.fetch(member).then(e => { fetch = true; member = e }).catch(() => { member = null })
   }
 
   const dmEmbed = new EmbedBuilder()
@@ -89,8 +73,8 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
       { name: "**Reason**", value: reason, inline: true }
     );
 
-  if (member.user.id === interaction.user.id) return interaction.followUp("Why do you want to kick yourself?")
-  if (member.user.id === interaction.client.user.id) return interaction.followUp("❌ Why would you kick me? 😢")
+  if (getName(interaction.options.getUser("member").id, member.user, fetch) === interaction.user.id) return interaction.followUp("Why do you want to kick yourself?")
+  if (getName(interaction.options.getUser("member").id, member.user, fetch) === interaction.client.user.id) return interaction.followUp("❌ Why would you kick me? 😢")
 
   if (member.kickable) {
 
@@ -106,7 +90,7 @@ async function kick(interaction, member, reason = "No reason provided", joke = f
 
       db.create({
         Executor: interaction.user.id,
-        userID: member.user.id,
+        userID: getName(interaction.options.getUser("member").id, member.user, fetch),
         reason: reason,
         type: "kick",
       });
@@ -122,14 +106,14 @@ async function warn(interaction, user, reason, joke = false, db) {
   let crash = false
 
   if (!(user instanceof User)) {
-    await interaction.client.users.fetch(user).catch(() => {crash = true})
+    await interaction.client.users.fetch(user).catch(() => { crash = true })
   }
 
   if (crash) {
     const errorEmbed = new EmbedBuilder()
-    .setDescription("You can't warn someone that isn't in the server.")
-    .setColor("#ff0000")
-    return interaction.followUp({embeds: [errorEmbed]})
+      .setDescription("You can't warn someone that isn't in the server.")
+      .setColor("#ff0000")
+    return interaction.followUp({ embeds: [errorEmbed] })
   }
 
   const avatar = await user.avatarURL({ extention: 'png', size: 4096 })
@@ -174,21 +158,21 @@ async function timeout(interaction, member, reason = "No reason provided", unit,
   let crash = false
 
   if (!(member instanceof GuildMember)) {
-    member = await interaction.guild.members.fetch(member).catch(() => {crash = true})
+    member = await interaction.guild.members.fetch(member).catch(() => { crash = true })
   }
 
   if (crash) {
     const errorEmbed = new EmbedBuilder()
-    .setDescription("You can't timeout someone that isn't in the server.")
-    .setColor("#ff0000")
-    return interaction.followUp({embeds: [errorEmbed]})
+      .setDescription("You can't timeout someone that isn't in the server.")
+      .setColor("#ff0000")
+    return interaction.followUp({ embeds: [errorEmbed] })
   }
 
   const replyEmbed = new EmbedBuilder()
     .setColor("#43b582")
   const avatar = await member.user.avatarURL({ extention: 'png', size: 4096 })
   const logEmbed = new EmbedBuilder()
-    .setAuthor({ name: `Case idk | Timeout | ${member.user.tag} | ${member.user.id}`, iconURL: (avatar ? avatar : undefined) })
+    .setAuthor({ name: `Case idk | Timeout | ${member.user.tag} | ${getName(interaction.options.getUser("member").id, member.user, fetch)}`, iconURL: (avatar ? avatar : undefined) })
     .setColor("#f04a47")
     .setTimestamp(new Date())
     .addFields(
@@ -205,7 +189,7 @@ async function timeout(interaction, member, reason = "No reason provided", unit,
     replyEmbed.setDescription(`**${escapeMarkdown(member.user.tag)} has been timed out for ${RealLen} ${unit}.**`)
   }
 
-  if (member.user.id === interaction.client.user.id) {
+  if (getName(interaction.options.getUser("member").id, member.user, fetch) === interaction.client.user.id) {
     if (reason === "No reason provided") {
       replyEmbed.setDescription(`Timed out undefined for ${RealLen} ${unit}`)
       return interaction.followUp({ embeds: [replyEmbed] });
@@ -239,10 +223,10 @@ async function timeout(interaction, member, reason = "No reason provided", unit,
           type: "timeout",
           reason: reason,
           Executor: interaction.user.tag,
-          userID: member.user.id
+          userID: getName(interaction.options.getUser("member").id, member.user, fetch)
         })
 
-        logEmbed.setAuthor({ name: `Case ${dbcr.id} | Timeout | ${member.user.tag} | ${member.user.id}`, iconURL: (avatar ? avatar : undefined) })
+        logEmbed.setAuthor({ name: `Case ${dbcr.id} | Timeout | ${member.user.tag} | ${getName(interaction.options.getUser("member").id, member.user, fetch)}`, iconURL: (avatar ? avatar : undefined) })
 
         let logChannel = await interaction.client.channels.fetch(logCha).catch(e => { })
         if (logChannel) await logChannel.send({ embeds: [logEmbed] })
@@ -250,6 +234,11 @@ async function timeout(interaction, member, reason = "No reason provided", unit,
       }).catch(err => { console.error(err); replyEmbed.setDescription(`Couldn't timeout ${escapeMarkdown(member.user.tag)}: \`\`\`${err}\`\`\``); replyEmbed.setColor("#ff0000"); return interaction.followUp({ embeds: [replyEmbed] }) })
     }
   }
+}
+
+function getName(id, user, fetch) {
+  if (!fetch) return id
+  return user.tags
 }
 
 module.exports = { ban, kick, warn, timeout }

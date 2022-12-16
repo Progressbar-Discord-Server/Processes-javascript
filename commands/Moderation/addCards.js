@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, User } = require("discord.js")
+const { SlashCommandBuilder, EmbedBuilder, GuildMember } = require("discord.js")
+const { AutoModCards, addCard } = require("../../Util/Cards.js")
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -14,19 +15,25 @@ module.exports = {
       .setRequired(true)
       .setChoices({ name: "Browns", value: "Browns" }, { name: "Yellow", value: "Yellow" }, { name: "White", value: "White" }, { name: "Orange", value: "Orange" }, { name: "Red", value: "Red" }, { name: "Black", value: "Black" })),
   async execute(interaction) {
-    await interaction.deferReply({ephemeral: true})
+    await interaction.deferReply({ ephemeral: true })
 
     const card = interaction.options.getString("card", true)
-    let user = interaction.options.getUser("user", true)
-    
-    if (user instanceof User) user = await user.fetch()
-    
-    let [userdb] = await client.db.Cards.findOrCreate({
-      where: {userID: user.id}
+    let member = interaction.options.getMember("user", true)
+    let user = member.user
+
+    if (!(member instanceof GuildMember)) {
+      member = await member.fetch()
+      user = await user.fetch()
+    }
+
+    let [cardDB] = await client.db.Cards.findOrCreate({
+      where: { userID: user.id }
     })
+
+    await addCard(cardDB, card)
     
-    await userdb.increment(card)
+    AutoModCards(interaction, cardDB, member)
     
-    interaction.followUp({embeds: [new EmbedBuilder().setTitle(`Added a ${card} card to ${user.tag}.`).setColor("#00ff00")]})
+    interaction.followUp({ embeds: [new EmbedBuilder().setTitle(`Added a ${card} card to ${user.tag}.`).setColor("#00ff00")] })
   }
 }
