@@ -1,4 +1,3 @@
-config.json
+config.js
 node_modules/
-jsconfig.json
 database.sqlite

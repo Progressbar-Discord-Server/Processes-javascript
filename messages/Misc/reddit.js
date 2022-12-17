@@ -1,4 +1,4 @@
-const { redditCha, reddit } = require("../../config.json")
+const { redditCha, reddit } = require("../../config.js")
 
 module.exports = {
   message: "reddit",

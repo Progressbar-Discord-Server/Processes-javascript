@@ -1,5 +1,5 @@
 const { StarboardRemove } = require("../../Util/Starboard.js");
-const { starBoard } = require("../../config.json")
+const { starBoard } = require("../../config.js")
 
 module.exports = {
   name: 'messageReactionRemove',

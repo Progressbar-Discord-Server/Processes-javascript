@@ -1,5 +1,5 @@
 const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, MessageType } = require("discord.js")
-const { starBoardEmoji, guildMainId } = require("../config.json")
+const { starBoardEmoji, guildMainId } = require("../config.js")
 
 function StarboardAdd(reaction) {
   if (reaction.message.guildId !== guildMainId) return

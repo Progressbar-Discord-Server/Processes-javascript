@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, codeBlock } = require('discord.js');
-const { PasteeDevKey } = require('../../config.json');
+const { PasteeDevKey } = require('../../config.js');
 const axios = require('axios').default;
 
 module.exports = {

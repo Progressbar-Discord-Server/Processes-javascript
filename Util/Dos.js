@@ -212,7 +212,7 @@ async function ProcessDOS(client) {
       }
       case "deploy": {
         const { send } = require("../deploy-commands.js");
-        const { beta } = require("../config.json");
+        const { beta } = require("../config.js");
 
         let all = []
         client.commands.forEach(e => { if (!beta && e.name !== "test" || beta) all.push(e.data.toJSON()) })

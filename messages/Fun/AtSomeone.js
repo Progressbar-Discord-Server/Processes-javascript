@@ -1,5 +1,5 @@
 const { GuildMember } = require('discord.js');
-const { AtSomeone } = require('../../config.json') || false;
+const { AtSomeone } = require('../../config.js') || false;
 
 
 async function randomMember(memberList) {

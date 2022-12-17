@@ -7,15 +7,24 @@
   "debugCha": "the id of the debug channel, where all unhandled errors will get",
   "reddit": "Do you want the reddit system to work?",
   "redditCha": "the channel where reddit post get sent",
-  "redditTalkCha": "the id of the channel where you talk about reddit",
   "starBoard": "Do you want the starboard to be activated?",
   "starBoardEmoji": [
-    {"emoji": "the reaction to respond to", "ChaId": "The id of the channel", "thread": true, "ThdId": "The id of the thread if the thread part in this object is true"}
+    {
+      "emoji": "the reaction to respond to",
+      "ChaId": "The id of the channel",
+      "thread": true,
+      "ThdId": "The id of the thread if the thread part in this object is true"
+    }
   ],
   "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it, and 'true' to activate",
-  "AutoMod": false, 
+  "Cards": {
+    "AutoMod": false,
+    "PunishmentRole": "A role id",
+    "JailRole": "A role id"
+  },
+  "listAllPerm": "ADMINISTRATOR",
   "sqlPass": "A password for the database, can be empty",
   "PasteeDevKey": "A key to the api of Paste.ee",
   "OwnerId": "The id of the owner of the bot, can be an Array",
-  "beta": "do you want the test command to be pushed like other? set 'true' here else, set false"
+  "beta": false
 }

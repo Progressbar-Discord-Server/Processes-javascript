@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { sqlPass } = require('../config.json')
+const { sqlPass } = require('../config.js')
 
 const sequelize = new Sequelize('database', 'user', sqlPass, {
   host: 'localhost',

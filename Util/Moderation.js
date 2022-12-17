@@ -1,5 +1,5 @@
 const { User, GuildMember, EmbedBuilder, escapeMarkdown } = require('discord.js')
-const { logCha } = require('../config.json')
+const { logCha } = require('../config.js')
 
 async function ban(interaction, member, reason = "No reason provided", joke = false, db, catcherror = console.error(err)) {
   const guild = interaction.guild

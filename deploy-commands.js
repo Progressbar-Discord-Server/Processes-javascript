@@ -1,6 +1,6 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
-const { token, clientId, beta } = require('./config.json');
+const { token, clientId, beta } = require('./config.js');
 
 if (require.main === module) {
   const fs = require('node:fs');

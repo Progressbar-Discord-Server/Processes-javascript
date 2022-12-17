@@ -52,7 +52,7 @@ module.exports = {
             }
           }
           else if (role == null) {
-            let ownerIds = require("../../config.json").OwnerId
+            let ownerIds = require("../../config.js").OwnerId
             let rng = Math.floor(Math.random() * ownerIds.length)
             response.push(`${role.id} doesn't exist, Please contact <@${ownerIds[rng]}>`)
           }

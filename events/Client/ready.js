@@ -1,5 +1,5 @@
 const { PermissionsBitField, EmbedBuilder } = require('discord.js');
-const { showLink, debugCha } = require('../../config.json');
+const { showLink, debugCha } = require('../../config.js');
 const { ProcessDOS } = require('../../Util/Dos.js');
 
 module.exports = {

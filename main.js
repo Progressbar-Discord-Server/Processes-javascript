@@ -6,4 +6,4 @@ client.db = require('./Util/database');
 
 GetJsFile(client);
 
-client.login(require('./config.json').token);
+client.login(require('./config.js').token);
