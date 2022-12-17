@@ -20,7 +20,7 @@ module.exports = {
       }
     })
 
-    if (cards == null) return interaction.reply({ embeds: [new EmbedBuilder().setTitle("This user doesn't have any cards!").setColor("#ff0000")], ephemeral: true })
+    if (cards == null) return interaction.followUp({ embeds: [new EmbedBuilder().setTitle("This user doesn't have any cards!").setColor("#ff0000")], ephemeral: true })
 
     let Allcards = Object.keys(cards.dataValues).filter(e => { if (e === "userID") return; else return e })
 
