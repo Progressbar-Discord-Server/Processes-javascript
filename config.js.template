@@ -1,30 +1,34 @@
-{
-  "token": "The token of the bot",
-  "clientId": "The id of the bot",
-  "guildId": "The id of a discord server for pushing / commands, can be an Array",
-  "guildMainId": "The id of the Main discord server",
-  "logCha": "The id of a log channel",
-  "debugCha": "the id of the debug channel, where all unhandled errors will get",
-  "reddit": "Do you want the reddit system to work?",
-  "redditCha": "the channel where reddit post get sent",
-  "starBoard": "Do you want the starboard to be activated?",
-  "starBoardEmoji": [
+module.exports = {
+  token: "The token of the bot",
+  clientId: "The id of the bot",
+  guildId: "The id of a discord server for pushing / commands, can be an Array",
+  OwnerId: ["The id of the owner of the bot"],
+  guildMainId: "The id of the Main discord server",
+  logCha: "The id of a log channel",
+  debugCha: "the id of the debug channel, where all unhandled errors will get",
+  reddit: "Do you want the reddit system to work?",
+  redditCha: "the channel where reddit post get sent",
+  starBoard: "Do you want the starboard to be activated?",
+  starBoardEmoji: [
     {
-      "emoji": "the reaction to respond to",
-      "ChaId": "The id of the channel",
-      "thread": true,
-      "ThdId": "The id of the thread if the thread part in this object is true"
+      emoji: "the reaction to respond to",
+      ChaId: "The id of the channel",
+      thread: true,
+      ThdId: "The id of the thread if the thread part in this object is true"
     }
   ],
-  "showLink": "Showing the link for inviting the bot, set 'false' to desactivate it, and 'true' to activate",
-  "Cards": {
-    "AutoMod": false,
-    "PunishmentRole": "A role id",
-    "JailRole": "A role id"
+  showLink: true,
+  Cards: {
+    AutoMod: false,
+    PunishmentRole: "A role id",
+    JailRole: "A role id"
   },
-  "listAllPerm": "ADMINISTRATOR",
-  "sqlPass": "A password for the database, can be empty",
-  "PasteeDevKey": "A key to the api of Paste.ee",
-  "OwnerId": "The id of the owner of the bot, can be an Array",
-  "beta": false
+  listAllPerm: "ADMINISTRATOR",
+  sqlPass: "A password for the database, can be empty",
+  PasteeDevKey: "A key to the api of Paste.ee",
+  beta: false,
+  catcherror: (err) => {
+    // A function when an error happend
+    console.error(err)
+  }
 }

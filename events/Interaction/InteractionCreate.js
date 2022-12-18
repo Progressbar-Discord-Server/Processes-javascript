@@ -11,9 +11,13 @@ module.exports = {
         const command = client.commands.get(interaction.commandName);
         if (!command) return;
 
-        await command.execute(interaction).catch(async err => {
+        await command.execute(interaction).catch(err => {
           console.error(err)
-          await interaction.reply({ content: `There was an error while executing this command!\n\`\`\`${err} \`\`\``, ephemeral: true }).catch(await interaction.followUp({ content: `There was an error while executing this command!\n\`\`\` ${err} \`\`\``, ephemeral: true }).catch(e => { interaction.editReply({ content: `There was an error while executing this command!\n\`\`\` ${err} \`\`\``, ephemeral: true }).catch(e => { }) }));
+          interaction.reply({ content: `There was an error while executing this command!\n\`\`\`${err} \`\`\``, ephemeral: true }).catch(() =>
+            interaction.editReply({ content: `There was an error while executing this command!\n\`\`\` ${err} \`\`\``, ephemeral: true }).catch(() =>
+              interaction.followUp({ content: `There was an error while executing this command!\n\`\`\` ${err} \`\`\``, ephemeral: true }).catch(() => { })
+            )
+          );
         });
       }
       else if (interaction.commandType == 2 || interaction.commandType == 3) {
@@ -22,7 +26,7 @@ module.exports = {
 
         await contextMenu.execute(interaction).catch(async err => {
           console.error(err)
-          await interaction.reply({ content: `There was an error while executing this context menu!\n\`\`\`${err} \`\`\``, ephemeral: true }).catch(await interaction.followUp({ content: `There was an error while executing this context menu!\n\`\`\` ${err} \`\`\``, ephemeral: true }).catch(e => { interaction.editReply({ content: `There was an error while executing this context menu!\n\`\`\` ${err} \`\`\``, ephemeral: true }).catch(e => { }) }));
+          await interaction.reply({ content: `There was an error while executing this context menu!\n\`\`\`${err} \`\`\``, ephemeral: true }).catch(() => interaction.followUp({ content: `There was an error while executing this context menu!\n\`\`\` ${err} \`\`\``, ephemeral: true }).catch(e => { interaction.editReply({ content: `There was an error while executing this context menu!\n\`\`\` ${err} \`\`\``, ephemeral: true }).catch(e => { }) }));
         });
       }
     }

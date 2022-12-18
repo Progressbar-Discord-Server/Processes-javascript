@@ -39,7 +39,7 @@ async function ProcessDOS(client) {
       }
       case 'eval': {
         try {
-          console.log(eval(line.substring(4)))
+          console.log(await eval(`(async () => {return ${line.substring(4)}})()`))
         } catch (error) {
           console.error(error)
         }
