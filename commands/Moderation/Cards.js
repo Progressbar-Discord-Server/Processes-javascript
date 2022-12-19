@@ -135,8 +135,8 @@ module.exports = {
           attributes: ["userID"]
         })).forEach(e => arr.push(e.dataValues.userID));
 
+        let userID = []
         if (page / 10 < Math.ceil(arr.length / 10)) {
-          let userID = []
           for (let i = page - 10; i < page; i++) {
             if (arr[i] != undefined) userID.push(arr[i])
           }
