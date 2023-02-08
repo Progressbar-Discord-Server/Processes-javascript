@@ -76,4 +76,4 @@ const Mastodon = sequelize.define('mastodon', {
   }
 })
 
-module.exports = { Cases, Star, Cards, Reddit, Mastodon }
+module.exports = { Cases, Star, Cards, Mastodon }
