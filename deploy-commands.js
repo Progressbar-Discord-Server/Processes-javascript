@@ -1,13 +1,13 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
-const { token, clientId, beta } = require('./config.js');
 
 if (require.main === module) {
-  const fs = require('node:fs');
+  const { readdirSync } = require('node:fs');
+  const { token, clientId, beta } = require('./config.js');
   const commands = [];
 
-  for (const folder of fs.readdirSync(`${__dirname}/commands`)) {
-    for (const file of fs.readdirSync(`${__dirname}/commands/${folder}`).filter(file => file.endsWith(".js"))) {
+  for (const folder of readdirSync(`${__dirname}/commands`)) {
+    for (const file of readdirSync(`${__dirname}/commands/${folder}`).filter(file => file.endsWith(".js"))) {
       try {
         const command = require(`${__dirname}/commands/${folder}/${file}`);
         commands.push(command.data.toJSON());
@@ -19,8 +19,8 @@ if (require.main === module) {
 
   const contextMenu = [];
 
-  for (const folder of fs.readdirSync(`${__dirname}/context menu`)) {
-    for (const file of fs.readdirSync(`${__dirname}/context menu/${folder}`).filter(file => file.endsWith(".js"))) {
+  for (const folder of readdirSync(`${__dirname}/context menu`)) {
+    for (const file of readdirSync(`${__dirname}/context menu/${folder}`).filter(file => file.endsWith(".js"))) {
       try {
         const contextmenu = require(`${__dirname}/context menu/${folder}/${file}`);
         contextMenu.push(contextmenu.data.toJSON());

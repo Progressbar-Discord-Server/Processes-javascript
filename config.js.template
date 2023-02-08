@@ -27,6 +27,16 @@ module.exports = {
   sqlPass: "A password for the database, can be empty",
   PasteeDevKey: "A key to the api of Paste.ee",
   beta: false,
+  redditURL: "A URL to a subreddit",
+  mastodon: {
+    enable: false,
+    server: "the server the bot account is on mastodon",
+    token: "",
+    client: {
+      id: "",
+      secret: ""
+    }
+  },
   catcherror: (err) => {
     // A function when an error happend
     console.error(err)

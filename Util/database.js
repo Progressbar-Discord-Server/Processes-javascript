@@ -69,4 +69,11 @@ const Cards = sequelize.define('cards', {
   }
 })
 
-module.exports = { Cases, Star, Cards }
+const Mastodon = sequelize.define('mastodon', {
+  MessageId: {
+    type: Sequelize.TEXT,
+    unique: true
+  }
+})
+
+module.exports = { Cases, Star, Cards, Reddit, Mastodon }

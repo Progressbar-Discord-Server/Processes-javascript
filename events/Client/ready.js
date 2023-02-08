@@ -10,9 +10,11 @@ module.exports = {
     base(client).then(async client => client.debugCha = await client.channels.fetch(debugCha))
   },
   async base(client) {
-    Object.keys(client.db).forEach(e => {
-      client.db[e].sync();
-    })
+    for (let e of Object.keys(client.db)) {
+      await client.db[e].sync();
+    }
+
+    console.log(`Login as ${client.user.tag}`);
 
     let guilds = await client.guilds.fetch()
 
@@ -38,9 +40,7 @@ module.exports = {
       }))
     }
 
-    console.log(`Login as ${client.user.tag}`);
     ProcessDOS(client)
-
 
     // Errors handler
     process.on("uncaughtException", async err => {

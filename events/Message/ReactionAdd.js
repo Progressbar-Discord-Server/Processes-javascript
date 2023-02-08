@@ -1,5 +1,6 @@
 const { StarboardAdd } = require('../../Util/Starboard.js');
-const { starBoard } = require("../../config.js")
+const { starBoard, mastodon: {enable: mastodon} } = require("../../config.js");
+const { checkReactionNumber } = require('../../Util/mastodon.js');
 
 module.exports = {
   name: 'messageReactionAdd',
@@ -7,10 +8,12 @@ module.exports = {
   async execute(reaction) {
     if (!reaction.partial) {
       if (starBoard) StarboardAdd(reaction)
+      if (mastodon && reaction.name == "🔁") checkReactionNumber(reaction)
     }
     else if (reaction.partial) {
       reaction.fetch().then(e => {
         if (starBoard) StarboardAdd(e)
+        if (mastodon && reaction.name == "🔁") checkReactionNumber(reaction)
       }).catch(console.error)
     }
   }

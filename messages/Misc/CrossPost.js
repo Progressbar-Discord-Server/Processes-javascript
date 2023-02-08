@@ -12,7 +12,7 @@ module.exports = {
   async execute(messages) {
     messages.crosspost()
       .then((message) => {
-        console.log(`Crossposted ${message.content.slice(4)}`);
+        console.log(`Crossposted a message (${message.id})`);
       }).catch(console.error);
   }
 }
