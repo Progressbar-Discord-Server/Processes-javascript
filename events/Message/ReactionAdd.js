@@ -8,12 +8,12 @@ module.exports = {
   async execute(reaction) {
     if (!reaction.partial) {
       if (starBoard) StarboardAdd(reaction)
-      if (mastodon && reaction.name == "🔁") checkReactionNumber(reaction)
+      if (mastodon.enable && reaction.emoji.name == "🔁") checkReactionNumber(reaction)
     }
     else if (reaction.partial) {
       reaction.fetch().then(e => {
         if (starBoard) StarboardAdd(e)
-        if (mastodon.enable && reaction.name == "🔁") checkReactionNumber(reaction)
+        if (mastodon.enable && reaction.emoji.name == "🔁") checkReactionNumber(reaction)
       }).catch(console.error)
     }
   }

@@ -11,12 +11,14 @@ async function checkReactionNumber(reaction) {
 
   let [_, created] = await client.db.Mastodon.findOrCreate({ where: { MessageId: message.id } })
 
-  if (created) {
-    sentToMastodon(message)
-  }
+  if (!created) return;
+
+  await sentToMastodon(message)
 }
 
 async function sentToMastodon(message) {
+  if (message.content.replaceAll("@", "@ ").length > 500) await new Promise((_, reject) => reject(new Error(`Length is more then 500 caracters, this is not yet supported (Message id is ${message.id})`)))
+
   await axios({
     url: mastodon.server.endsWith("/") ? mastodon.server + "api/v1/statuses" : mastodon.server + "/api/v1/statuses",
     method: "POST",
