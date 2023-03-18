@@ -31,10 +31,17 @@ module.exports = {
   mastodon: {
     enable: false,
     server: "the server the bot account is on mastodon",
-    token: "",
-    client: {
-      id: "",
-      secret: ""
+    token: ""
+  },
+  twitter: {
+    enable: false,
+    app: {
+      key: "A key to twitter API (appKey)",
+      secret: "A key to twitter API (appSecret)"
+    },
+    access: {
+      token: "A key to twitter API (accessToken)",
+      secret: "A key to twitter API (accessSecret)"
     }
   },
   catcherror: (err) => {

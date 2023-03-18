@@ -11,7 +11,7 @@ module.exports = {
   },
   async base(client) {
     for (let e of Object.keys(client.db)) {
-      await client.db[e].sync();
+      client.db[e].sync();
     }
 
     console.log(`Login as ${client.user.tag}`);
@@ -25,9 +25,9 @@ module.exports = {
       channels.forEach(async channel => {
         await channel.fetch().then(async e => {
           if (e.threads && e.permissionsFor(client.id).has(PermissionsBitField.Flags.ReadMessageHistory)) {
-            await Promise.all([e.threads.fetchActive(), e.threads.fetchArchived()]).catch(() => {})
+            await Promise.all([e.threads.fetchActive(), e.threads.fetchArchived()]).catch(() => { })
           }
-        }).catch(() => {})
+        }).catch(() => { })
       })
       console.log(`Channels of ${guildFetched.name} loaded (${guildFetched.id})`)
     })
@@ -75,7 +75,29 @@ module.exports = {
         message = err.message
       }
       else stack = err
-      if (client.debugCha) client.debugCha.send({
+      if (!client.debugCha) return
+
+      const { AxiosError } = require('axios');
+      if (err instanceof AxiosError) {
+        return client.debugChat.send({
+          embeds: [new EmbedBuilder({
+            author: { name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" },
+            description: "UnhandledRejection",
+            fields: [
+              {
+                name: "Error",
+                value: `${err}\n\n${message}`,
+                inline: true
+              },
+              {
+                name: "From",
+                value: `${stack}`,
+                inline: true
+              }]
+          })]
+        })
+      }
+      client.debugCha.send({
         embeds: [new EmbedBuilder({
           author: { name: "Error", iconURL: "https://raw.githubusercontent.com/abrahammurciano/discord-lumberjack/main/images/error.png" },
           description: "UnhandledRejection",
