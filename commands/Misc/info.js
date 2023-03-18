@@ -36,7 +36,7 @@ module.exports = {
           embeds: [new EmbedBuilder()
             .setAuthor({ name: member.user.tag, iconURL: (avatar ? avatar : undefined) })
             .setDescription(`<@${member.user.id}>`)
-            .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+            .setColor(Math.floor(Math.random() * 16777215))
             .addFields(
               { name: "**Joined**", value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:f> (<t:${Math.floor(member.joinedTimestamp / 1000)}:R>)`, inline: true },
               { name: "**Registered**", value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:f> (<t:${Math.floor(member.user.createdTimestamp / 1000)}:R>)`, inline: true },

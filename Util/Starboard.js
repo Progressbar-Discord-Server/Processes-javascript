@@ -87,7 +87,7 @@ async function createEmbed(MainMessage) {
 
   const embed = new EmbedBuilder()
     .setAuthor({ name: (MainMessage.author.tag.endsWith("#0000") ? MainMessage.author.tag.slice(0, -5) : MainMessage.author.tag), iconURL: typeof avatar === "string" ? avatar : undefined })
-    .setColor(Math.floor(Math.random() * 16777215).toString(16))
+    .setColor(Math.floor(Math.random() * 16777215))
     .setTimestamp(new Date());
 
   if (MainMessage.content) embed.setDescription(MainMessage.content)
